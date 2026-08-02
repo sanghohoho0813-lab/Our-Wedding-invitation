@@ -57,17 +57,16 @@ function svg({ width, height, tone, label }) {
 
 const FILES = [
   { name: "hero.jpg", width: 1200, height: 1500, label: "HERO" },
-  { name: "couple.jpg", width: 1200, height: 1500, label: "COUPLE" },
-  { name: "ending.jpg", width: 1200, height: 1500, label: "ENDING" },
-  { name: "01.jpg", width: 1200, height: 1500, label: "01" },
-  { name: "02.jpg", width: 1000, height: 1000, label: "02" },
-  { name: "03.jpg", width: 1000, height: 1000, label: "03" },
-  { name: "04.jpg", width: 1000, height: 1500, label: "04" },
-  { name: "05.jpg", width: 1500, height: 1000, label: "05" },
-  { name: "06.jpg", width: 1000, height: 1500, label: "06" },
-  { name: "07.jpg", width: 1000, height: 1000, label: "07" },
-  { name: "08.jpg", width: 1000, height: 1000, label: "08" },
-  { name: "09.jpg", width: 1500, height: 1000, label: "09" },
+  { name: "01.jpg", width: 1200, height: 1600, label: "01" },
+  { name: "02.jpg", width: 1600, height: 1067, label: "02" },
+  { name: "03.jpg", width: 1200, height: 1600, label: "03" },
+  { name: "04.jpg", width: 1200, height: 1200, label: "04" },
+  { name: "05.jpg", width: 1600, height: 1067, label: "05" },
+  { name: "06.jpg", width: 1200, height: 1600, label: "06" },
+  { name: "07.jpg", width: 1200, height: 1600, label: "07" },
+  { name: "08.jpg", width: 1200, height: 1200, label: "08" },
+  { name: "09.jpg", width: 1600, height: 1067, label: "09" },
+  { name: "10.jpg", width: 1200, height: 1600, label: "10" },
   { name: "og.jpg", width: 1200, height: 630, label: "OUR WEDDING DAY" },
 ];
 

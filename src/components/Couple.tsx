@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { MessageSquare, Phone } from "lucide-react";
 
 import { Reveal } from "@/components/Reveal";
@@ -14,29 +13,29 @@ function parentsLine(person: Person) {
   return person.relation ? `${parents}의 ${person.relation}` : parents;
 }
 
+/** GROOM / 이름 / 전화·문자 — 한 줄로 정리한 compact row */
 function PersonRow({ label, koLabel, person }: { label: string; koLabel: string; person: Person }) {
+  const tel = person.phone.replace(/-/g, "");
   const parents = wedding.couple.showParents ? parentsLine(person) : "";
 
   return (
-    <div className="flex items-center justify-between gap-4 py-5">
+    <div className="flex items-center justify-between gap-4 py-4">
       <div className="min-w-0">
         <span className="eyebrow block">{label}</span>
-        {parents && <p className="mt-2.5 text-[12.5px] leading-snug text-muted">{parents}</p>}
-        <p className="mt-1 text-[19px] font-normal leading-tight tracking-[-0.01em] text-ink">
-          {person.name}
-        </p>
+        <p className="mt-2 text-[18px] leading-tight tracking-[-0.01em] text-ink">{person.name}</p>
+        {parents && <p className="mt-1.5 text-[12.5px] leading-snug text-faint">{parents}</p>}
       </div>
 
       <div className="flex shrink-0 items-center gap-1">
         <a
-          href={`tel:${person.phone.replace(/-/g, "")}`}
+          href={`tel:${tel}`}
           aria-label={`${koLabel} ${person.name}에게 전화하기`}
           className="tap w-11 rounded-full text-muted transition-colors active:text-ink"
         >
           <Phone size={16} strokeWidth={1.4} aria-hidden="true" />
         </a>
         <a
-          href={`sms:${person.phone.replace(/-/g, "")}`}
+          href={`sms:${tel}`}
           aria-label={`${koLabel} ${person.name}에게 문자 보내기`}
           className="tap w-11 rounded-full text-muted transition-colors active:text-ink"
         >
@@ -49,35 +48,13 @@ function PersonRow({ label, koLabel, person }: { label: string; koLabel: string;
 
 export function Couple() {
   return (
-    <section aria-label="신랑 신부 소개">
+    <section className="edge pb-20" aria-label="신랑 신부 소개">
       <Reveal>
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-paper-deep">
-          <Image
-            src={wedding.couple.image}
-            alt={wedding.couple.imageAlt}
-            fill
-            sizes="(max-width: 520px) 100vw, 520px"
-            className="object-cover object-[50%_40%]"
-          />
+        <div className="divide-y divide-line border-y border-line">
+          <PersonRow label="Groom" koLabel="신랑" person={wedding.groom} />
+          <PersonRow label="Bride" koLabel="신부" person={wedding.bride} />
         </div>
       </Reveal>
-
-      <div className="edge">
-        {wedding.couple.caption && (
-          <Reveal delay={0.05}>
-            <p className="serif mt-8 text-center text-[15px] font-light italic tracking-[0.01em] text-muted">
-              {wedding.couple.caption}
-            </p>
-          </Reveal>
-        )}
-
-        <Reveal delay={0.1}>
-          <div className="mt-10 divide-y divide-line border-y border-line">
-            <PersonRow label="Groom" koLabel="신랑" person={wedding.groom} />
-            <PersonRow label="Bride" koLabel="신부" person={wedding.bride} />
-          </div>
-        </Reveal>
-      </div>
     </section>
   );
 }

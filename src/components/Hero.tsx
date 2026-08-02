@@ -16,7 +16,7 @@ export function Hero() {
   return (
     <section
       className="relative w-full overflow-hidden bg-paper-deep"
-      style={{ height: "100svh", minHeight: "560px" }}
+      style={{ height: "88svh", minHeight: "540px" }}
       aria-label="메인 화면"
     >
       <div className="hero-photo absolute inset-0">
@@ -27,7 +27,8 @@ export function Hero() {
           priority
           fetchPriority="high"
           sizes="(max-width: 520px) 100vw, 520px"
-          className="object-cover object-[50%_38%]"
+          className="object-cover"
+          style={{ objectPosition: wedding.images.heroPosition }}
         />
       </div>
 
@@ -42,7 +43,7 @@ export function Hero() {
       />
 
       <div className="absolute inset-x-0 bottom-0 edge pb-[max(env(safe-area-inset-bottom),18px)]">
-        <div className="hero-copy pb-16 text-center text-white">
+        <div className="hero-copy pb-14 text-center text-white">
           <p className="serif text-[10.5px] font-medium uppercase tracking-[0.42em] text-white/75">
             Our Wedding Day
           </p>

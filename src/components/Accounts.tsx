@@ -88,13 +88,13 @@ export function Accounts() {
   const { groom, bride } = wedding.accounts;
 
   return (
-    <section className="edge pb-28" aria-labelledby="accounts-heading">
+    <section className="edge pb-20" aria-labelledby="accounts-heading">
       <Reveal>
         <div className="text-center">
           <p id="accounts-heading" className="eyebrow">
             With Heart
           </p>
-          <p className="mt-7 text-[15px] leading-[1.9] tracking-[-0.01em] text-muted">
+          <p className="mt-6 text-[14.5px] leading-[1.85] tracking-[-0.01em] text-muted">
             축하의 마음을 전하고 싶은 분들을 위해
             <br />
             계좌번호를 안내드립니다.
@@ -103,7 +103,7 @@ export function Accounts() {
       </Reveal>
 
       <Reveal delay={0.06}>
-        <div className="mt-10 border-t border-line">
+        <div className="mt-8 border-t border-line">
           <AccountGroup title="신랑측 마음 전하실 곳" accounts={groom} />
           <AccountGroup title="신부측 마음 전하실 곳" accounts={bride} />
         </div>

@@ -84,6 +84,11 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
     else if (offset.x > SWIPE_DISTANCE || velocity.x > SWIPE_VELOCITY) paginate(-1);
   };
 
+  /** 사진 바깥(여백)을 누르면 닫는다. 사진 자체를 누르면 닫히지 않는다. */
+  const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   if (!mounted) return null;
 
   const image = images[index];
@@ -93,7 +98,7 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
       role="dialog"
       aria-modal="true"
       aria-label="사진 크게 보기"
-      className="fixed inset-0 z-[100] flex flex-col bg-[#141311]"
+      className="fixed inset-0 z-[100] flex flex-col bg-[#121110]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -121,7 +126,8 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
           <motion.div
             key={index}
             custom={direction}
-            className="absolute inset-0 flex items-center justify-center px-3"
+            className="absolute inset-0 flex items-center justify-center px-3 py-1"
+            onClick={onBackdropClick}
             drag="x"
             dragElastic={0.16}
             dragConstraints={{ left: 0, right: 0 }}
@@ -131,24 +137,28 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: direction * -44 }}
             transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="relative h-full w-full">
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="100vw"
-                priority
-                draggable={false}
-                className="select-none object-contain"
-              />
-            </div>
+            {/*
+              width/height 는 비율 힌트이고, 실제 표시 크기는 로드된 이미지의
+              고유 비율을 따른다. 덕분에 <img> 박스가 사진에 딱 맞아
+              그 바깥 여백을 누르면 닫히도록 만들 수 있다.
+            */}
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={1200}
+              height={1600}
+              sizes="100vw"
+              priority
+              draggable={false}
+              className="h-auto max-h-full w-auto max-w-full select-none object-contain"
+            />
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* 하단 — 이전 / 번호 / 다음 */}
       <div
-        className="relative z-10 flex items-center justify-center gap-6 px-4 pb-2"
+        className="relative z-10 flex items-center justify-center gap-6 px-4"
         style={{ paddingBottom: "max(env(safe-area-inset-bottom), 14px)" }}
       >
         <button

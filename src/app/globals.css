@@ -184,6 +184,17 @@ img {
   justify-content: center;
 }
 
+/* 가로 갤러리 — 스크롤바는 숨기고 관성 스크롤은 살린다 */
+@utility no-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* 아주 옅은 구분선 — 카드 대신 사용하는 유일한 장식 */
 @utility hairline {
   height: 1px;

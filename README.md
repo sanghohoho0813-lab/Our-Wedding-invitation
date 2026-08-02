@@ -30,23 +30,26 @@ npm run lint       # ESLint
 **모든 텍스트와 경로가 `src/config/wedding.ts` 한 곳에** 있습니다.
 컴포넌트 안에는 개인정보를 하드코딩하지 않았습니다.
 
-지금 들어있는 값은 전부 임시(placeholder)입니다. 아래 항목을 실제 정보로 바꿔주세요.
+이름과 예식장은 실제 정보가 들어가 있고, 연락처·계좌번호·부모님 성함은 아직 임시값입니다.
 
 | 항목 | 위치 | 지금 값 |
 | --- | --- | --- |
-| 신랑 이름 / 연락처 / 부모님 | `groom` | 김민준, 010-0000-0000, 김○○ · 박○○ |
-| 신부 이름 / 연락처 / 부모님 | `bride` | 이서연, 010-0000-0000, 이○○ · 최○○ |
-| 예식 날짜 / 시간 | `wedding.date`, `wedding.time`, `wedding.timeLabel` | 2026-12-20, 14:00, 오후 2시 |
-| 예식장 / 홀 / 주소 / 대표번호 | `wedding.venue`, `hall`, `address`, `tel` | 그랜드 하우스, 3층 그랜드홀 … |
-| 지도 검색어 | `wedding.mapQuery` | 네이버지도 · 카카오맵 버튼이 이 검색어로 열립니다 |
+| 신랑 이름 | `groom.name` | **김상호** (확정) |
+| 신부 이름 | `bride.name` | **창지윤** (확정) |
+| 예식장 | `wedding.venue` | **연세대학교 신촌캠퍼스 동문회관** (확정) |
+| 주소 | `wedding.address` | **서울 서대문구 연세로 50** (확정) |
+| 예식 날짜 | `wedding.date` | 2026-12-20 |
+| 예식 시간 | `wedding.time`, `wedding.timeLabel` | 14:00 / 오후 2시 — **확인 필요** |
+| 홀 이름 | `wedding.hall` | 비어 있음 (입력하면 화면에 표시됩니다) |
+| 신랑·신부 연락처 | `groom.phone`, `bride.phone` | 010-0000-0000 — **교체 필요** |
+| 부모님 성함 | `groom.father/mother`, `bride.father/mother` | 김○○ 등 — **교체 필요** |
+| 혼주 연락처 | `contacts.groom`, `contacts.bride` | 010-0000-0000 — **교체 필요** |
+| 계좌번호 | `accounts.groom`, `accounts.bride` | 은행명/000000 — **교체 필요** |
+| 교통 안내 | `transportation` | 신촌역 기준 — **예식장 안내로 확인 필요** |
 | 초대 문구 | `invitation.body` | 배열의 각 항목이 한 줄입니다 (`""`는 빈 줄) |
-| 커플 사진 / 문구 | `couple` | `/images/wedding/couple.jpg` |
-| 갤러리 사진 목록 | `gallery` | 9장 (placeholder) |
-| 교통 안내 | `transportation` | 지하철 / 버스 / 주차 / 기타 |
-| 계좌번호 | `accounts.groom`, `accounts.bride` | 각 3개 (placeholder) |
-| 연락처 목록 | `contacts.groom`, `contacts.bride` | 신랑측 / 신부측 각 3명 |
+| 갤러리 사진 | `gallery` | 10장 (placeholder) |
 | 음악 | `music` | `enabled: false` — 음원을 넣은 뒤 `true` 로 |
-| 배포 주소 / 공유 문구 / OG | `share` | **배포 후 `share.url` 을 실제 도메인으로 꼭 바꿔주세요** |
+| 배포 주소 / 공유 문구 | `share` | **배포 후 `share.url` 을 실제 도메인으로 꼭 바꿔주세요** |
 
 > `wedding.date` 만 바꾸면 요일, 달력, D-day가 모두 자동으로 다시 계산됩니다.
 
@@ -61,29 +64,37 @@ npm run lint       # ESLint
 
 ```
 public/images/wedding/
-├─ hero.jpg      첫 화면 (4:5, 세로) ★ 가장 중요
-├─ couple.jpg    신랑·신부 소개 (4:5, 세로)
-├─ ending.jpg    마지막 사진 (4:5, 세로)
-├─ 01.jpg ~ 09.jpg  갤러리
-└─ og.jpg        카카오톡·문자 공유 미리보기 (1200×630)
+├─ hero.jpg          첫 화면 대표 사진 (4:5, 세로) ★ 가장 중요
+├─ 01.jpg ~ 10.jpg   갤러리 (가로 스와이프)
+└─ og.jpg            카카오톡·문자 공유 미리보기 (1200×630)
 ```
+
+웨딩 사진은 **Hero 대표 사진 1장 + GALLERY** 두 곳에만 들어갑니다.
+페이지 중간에 장식용 사진을 반복해서 넣지 않기 때문에 스크롤이 짧습니다.
 
 ### 교체 방법
 
 1. 같은 파일명으로 덮어쓰면 코드 수정 없이 바로 반영됩니다.
-2. 파일명을 바꾸고 싶다면 `src/config/wedding.ts` 의 `images`, `couple.image`, `gallery` 경로를 수정하세요.
+2. 파일명을 바꾸고 싶다면 `src/config/wedding.ts` 의 `images.hero` 와 `gallery` 경로를 수정하세요.
 3. 사진 장수를 늘리거나 줄이려면 `gallery` 배열만 수정하면 됩니다.
-   갤러리는 `큰 사진 → 두 장 → 세로 컷 → 가로 컷 → …` 패턴이 장수에 맞춰 자동으로 반복됩니다.
+   가로 스와이프 갤러리와 전체화면 뷰어, 하단의 `01 — 10` 표시가 장수에 맞춰 자동으로 조정됩니다.
 
 ### 권장 비율
 
 | 용도 | 비율 | 권장 크기 |
 | --- | --- | --- |
-| hero / couple / ending | 4:5 또는 3:4 | 1200 × 1500 |
-| `orientation: "portrait"` | 2:3 ~ 3:4 | 1000 × 1500 |
-| `orientation: "landscape"` | 3:2 | 1500 × 1000 |
-| `orientation: "square"` | 1:1 | 1000 × 1000 |
+| hero.jpg | 4:5 또는 3:4 | 1200 × 1500 |
+| 갤러리 (01~10) | 3:4 권장 | 1200 × 1600 |
 | og.jpg | 1.91:1 | 1200 × 630 |
+
+갤러리 카드는 높이가 들쭉날쭉해지지 않도록 **3:4 로 통일**되어 있고,
+사진은 `object-fit: cover` 로 채워집니다.
+가로 사진을 넣어도 레이아웃은 깨지지 않지만 위아래가 잘리므로,
+중요한 사진은 `objectPosition` 으로 보여줄 부분을 지정하세요.
+
+```ts
+{ src: "/images/wedding/03.jpg", alt: "웨딩 사진 3", objectPosition: "center 30%" }
+```
 
 원본 촬영본(수천 px)을 그대로 올려도 `next/image` 가 WebP/AVIF로 리사이즈해 내려보내지만,
 첫 화면 로딩을 위해 **긴 변 2000px 내외, 장당 500KB 이하**로 줄여서 올리는 것을 권합니다.
@@ -162,26 +173,33 @@ src/
 │  ├─ globals.css     컬러·타이포 토큰, hero CSS 애니메이션
 │  └─ icon.svg        파비콘
 ├─ components/
-│  ├─ Hero.tsx            첫 화면 (JS 없이 CSS만으로 완성)
-│  ├─ Invitation.tsx      초대의 글
-│  ├─ Couple.tsx          신랑·신부
-│  ├─ WeddingInfo.tsx     예식 정보
-│  ├─ WeddingCalendar.tsx 달력 + D-day
-│  ├─ Gallery.tsx         에디토리얼 갤러리
-│  ├─ GalleryViewer.tsx   전체화면 뷰어 (스와이프/키보드/ESC)
-│  ├─ Location.tsx        오시는 길
-│  ├─ Transportation.tsx  교통
-│  ├─ Accounts.tsx        마음 전하실 곳
-│  ├─ Contact.tsx         연락처
-│  ├─ Share.tsx           공유
-│  ├─ Ending.tsx          마무리
-│  ├─ AudioProvider.tsx   전역 오디오
-│  ├─ MusicToggle.tsx     음악 컨트롤
-│  ├─ Reveal.tsx          스크롤 등장 애니메이션
-│  └─ Toast.tsx           복사 안내 토스트
+│  ├─ Hero.tsx            01 첫 화면 (JS 없이 CSS만으로 완성)
+│  ├─ Invitation.tsx      02 초대의 글
+│  ├─ Couple.tsx          03 신랑·신부 (이름 + 전화/문자)
+│  ├─ WeddingInfo.tsx     04 예식 정보 + 달력 + D-day (한 섹션)
+│  ├─ Gallery.tsx         05 가로 스와이프 갤러리
+│  ├─ GalleryViewer.tsx      전체화면 뷰어 (스와이프/키보드/ESC/배경 탭)
+│  ├─ Location.tsx        06 오시는 길 + 교통 (한 섹션)
+│  ├─ Accounts.tsx        07 마음 전하실 곳 (Accordion)
+│  ├─ Contact.tsx         08 혼주 연락처 + 공유 (한 섹션)
+│  ├─ Ending.tsx          09 맺음말 (사진 없음)
+│  ├─ AudioProvider.tsx      전역 오디오
+│  ├─ MusicToggle.tsx        음악 컨트롤
+│  ├─ Reveal.tsx             스크롤 등장 애니메이션
+│  └─ Toast.tsx              복사 안내 토스트
 ├─ config/wedding.ts   ★ 모든 데이터
 └─ lib/                date / clipboard / share
 ```
+
+### 페이지가 짧은 이유 (2차 개선)
+
+모바일에서 "끝없이 내려가는" 느낌을 없애기 위해 이렇게 정리했습니다.
+
+- 웨딩 사진을 **GALLERY 한 곳**으로 모으고, 세로로 길게 늘어놓던 배치를
+  **가로 스와이프**로 바꿨습니다. (사진 10장이 세로 약 2,500px → 약 480px)
+- 페이지 중간·마지막에 있던 큰 장식 사진 2장을 없앴습니다.
+- `예식 정보 + 달력 + D-day`, `오시는 길 + 교통`, `연락처 + 공유` 를 각각 한 섹션으로 합쳤습니다.
+- 신랑·신부 연락처(COUPLE)와 혼주 연락처(CONTACT)가 겹치지 않도록 나눴습니다.
 
 ### 디자인 원칙 (수정할 때 참고)
 
@@ -197,17 +215,25 @@ src/
   나머지 섹션도 서버 렌더링 시점에 "보이는 상태"로 출력한 뒤
   화면 아래에 있는 요소만 등장 애니메이션 대상으로 전환합니다.
   (JS 로딩이 느리거나 실패해도 청첩장 내용은 항상 읽힙니다.)
-- 높이는 `100svh` 를 사용하고, 노치·홈 인디케이터 영역은 `env(safe-area-inset-*)` 로 처리했습니다.
+- 첫 화면 높이는 `88svh` 를 사용하고, 노치·홈 인디케이터 영역은 `env(safe-area-inset-*)` 로 처리했습니다.
+- 갤러리는 CSS `scroll-snap` 기반이라 손가락 관성 스크롤이 그대로 살아 있고,
+  스크롤바는 숨겨져 있습니다. 사진을 누르면 전체화면 뷰어가 열립니다.
 - 갤러리 뷰어는 열릴 때 body 스크롤을 잠그고, 닫을 때 원래 스크롤 위치로 복원합니다.
+  좌우 스와이프 · 화살표 키 · ESC · 사진 바깥 여백 탭으로 조작할 수 있습니다.
 
 ---
 
-## 7. 배포 후 체크리스트
+## 7. 배포 전 체크리스트
 
-- [ ] `share.url` 을 실제 도메인으로 변경
+- [ ] 예식 **시간** 확정 후 `wedding.time` / `wedding.timeLabel` 수정
+- [ ] 홀 이름이 있으면 `wedding.hall` 입력
+- [ ] 신랑·신부 **연락처** 입력 (`groom.phone`, `bride.phone`)
+- [ ] 부모님 **성함**과 **연락처** 입력 (`groom`/`bride`, `contacts`)
+- [ ] **계좌번호** 입력 (`accounts`)
+- [ ] **교통 안내**를 예식장에서 받은 실제 정보로 확인 (`transportation`)
 - [ ] 실제 사진으로 교체 (`hero.jpg` 부터)
 - [ ] `og.jpg` 교체 후 카카오톡에 링크를 보내 미리보기 확인
 - [ ] 음원 업로드 + `music.enabled: true`
-- [ ] 이름 · 날짜 · 장소 · 계좌번호 · 연락처 실제 값 확인
+- [ ] 배포 후 `share.url` 을 실제 도메인으로 변경
 - [ ] 아이폰 Safari / 안드로이드 Chrome 에서 직접 열어보기
 - [ ] 종이 청첩장에 넣을 QR 코드 생성 후 스캔 테스트

@@ -30,6 +30,26 @@ export function weekdayKo(date: string) {
   return WEEKDAY_KO[parseWeddingDate(date).getDay()];
 }
 
+const MONTH_EN = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+/** "December" */
+export function monthEn(date: string) {
+  return MONTH_EN[getMonth(date) - 1];
+}
+
 export function weekdayEn(date: string) {
   return WEEKDAY_EN[parseWeddingDate(date).getDay()];
 }
@@ -74,4 +94,4 @@ export function buildMonthGrid(date: string): CalendarCell[] {
   return cells;
 }
 
-export { WEEKDAY_EN, WEEKDAY_KO };
+export { MONTH_EN, WEEKDAY_EN, WEEKDAY_KO };
