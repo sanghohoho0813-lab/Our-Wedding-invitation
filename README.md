@@ -30,108 +30,105 @@ npm run lint       # ESLint
 **모든 텍스트와 경로가 `src/config/wedding.ts` 한 곳에** 있습니다.
 컴포넌트 안에는 개인정보를 하드코딩하지 않았습니다.
 
-이름과 예식장은 실제 정보가 들어가 있고, 연락처·계좌번호·부모님 성함은 아직 임시값입니다.
+이름 · 부모님 성함 · 예식 일시 · 예식장 · 사진 · 음악은 실제 정보가 들어가 있습니다.
+**연락처(전화번호)와 계좌번호, 교통 안내**만 아직 임시값입니다.
 
 | 항목 | 위치 | 지금 값 |
 | --- | --- | --- |
-| 신랑 이름 | `groom.name` | **김상호** (확정) |
-| 신부 이름 | `bride.name` | **창지윤** (확정) |
-| 예식장 | `wedding.venue` | **연세대학교 신촌캠퍼스 동문회관** (확정) |
-| 주소 | `wedding.address` | **서울 서대문구 연세로 50** (확정) |
-| 예식 날짜 | `wedding.date` | 2026-12-20 |
-| 예식 시간 | `wedding.time`, `wedding.timeLabel` | 14:00 / 오후 2시 — **확인 필요** |
+| 신랑 / 신부 | `groom.name`, `bride.name` | **김상호 · 창지윤** |
+| 신랑 부모님 | `groom.father/mother` | **김영훈 · 원정연** |
+| 신부 부모님 | `bride.father/mother` | **창지환 · 유병연** |
+| 예식 일시 | `wedding.date`, `wedding.timeLabel` | **2026-12-20(일) 오후 1시** |
+| 예식장 / 주소 | `wedding.venue`, `address` | **연세대학교 신촌캠퍼스 동문회관 / 서울 서대문구 연세로 50** |
 | 홀 이름 | `wedding.hall` | 비어 있음 (입력하면 화면에 표시됩니다) |
 | 신랑·신부 연락처 | `groom.phone`, `bride.phone` | 010-0000-0000 — **교체 필요** |
-| 부모님 성함 | `groom.father/mother`, `bride.father/mother` | 김○○ 등 — **교체 필요** |
 | 혼주 연락처 | `contacts.groom`, `contacts.bride` | 010-0000-0000 — **교체 필요** |
 | 계좌번호 | `accounts.groom`, `accounts.bride` | 은행명/000000 — **교체 필요** |
 | 교통 안내 | `transportation` | 신촌역 기준 — **예식장 안내로 확인 필요** |
 | 초대 문구 | `invitation.body` | 배열의 각 항목이 한 줄입니다 (`""`는 빈 줄) |
-| 갤러리 사진 | `gallery` | 10장 (placeholder) |
-| 음악 | `music` | `enabled: false` — 음원을 넣은 뒤 `true` 로 |
+| 갤러리 사진 | `gallery` | 실제 웨딩 사진 17장 |
+| 음악 | `music` | `enabled: true` — 자체 제작 곡 재생 중 |
 | 배포 주소 / 공유 문구 | `share` | **배포 후 `share.url` 을 실제 도메인으로 꼭 바꿔주세요** |
 
 > `wedding.date` 만 바꾸면 요일, 달력, D-day가 모두 자동으로 다시 계산됩니다.
 
 ---
 
-## 3. 사진 교체
+## 3. 사진
 
-현재는 실제 사진 대신 **로컬 placeholder 이미지**가 들어가 있습니다.
-외부(Unsplash 등) 이미지를 런타임에 불러오지 않습니다.
+Google Drive 원본(2026-05-22 촬영, 18장)을 웹용으로 변환해 넣어두었습니다.
+EXIF 회전을 적용하면 17장이 **세로 2:3**, 1장이 가로 3:2 입니다.
 
 ### 파일 위치
 
 ```
 public/images/wedding/
-├─ hero.jpg          첫 화면 대표 사진 (4:5, 세로) ★ 가장 중요
-├─ 01.jpg ~ 10.jpg   갤러리 (가로 스와이프)
+├─ hero.jpg          첫 화면 (1200×2133, 9:16 으로 미리 크롭)
+├─ 01.jpg ~ 17.jpg   갤러리 (긴 변 1600px, 원본 프레임 그대로)
 └─ og.jpg            카카오톡·문자 공유 미리보기 (1200×630)
 ```
 
-웨딩 사진은 **Hero 대표 사진 1장 + GALLERY** 두 곳에만 들어갑니다.
-페이지 중간에 장식용 사진을 반복해서 넣지 않기 때문에 스크롤이 짧습니다.
+웨딩 사진은 **Hero 1장 + GALLERY 17장** 두 곳에만 들어갑니다.
+갤러리 카드는 3:4 로 통일되어 있고(세로 원본이라 위아래만 살짝 잘림),
+**전체화면 뷰어에서는 잘리지 않은 원본 프레임**이 보입니다.
 
-### 교체 방법
+### 원본에서 다시 만들기
 
-1. 같은 파일명으로 덮어쓰면 코드 수정 없이 바로 반영됩니다.
-2. 파일명을 바꾸고 싶다면 `src/config/wedding.ts` 의 `images.hero` 와 `gallery` 경로를 수정하세요.
-3. 사진 장수를 늘리거나 줄이려면 `gallery` 배열만 수정하면 됩니다.
-   가로 스와이프 갤러리와 전체화면 뷰어, 하단의 `01 — 10` 표시가 장수에 맞춰 자동으로 조정됩니다.
-
-### 권장 비율
-
-| 용도 | 비율 | 권장 크기 |
-| --- | --- | --- |
-| hero.jpg | 4:5 또는 3:4 | 1200 × 1500 |
-| 갤러리 (01~10) | 3:4 권장 | 1200 × 1600 |
-| og.jpg | 1.91:1 | 1200 × 630 |
-
-갤러리 카드는 높이가 들쭉날쭉해지지 않도록 **3:4 로 통일**되어 있고,
-사진은 `object-fit: cover` 로 채워집니다.
-가로 사진을 넣어도 레이아웃은 깨지지 않지만 위아래가 잘리므로,
-중요한 사진은 `objectPosition` 으로 보여줄 부분을 지정하세요.
-
-```ts
-{ src: "/images/wedding/03.jpg", alt: "웨딩 사진 3", objectPosition: "center 30%" }
-```
-
-원본 촬영본(수천 px)을 그대로 올려도 `next/image` 가 WebP/AVIF로 리사이즈해 내려보내지만,
-첫 화면 로딩을 위해 **긴 변 2000px 내외, 장당 500KB 이하**로 줄여서 올리는 것을 권합니다.
-
-### Google Drive / 외부 CDN을 쓰는 경우
-
-`gallery[].src` 에 절대 URL을 넣고, `next.config.ts` 의 `images.remotePatterns` 에 해당 호스트를 추가하세요
-(파일 안에 주석으로 예시를 남겨두었습니다).
-
-### placeholder 다시 만들기
+원본을 `scripts/` 옆의 작업 폴더에 받아두고 경로를 맞춘 뒤 실행하면
+hero / og / 갤러리를 한 번에 다시 만들 수 있습니다.
 
 ```bash
-node scripts/generate-placeholders.mjs
+node scripts/build-photos.mjs
 ```
+
+사진을 바꾸거나 순서를 바꾸려면 이 스크립트의 `HERO`, `GALLERY` 배열을 수정하고
+다시 실행한 뒤, `src/config/wedding.ts` 의 `gallery` 배열(설명 문구)도 맞춰주세요.
+
+### 사진이 잘리는 위치 조정
+
+카드에서 인물이 잘리면 `objectPosition` 으로 보여줄 부분을 지정할 수 있습니다.
+
+```ts
+{ src: "/images/wedding/03.jpg", alt: "…", objectPosition: "center 30%" }
+```
+
+### Google Drive / 외부 CDN을 직접 참조하는 경우
+
+`gallery[].src` 에 절대 URL을 넣고, `next.config.ts` 의 `images.remotePatterns` 에 호스트를 추가하세요.
+다만 Drive 링크는 만료·권한 이슈가 있어 **지금처럼 저장소에 넣어두는 편**이 안전합니다.
 
 ---
 
-## 4. 음악 교체
+## 4. 음악
 
-1. 웹용 파일을 `public/audio/wedding-theme.mp3` 에 넣습니다.
-2. `src/config/wedding.ts` 의 `music.enabled` 를 `true` 로 바꿉니다.
-   → 우측 상단에 작은 음악 컨트롤이 나타납니다. (`false` 면 오디오 요청 자체를 하지 않습니다.)
+`public/audio/wedding-theme.mp3` 에 **직접 만든 배경음악**이 들어가 있습니다.
+(D major · 66BPM · 72초 · 오르골 + 패드 + 단순한 멜로디, 끊김 없이 반복 재생)
 
-### `.aif` / `.aiff` 원본을 쓰는 경우
-
-브라우저는 AIFF를 제대로 재생하지 못합니다. mp3 또는 m4a로 변환해서 넣어주세요.
+코드로 합성한 곡이라 `scripts/make-music.mjs` 를 고치면 분위기를 바꿀 수 있습니다.
 
 ```bash
-# mp3 (호환성 가장 좋음)
-ffmpeg -i wedding-theme.aif -codec:a libmp3lame -b:a 192k public/audio/wedding-theme.mp3
-
-# m4a (같은 용량에서 음질이 더 좋음)
-ffmpeg -i wedding-theme.aif -codec:a aac -b:a 160k public/audio/wedding-theme.m4a
+npm i -D @breezystack/lamejs
+node scripts/make-music.mjs
 ```
 
-파일 확장자를 바꿨다면 `music.src` 경로도 함께 수정하세요.
-용량은 3~5MB 이내를 권합니다.
+- 화음 진행: `PROG` (지금은 D – A/C# – Bm7 – G)
+- 멜로디: `MELODY` (마디별 `[음이름, 시작 박, 길이]`)
+- 빠르기: `BPM`, 길이: `BARS`
+
+### 다른 곡으로 교체하려면
+
+1. 웹용 파일을 `public/audio/wedding-theme.mp3` 로 덮어씁니다.
+2. 파일명을 바꿨다면 `music.src` 도 함께 수정하세요.
+3. 음악을 아예 끄려면 `music.enabled` 를 `false` 로 바꾸면 됩니다.
+   (요청 자체를 하지 않고 컨트롤도 사라집니다.)
+
+`.aif` / `.aiff` 원본은 브라우저에서 재생되지 않으므로 변환이 필요합니다.
+
+```bash
+ffmpeg -i wedding-theme.aif -codec:a libmp3lame -b:a 192k public/audio/wedding-theme.mp3
+```
+
+용량은 3~5MB 이내를 권합니다. (현재 파일은 1.1MB)
 
 ### 재생 정책
 
@@ -196,7 +193,7 @@ src/
 모바일에서 "끝없이 내려가는" 느낌을 없애기 위해 이렇게 정리했습니다.
 
 - 웨딩 사진을 **GALLERY 한 곳**으로 모으고, 세로로 길게 늘어놓던 배치를
-  **가로 스와이프**로 바꿨습니다. (사진 10장이 세로 약 2,500px → 약 480px)
+  **가로 스와이프**로 바꿨습니다. (사진 17장이 세로 한 화면 안에 들어옵니다)
 - 페이지 중간·마지막에 있던 큰 장식 사진 2장을 없앴습니다.
 - `예식 정보 + 달력 + D-day`, `오시는 길 + 교통`, `연락처 + 공유` 를 각각 한 섹션으로 합쳤습니다.
 - 신랑·신부 연락처(COUPLE)와 혼주 연락처(CONTACT)가 겹치지 않도록 나눴습니다.
@@ -225,15 +222,12 @@ src/
 
 ## 7. 배포 전 체크리스트
 
-- [ ] 예식 **시간** 확정 후 `wedding.time` / `wedding.timeLabel` 수정
-- [ ] 홀 이름이 있으면 `wedding.hall` 입력
 - [ ] 신랑·신부 **연락처** 입력 (`groom.phone`, `bride.phone`)
-- [ ] 부모님 **성함**과 **연락처** 입력 (`groom`/`bride`, `contacts`)
+- [ ] 혼주 **연락처** 입력 (`contacts`)
 - [ ] **계좌번호** 입력 (`accounts`)
 - [ ] **교통 안내**를 예식장에서 받은 실제 정보로 확인 (`transportation`)
-- [ ] 실제 사진으로 교체 (`hero.jpg` 부터)
-- [ ] `og.jpg` 교체 후 카카오톡에 링크를 보내 미리보기 확인
-- [ ] 음원 업로드 + `music.enabled: true`
+- [ ] 홀 이름이 정해지면 `wedding.hall` 입력
 - [ ] 배포 후 `share.url` 을 실제 도메인으로 변경
+- [ ] 카카오톡에 링크를 보내 미리보기(og.jpg) 확인
 - [ ] 아이폰 Safari / 안드로이드 Chrome 에서 직접 열어보기
 - [ ] 종이 청첩장에 넣을 QR 코드 생성 후 스캔 테스트

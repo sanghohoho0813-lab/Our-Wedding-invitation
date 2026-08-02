@@ -21,10 +21,12 @@ export function MusicToggle() {
   return (
     <button
       type="button"
+      data-music-toggle
       onClick={toggle}
       aria-label={isPlaying ? "음악 정지" : "음악 재생"}
       aria-pressed={isPlaying}
-      className="fixed z-[80] flex h-11 w-11 items-center justify-center rounded-full border border-white/45 bg-white/35 backdrop-blur-md transition-colors duration-300 active:bg-white/55"
+      // 밝은 사진 위에서도, 아이보리 배경 위에서도 보이도록 어두운 반투명 원을 쓴다.
+      className="fixed z-[80] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-ink/30 backdrop-blur-md transition-colors duration-300 active:bg-ink/45"
       style={{
         top: "calc(env(safe-area-inset-top) + 14px)",
         right: "max(14px, calc(50vw - 260px + 14px))",
@@ -34,12 +36,12 @@ export function MusicToggle() {
         {BARS.map((bar, i) => (
           <motion.span
             key={i}
-            className="w-[1.5px] rounded-full bg-ink/70"
+            className="w-[1.5px] rounded-full bg-white"
             initial={false}
             animate={
               isPlaying && !reduceMotion
-                ? { height: [bar.rest, bar.peak, bar.rest], opacity: 0.85 }
-                : { height: 3, opacity: 0.45 }
+                ? { height: [bar.rest, bar.peak, bar.rest], opacity: 0.92 }
+                : { height: 3, opacity: 0.55 }
             }
             transition={
               isPlaying && !reduceMotion

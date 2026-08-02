@@ -5,7 +5,8 @@
  *  이 파일 하나만 수정하면 청첩장의 모든 내용이 바뀝니다.
  *  컴포넌트 안에는 이름 / 날짜 / 주소 / 계좌번호를 하드코딩하지 않습니다.
  *
- *  ※ 이름·예식장은 실제 정보, 연락처·계좌번호·부모님 성함은 아직 임시값입니다.
+ *  ※ 이름·부모님 성함·예식장·날짜·사진·음악은 실제 정보입니다.
+ *     연락처(전화번호)와 계좌번호, 교통 안내만 아직 임시값입니다.
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -45,8 +46,8 @@ export const wedding = {
     /** TODO: 실제 번호로 교체 */
     phone: "010-0000-0000",
     /** 부모님 표기가 필요 없으면 father/mother를 빈 문자열로 두세요. */
-    father: "김○○",
-    mother: "박○○",
+    father: "김영훈",
+    mother: "원정연",
     /** 부모님 성함 앞 고인 표기가 필요할 때 사용 (예: "故") */
     fatherPrefix: "",
     motherPrefix: "",
@@ -62,8 +63,8 @@ export const wedding = {
     englishName: "Jiyoon",
     /** TODO: 실제 번호로 교체 */
     phone: "010-0000-0000",
-    father: "창○○",
-    mother: "이○○",
+    father: "창지환",
+    mother: "유병연",
     fatherPrefix: "",
     motherPrefix: "",
     relation: "장녀",
@@ -74,9 +75,9 @@ export const wedding = {
     /** YYYY-MM-DD (요일·달력·D-day가 이 값에서 자동 계산됩니다) */
     date: "2026-12-20",
     /** HH:mm — 24시간 표기 */
-    time: "14:00",
-    /** 화면에 보여줄 시간 문구 — TODO: 실제 예식 시간으로 교체 */
-    timeLabel: "오후 2시",
+    time: "13:00",
+    /** 화면에 보여줄 시간 문구 */
+    timeLabel: "오후 1시",
     venue: "연세대학교 신촌캠퍼스 동문회관",
     /** 홀 이름이 정해지면 입력하세요. 비워두면 화면에 표시되지 않습니다. */
     hall: "",
@@ -117,16 +118,23 @@ export const wedding = {
    * 장수를 늘리거나 줄여도 갤러리와 뷰어가 알아서 맞춰집니다.
    */
   gallery: [
-    { src: "/images/wedding/01.jpg", alt: "웨딩 사진 1" },
-    { src: "/images/wedding/02.jpg", alt: "웨딩 사진 2" },
-    { src: "/images/wedding/03.jpg", alt: "웨딩 사진 3" },
-    { src: "/images/wedding/04.jpg", alt: "웨딩 사진 4" },
-    { src: "/images/wedding/05.jpg", alt: "웨딩 사진 5" },
-    { src: "/images/wedding/06.jpg", alt: "웨딩 사진 6" },
-    { src: "/images/wedding/07.jpg", alt: "웨딩 사진 7" },
-    { src: "/images/wedding/08.jpg", alt: "웨딩 사진 8" },
-    { src: "/images/wedding/09.jpg", alt: "웨딩 사진 9" },
-    { src: "/images/wedding/10.jpg", alt: "웨딩 사진 10" },
+    { src: "/images/wedding/01.jpg", alt: "호숫가에서 입맞추는 신랑과 신부" },
+    { src: "/images/wedding/02.jpg", alt: "면사포를 쓰고 이마를 맞댄 두 사람" },
+    { src: "/images/wedding/03.jpg", alt: "다리를 배경으로 마주 안은 신랑과 신부" },
+    { src: "/images/wedding/04.jpg", alt: "부케를 든 신랑과 면사포를 쓴 신부" },
+    { src: "/images/wedding/05.jpg", alt: "계단에 나란히 앉은 신랑과 신부" },
+    { src: "/images/wedding/06.jpg", alt: "잔디밭에 누워 마주 보는 두 사람" },
+    { src: "/images/wedding/07.jpg", alt: "꽃밭에서 뒤돌아보며 웃는 신부" },
+    { src: "/images/wedding/08.jpg", alt: "잔디밭에 앉아 서로를 담는 신랑과 신부" },
+    { src: "/images/wedding/09.jpg", alt: "나무가 늘어선 길을 함께 걷는 두 사람" },
+    { src: "/images/wedding/10.jpg", alt: "붉은 장미 부케를 든 신부의 옆모습" },
+    { src: "/images/wedding/11.jpg", alt: "단풍나무 아래 나란히 앉은 두 사람" },
+    { src: "/images/wedding/12.jpg", alt: "하늘을 배경으로 신부를 안아 올린 신랑" },
+    { src: "/images/wedding/13.jpg", alt: "장미 부케를 들고 마주 보며 웃는 두 사람" },
+    { src: "/images/wedding/14.jpg", alt: "면사포 너머로 장미 부케를 든 신부" },
+    { src: "/images/wedding/15.jpg", alt: "손하트 너머로 바라본 신부" },
+    { src: "/images/wedding/16.jpg", alt: "잔디밭에서 마주 안은 신랑과 신부" },
+    { src: "/images/wedding/17.jpg", alt: "손하트 너머로 바라본 신랑" },
   ] satisfies GalleryImage[],
 
   /* ── 교통 안내 ────────────────────────────────────────── */
@@ -144,13 +152,13 @@ export const wedding = {
   accounts: {
     groom: [
       { bank: "은행명", holder: "김상호", number: "000000-00-000000", relation: "신랑" },
-      { bank: "은행명", holder: "김○○", number: "000-000-000000", relation: "아버지" },
-      { bank: "은행명", holder: "박○○", number: "000-0000-0000-00", relation: "어머니" },
+      { bank: "은행명", holder: "김영훈", number: "000-000-000000", relation: "아버지" },
+      { bank: "은행명", holder: "원정연", number: "000-0000-0000-00", relation: "어머니" },
     ] satisfies Account[],
     bride: [
       { bank: "은행명", holder: "창지윤", number: "0000-000-000000", relation: "신부" },
-      { bank: "은행명", holder: "창○○", number: "000-000000-000", relation: "아버지" },
-      { bank: "은행명", holder: "이○○", number: "0000-00-0000000", relation: "어머니" },
+      { bank: "은행명", holder: "창지환", number: "000-000000-000", relation: "아버지" },
+      { bank: "은행명", holder: "유병연", number: "0000-00-0000000", relation: "어머니" },
     ] satisfies Account[],
   },
 
@@ -161,12 +169,12 @@ export const wedding = {
    */
   contacts: {
     groom: [
-      { role: "신랑 아버지", name: "김○○", phone: "010-0000-0000" },
-      { role: "신랑 어머니", name: "박○○", phone: "010-0000-0000" },
+      { role: "신랑 아버지", name: "김영훈", phone: "010-0000-0000" },
+      { role: "신랑 어머니", name: "원정연", phone: "010-0000-0000" },
     ] satisfies ContactPerson[],
     bride: [
-      { role: "신부 아버지", name: "창○○", phone: "010-0000-0000" },
-      { role: "신부 어머니", name: "이○○", phone: "010-0000-0000" },
+      { role: "신부 아버지", name: "창지환", phone: "010-0000-0000" },
+      { role: "신부 어머니", name: "유병연", phone: "010-0000-0000" },
     ] satisfies ContactPerson[],
   },
 
@@ -174,9 +182,9 @@ export const wedding = {
   images: {
     /** 첫 화면 사진 — 이 한 장이 청첩장의 첫인상을 결정합니다. */
     hero: "/images/wedding/hero.jpg",
-    heroAlt: "신랑 신부의 웨딩 사진",
+    heroAlt: "노을빛 잔디밭에서 입맞추는 신랑과 신부",
     /** 첫 화면에서 사진의 어느 부분을 보여줄지 (CSS object-position) */
-    heroPosition: "50% 38%",
+    heroPosition: "50% 42%",
   },
 
   /* ── 음악 ─────────────────────────────────────────────── */
@@ -185,7 +193,7 @@ export const wedding = {
      * 음원 파일을 public/audio/ 에 넣은 뒤 true 로 바꾸면
      * 우측 상단에 음악 컨트롤이 나타납니다. (false 면 아무 요청도 하지 않습니다.)
      */
-    enabled: false,
+    enabled: true,
     /** .aif / .aiff 원본은 mp3 또는 m4a로 변환해 넣어주세요. (README 참고) */
     src: "/audio/wedding-theme.mp3",
     title: "Our Theme",
@@ -205,7 +213,7 @@ export const wedding = {
     url: "https://our-wedding-invitation.vercel.app",
     title: "김상호 ♥ 창지윤 결혼합니다",
     description:
-      "2026년 12월 20일 일요일 오후 2시, 연세대학교 신촌캠퍼스 동문회관에서 저희 두 사람의 새로운 시작에 초대합니다.",
+      "2026년 12월 20일 일요일 오후 1시, 연세대학교 신촌캠퍼스 동문회관에서 저희 두 사람의 새로운 시작에 초대합니다.",
     ogImage: "/images/wedding/og.jpg",
     /** 카카오 JavaScript 키. 값을 넣으면 카카오톡 공유가 활성화됩니다. */
     kakaoJavascriptKey: "",

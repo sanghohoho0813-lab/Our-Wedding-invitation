@@ -36,6 +36,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     const audio = audioRef.current;
     if (!audio) return;
 
+    // 사용자가 직접 조작했으므로 이후 자동 재생 시도는 하지 않는다.
+    triedAutoplay.current = true;
+
     if (audio.paused) {
       void audio.play().catch(() => setIsPlaying(false));
     } else {
@@ -47,7 +50,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!wedding.music.playOnFirstInteraction || !isReady) return;
 
-    const tryPlay = () => {
+    const tryPlay = (event: Event) => {
+      // 음악 버튼을 누른 경우는 버튼 자체 토글에 맡긴다.
+      // (여기서 재생해 버리면 이어지는 click 이 곧바로 정지시켜 첫 탭이 먹지 않는다.)
+      const target = event.target;
+      if (target instanceof Element && target.closest("[data-music-toggle]")) return;
+
       if (triedAutoplay.current) return;
       triedAutoplay.current = true;
       void audioRef.current?.play().catch(() => undefined);
@@ -56,7 +64,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     const events: (keyof WindowEventMap)[] = ["pointerdown", "touchstart", "keydown"];
     const remove = () => events.forEach((e) => window.removeEventListener(e, tryPlay));
-    events.forEach((e) => window.addEventListener(e, tryPlay, { once: true, passive: true }));
+    events.forEach((e) => window.addEventListener(e, tryPlay, { passive: true }));
 
     return remove;
   }, [isReady]);

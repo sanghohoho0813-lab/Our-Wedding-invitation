@@ -14,7 +14,9 @@ import { wedding, type GalleryImage } from "@/config/wedding";
  *   스와이프할 수 있다는 걸 자연스럽게 알린다.
  * - scroll-snap 으로 손가락 관성 스크롤이 그대로 살아 있다.
  * - 카드 비율(3:4)을 통일해 사진마다 높이가 들쭉날쭉해지지 않는다.
+ *   원본이 대부분 세로 2:3 이라 위아래만 살짝 잘린다.
  *   사진별 crop 위치는 config 의 objectPosition 으로 조정한다.
+ *   (전체화면 뷰어에서는 잘리지 않은 원본 프레임이 보인다.)
  */
 export function Gallery() {
   const images: readonly GalleryImage[] = wedding.gallery;

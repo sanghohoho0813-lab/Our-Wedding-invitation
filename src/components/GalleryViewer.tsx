@@ -21,6 +21,7 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
   const [[index, direction], setState] = useState<[number, number]>([startIndex, 0]);
   const [mounted, setMounted] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const draggedAt = useRef(0);
   const reduceMotion = useReducedMotion();
 
   const paginate = useCallback(
@@ -82,11 +83,16 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
     const { offset, velocity } = info;
     if (offset.x < -SWIPE_DISTANCE || velocity.x < -SWIPE_VELOCITY) paginate(1);
     else if (offset.x > SWIPE_DISTANCE || velocity.x > SWIPE_VELOCITY) paginate(-1);
+
+    // 스와이프 직후 따라오는 click 으로 뷰어가 닫히지 않게 잠깐 막는다.
+    draggedAt.current = performance.now();
   };
 
-  /** 사진 바깥(여백)을 누르면 닫는다. 사진 자체를 누르면 닫히지 않는다. */
+  /** 사진 바깥(여백)을 누르면 닫는다. 사진 자체를 누르거나 스와이프한 직후에는 닫지 않는다. */
   const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target !== e.currentTarget) return;
+    if (performance.now() - draggedAt.current < 400) return;
+    onClose();
   };
 
   if (!mounted) return null;
