@@ -54,6 +54,23 @@ export function weekdayEn(date: string) {
   return WEEKDAY_EN[parseWeddingDate(date).getDay()];
 }
 
+/** "Sun, Dec 20th, 2026" */
+export function formatEnDate(date: string) {
+  const d = parseWeddingDate(date);
+  const day = d.getDate();
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? "st"
+      : day % 10 === 2 && day !== 12
+        ? "nd"
+        : day % 10 === 3 && day !== 13
+          ? "rd"
+          : "th";
+  const month = MONTH_EN[d.getMonth()].slice(0, 3);
+  const weekday = WEEKDAY_EN[d.getDay()].charAt(0) + WEEKDAY_EN[d.getDay()].slice(1).toLowerCase();
+  return `${weekday}, ${month} ${day}${suffix}, ${d.getFullYear()}`;
+}
+
 export type DdayState =
   | { status: "before"; days: number }
   | { status: "today" }

@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
+import { FloatingButtons } from "@/components/FloatingButtons";
 import { MusicToggle } from "@/components/MusicToggle";
 import { wedding } from "@/config/wedding";
 
@@ -87,6 +88,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         />
       )}
       {isReady && <MusicToggle />}
+      <FloatingButtons />
     </AudioCtx.Provider>
   );
 }

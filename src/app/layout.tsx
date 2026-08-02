@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Noto_Sans_KR } from "next/font/google";
+import { Cormorant_Garamond, Noto_Sans_KR, Noto_Serif_KR, Parisienne } from "next/font/google";
 
 import { AudioProvider } from "@/components/AudioProvider";
 import { ToastProvider } from "@/components/Toast";
@@ -14,6 +14,22 @@ const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
   display: "swap",
   preload: false,
+});
+
+const notoSerifKr = Noto_Serif_KR({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-noto-serif-kr",
+  display: "swap",
+  preload: false,
+});
+
+/** HERO 의 큰 필기체 제목에만 사용 */
+const script = Parisienne({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-script",
+  display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
@@ -62,7 +78,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f8f7f3",
+  themeColor: "#fbfaf7",
 };
 
 /** 카카오톡 / 검색 공유 시 구조화 데이터 */
@@ -93,7 +109,7 @@ function StructuredData() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${notoSansKr.variable} ${cormorant.variable}`}>
+    <html lang="ko" className={`${notoSansKr.variable} ${notoSerifKr.variable} ${cormorant.variable} ${script.variable}`}>
       <head>
         <StructuredData />
         {/*

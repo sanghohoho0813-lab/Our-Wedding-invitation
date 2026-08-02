@@ -5,9 +5,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useAudio } from "@/components/AudioProvider";
 
 const BARS = [
-  { rest: 5, peak: 13, delay: 0 },
-  { rest: 9, peak: 17, delay: 0.18 },
-  { rest: 6, peak: 11, delay: 0.36 },
+  { rest: 4, peak: 10, delay: 0 },
+  { rest: 7, peak: 14, delay: 0.18 },
+  { rest: 5, peak: 9, delay: 0.36 },
 ];
 
 /**
@@ -25,23 +25,26 @@ export function MusicToggle() {
       onClick={toggle}
       aria-label={isPlaying ? "음악 정지" : "음악 재생"}
       aria-pressed={isPlaying}
-      // 밝은 사진 위에서도, 아이보리 배경 위에서도 보이도록 어두운 반투명 원을 쓴다.
-      className="fixed z-[80] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-ink/30 backdrop-blur-md transition-colors duration-300 active:bg-ink/45"
+      // 사진 위에서도, 아이보리 배경 위에서도 보이도록 밝은 반투명 원 + 어두운 막대.
+      className="fixed z-[80] flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300"
       style={{
         top: "calc(env(safe-area-inset-top) + 14px)",
         right: "max(14px, calc(50vw - 260px + 14px))",
       }}
     >
-      <span className="flex h-[18px] items-center gap-[3px]" aria-hidden="true">
+      <span
+        className="flex h-8 w-8 items-center justify-center gap-[2.5px] rounded-full border border-white/50 bg-white/55 backdrop-blur-md"
+        aria-hidden="true"
+      >
         {BARS.map((bar, i) => (
           <motion.span
             key={i}
-            className="w-[1.5px] rounded-full bg-white"
+            className="w-[1.5px] rounded-full bg-ink/75"
             initial={false}
             animate={
               isPlaying && !reduceMotion
-                ? { height: [bar.rest, bar.peak, bar.rest], opacity: 0.92 }
-                : { height: 3, opacity: 0.55 }
+                ? { height: [bar.rest, bar.peak, bar.rest], opacity: 0.9 }
+                : { height: 3, opacity: 0.5 }
             }
             transition={
               isPlaying && !reduceMotion

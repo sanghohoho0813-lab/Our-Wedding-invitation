@@ -1,18 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f8f7f3;
-  --color-paper-deep: #f1efe9;
-  --color-ink: #242321;
-  /* 본문 대비(AA)를 만족하도록 원안(#77736D/#A5A099)보다 살짝 어둡게 조정 */
-  --color-muted: #605d58;
-  --color-faint: #767169;
-  --color-line: #e8e5df;
-  --color-accent: #8b8467;
+  --color-paper: #fbfaf7;
+  --color-paper-deep: #f2efe9;
+  --color-ink: #2b2925;
+  /* 본문 대비(AA)를 만족하도록 조정한 값 */
+  --color-muted: #5f5c56;
+  --color-faint: #75706a;
+  --color-line: #e9e5dd;
+  /* 레퍼런스의 베이지 포인트 — 제목 / 버튼 / 강조 */
+  --color-accent: #a68e63;
+  --color-accent-soft: #b9a684;
+  --color-accent-pale: #f3ede2;
 
   --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Malgun Gothic", sans-serif;
-  --font-serif: var(--font-cormorant), "Apple SD Gothic Neo", Georgia, serif;
+  --font-serif: var(--font-noto-serif-kr), "Apple SD Gothic Neo", Georgia, serif;
+  --font-latin: var(--font-cormorant), Georgia, serif;
+  --font-script: var(--font-script), var(--font-cormorant), cursive;
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
@@ -35,14 +40,13 @@ body {
   word-break: keep-all;
 }
 
-/* 모바일에서 가로 스크롤이 절대 생기지 않도록 */
 html,
 body {
   max-width: 100%;
 }
 
 ::selection {
-  background: #e3ded2;
+  background: var(--color-accent-pale);
   color: var(--color-ink);
 }
 
@@ -116,9 +120,13 @@ img {
   will-change: transform, opacity;
 }
 
+.hero-title {
+  animation: hero-copy-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+  text-shadow: 0 1px 18px rgba(20, 18, 15, 0.34);
+}
+
 .hero-copy {
   animation: hero-copy-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
-  /* 밝은 사진 위에서도 글자가 읽히도록 아주 부드러운 그림자만 사용 */
   text-shadow: 0 1px 14px rgba(20, 18, 15, 0.42);
 }
 
@@ -145,16 +153,25 @@ img {
   margin-inline: auto;
 }
 
-/* 좌우 기본 여백 (모바일 기준으로 잡은 값) */
 @utility edge {
   padding-inline: 26px;
 }
 
 /* ── Type primitives ──────────────────────────────────────── */
 
-/* 섹션 위의 아주 작은 영문 라벨 */
-@utility eyebrow {
+/** 섹션 제목 — 국문 세리프, 베이지 */
+@utility section-title {
   font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  line-height: 1.4;
+}
+
+/** 아주 작은 영문 라벨 */
+@utility eyebrow {
+  font-family: var(--font-latin);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.34em;
@@ -165,18 +182,26 @@ img {
 
 @utility serif {
   font-family: var(--font-serif);
+}
+
+@utility latin {
+  font-family: var(--font-latin);
   font-feature-settings: "lnum" 1;
 }
 
-/* 본문 한글 — 16~17px, 넉넉한 행간 */
-@utility body-ko {
-  font-size: 16.5px;
-  line-height: 2.05;
-  letter-spacing: -0.015em;
-  color: #3d3b37;
+@utility script {
+  font-family: var(--font-script);
 }
 
-/* 최소 터치 영역 44px 보장 */
+/** 섹션 본문 — 가운데 정렬, 넉넉한 행간 */
+@utility body-ko {
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: -0.015em;
+  color: #4a473f;
+}
+
+/** 최소 터치 영역 44px 보장 */
 @utility tap {
   min-height: 44px;
   display: inline-flex;
@@ -184,7 +209,56 @@ img {
   justify-content: center;
 }
 
-/* 가로 갤러리 — 스크롤바는 숨기고 관성 스크롤은 살린다 */
+/** 채워진 베이지 버튼 */
+@utility btn-solid {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 26px;
+  border-radius: 6px;
+  background: var(--color-accent-soft);
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  transition: background-color 0.25s ease;
+}
+
+@utility btn-solid-active {
+  background: var(--color-accent);
+}
+
+/** 테두리만 있는 버튼 */
+@utility btn-outline {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 22px;
+  border-radius: 6px;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-muted);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  transition: background-color 0.25s ease;
+}
+
+/** 옅은 카드 */
+@utility card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+
+/** 형광펜 느낌의 강조 */
+@utility marker {
+  background: linear-gradient(to top, var(--color-accent-pale) 46%, transparent 46%);
+  color: var(--color-ink);
+  padding-inline: 2px;
+}
+
+/** 가로 갤러리 — 스크롤바는 숨기고 관성 스크롤은 살린다 */
 @utility no-scrollbar {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -195,7 +269,6 @@ img {
   }
 }
 
-/* 아주 옅은 구분선 — 카드 대신 사용하는 유일한 장식 */
 @utility hairline {
   height: 1px;
   background: linear-gradient(to right, transparent, var(--color-line) 22%, var(--color-line) 78%, transparent);
