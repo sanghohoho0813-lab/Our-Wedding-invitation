@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f8f7f3;
+  --color-paper-deep: #f1efe9;
+  --color-ink: #242321;
+  /* 본문 대비(AA)를 만족하도록 원안(#77736D/#A5A099)보다 살짝 어둡게 조정 */
+  --color-muted: #605d58;
+  --color-faint: #767169;
+  --color-line: #e8e5df;
+  --color-accent: #8b8467;
+
+  --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Pretendard", "Malgun Gothic", sans-serif;
+  --font-serif: var(--font-cormorant), "Apple SD Gothic Neo", Georgia, serif;
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  word-break: keep-all;
+}
+
+/* 모바일에서 가로 스크롤이 절대 생기지 않도록 */
+html,
+body {
+  max-width: 100%;
+}
+
+::selection {
+  background: #e3ded2;
+  color: var(--color-ink);
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── Hero motion (JS 없이 동작하도록 CSS로 처리) ──────────── */
+
+@keyframes hero-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-indicator-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-indicator-bar {
+  0% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(32px);
+  }
+}
+
+.hero-photo {
+  animation: hero-photo-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+.hero-copy {
+  animation: hero-copy-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+  /* 밝은 사진 위에서도 글자가 읽히도록 아주 부드러운 그림자만 사용 */
+  text-shadow: 0 1px 14px rgba(20, 18, 15, 0.42);
+}
+
+.hero-indicator {
+  animation: hero-indicator-in 1s ease-out 1.5s both;
+}
+
+.hero-indicator-bar {
+  animation: hero-indicator-bar 2.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-indicator-bar {
+    animation: none;
+    transform: translateY(10px);
+  }
+}
+
+/* ── Layout primitives ────────────────────────────────────── */
+
+@utility shell {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+/* 좌우 기본 여백 (모바일 기준으로 잡은 값) */
+@utility edge {
+  padding-inline: 26px;
+}
+
+/* ── Type primitives ──────────────────────────────────────── */
+
+/* 섹션 위의 아주 작은 영문 라벨 */
+@utility eyebrow {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  line-height: 1;
+}
+
+@utility serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "lnum" 1;
+}
+
+/* 본문 한글 — 16~17px, 넉넉한 행간 */
+@utility body-ko {
+  font-size: 16.5px;
+  line-height: 2.05;
+  letter-spacing: -0.015em;
+  color: #3d3b37;
+}
+
+/* 최소 터치 영역 44px 보장 */
+@utility tap {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 아주 옅은 구분선 — 카드 대신 사용하는 유일한 장식 */
+@utility hairline {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-line) 22%, var(--color-line) 78%, transparent);
+}
