@@ -8,6 +8,7 @@
  *
  *  crop 을 지정하면 그 영역만 잘라낸 뒤 크기를 맞춘다. (인물을 크게 보여줄 때 사용)
  *  crop 이 없으면 position 전략으로 자동 크롭한다. (기본 attention)
+ *  brightness 를 지정하면 그만큼 밝기를 올린다. (1 = 원본)
  *
  *  사진을 바꾸고 싶으면 아래 PICKS / GALLERY 의 파일명만 수정하고 다시 실행하세요.
  *    node scripts/build-photos.mjs
@@ -23,7 +24,15 @@ const SRC = process.env.PHOTO_SRC ?? path.join(process.cwd(), "..", "photos");
 /* ── 섹션별 사진 ─────────────────────────────────────────── */
 const PICKS = {
   // 첫 화면 — 세로로 길게 잘려도 두 사람이 가운데 오는 컷
-  hero: { file: "HYU01511", out: "hero.jpg", width: 1200, height: 2133, quality: 82 },
+  // 첫 화면은 위아래 그라데이션이 얹히므로 사진을 아주 살짝 밝게 보정한다
+  hero: {
+    file: "HYU01511",
+    out: "hero.jpg",
+    width: 1200,
+    height: 2133,
+    quality: 82,
+    brightness: 1.07,
+  },
   // 인용구
   quote: { file: "HYU01444", out: "quote.jpg", width: 1200, height: 1500 },
   // 신랑 / 신부 카드 — 카드가 작으므로 얼굴이 잘 보이도록 직접 잘라낸다
@@ -54,7 +63,7 @@ const PICKS = {
 };
 
 /** 공유 미리보기는 첫 화면 사진에서 가로로 잘라 쓴다. */
-const OG = { file: PICKS.hero.file, out: "og.jpg", width: 1200, height: 630 };
+const OG = { file: PICKS.hero.file, out: "og.jpg", width: 1200, height: 630, brightness: PICKS.hero.brightness };
 
 /* ── 갤러리 (낮 → 노을 순서) ─────────────────────────────── */
 const GALLERY = [
@@ -87,21 +96,22 @@ for (const [key, p] of Object.entries(PICKS)) {
   const pipeline = sharp(rotated);
   if (p.crop) pipeline.extract(p.crop);
 
-  const buf = await pipeline
-    .resize(p.width, p.height, { fit: "cover", position: p.position ?? "attention" })
-    .jpeg({ quality: p.quality ?? 80, mozjpeg: true })
-    .toBuffer();
+  pipeline.resize(p.width, p.height, { fit: "cover", position: p.position ?? "attention" });
+  if (p.brightness) pipeline.modulate({ brightness: p.brightness });
+
+  const buf = await pipeline.jpeg({ quality: p.quality ?? 80, mozjpeg: true }).toBuffer();
   await writeFile(path.join(OUT, p.out), buf);
   console.log(`${p.out.padEnd(14)} ${p.width}×${p.height}  ${kb(buf.length).padStart(6)}  (${p.file}) ← ${key}`);
 }
 
 /* ── 공유 미리보기 ───────────────────────────────────────── */
 {
-  const buf = await sharp(src(OG.file))
+  const ogPipeline = sharp(src(OG.file))
     .rotate()
-    .resize(OG.width, OG.height, { fit: "cover", position: "attention" })
-    .jpeg({ quality: 80, mozjpeg: true })
-    .toBuffer();
+    .resize(OG.width, OG.height, { fit: "cover", position: "attention" });
+  if (OG.brightness) ogPipeline.modulate({ brightness: OG.brightness });
+
+  const buf = await ogPipeline.jpeg({ quality: 80, mozjpeg: true }).toBuffer();
   await writeFile(path.join(OUT, OG.out), buf);
   console.log(`${OG.out.padEnd(14)} ${OG.width}×${OG.height}   ${kb(buf.length).padStart(6)}  (${OG.file})`);
 }

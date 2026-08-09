@@ -36,7 +36,7 @@ export function Hero() {
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-[42%]"
         style={{
-          background: "linear-gradient(to bottom, rgba(24,22,19,0.42) 0%, rgba(24,22,19,0) 100%)",
+          background: "linear-gradient(to bottom, rgba(24,22,19,0.32) 0%, rgba(24,22,19,0) 100%)",
         }}
       />
       <div
@@ -44,7 +44,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 h-[46%]"
         style={{
           background:
-            "linear-gradient(to top, rgba(24,22,19,0.62) 0%, rgba(24,22,19,0.34) 32%, rgba(24,22,19,0) 100%)",
+            "linear-gradient(to top, rgba(24,22,19,0.56) 0%, rgba(24,22,19,0.28) 32%, rgba(24,22,19,0) 100%)",
         }}
       />
 
