@@ -64,9 +64,8 @@ export const wedding = {
     birth: "",
     /** 성격·취향 키워드 (레퍼런스처럼 4~5줄 권장). 비우면 표시되지 않습니다. */
     keywords: [] as string[],
-    /** 인물 사진 — TODO: 준비되면 경로 입력 */
-    photo: "",
-    photoAlt: "신랑 김상호",
+    photo: "/images/wedding/groom.jpg",
+    photoAlt: "부케를 든 신랑 김상호",
     father: "김영훈",
     mother: "원정연",
     /** 부모님 성함 앞 고인 표기가 필요할 때 사용 (예: "故") */
@@ -85,8 +84,8 @@ export const wedding = {
     phone: "010-0000-0000",
     birth: "",
     keywords: [] as string[],
-    photo: "",
-    photoAlt: "신부 창지윤",
+    photo: "/images/wedding/bride.jpg",
+    photoAlt: "꽃밭에 선 신부 창지윤",
     father: "창지환",
     mother: "유병연",
     fatherPrefix: "",
@@ -111,8 +110,8 @@ export const wedding = {
     /** 예식장 대표번호 — 비우면 표시되지 않습니다. */
     tel: "",
     /** 예식 안내 섹션 사진 */
-    image: "",
-    imageAlt: "신랑 신부의 웨딩 사진",
+    image: "/images/wedding/info.jpg",
+    imageAlt: "장미 부케를 들고 마주 안은 신랑과 신부",
   },
 
   /* ── HERO ─────────────────────────────────────────────── */
@@ -120,8 +119,8 @@ export const wedding = {
     /** 큰 필기체 제목 (줄바꿈은 배열로) */
     title: ["our", "wedding", "day"],
     image: "/images/wedding/hero.jpg",
-    imageAlt: "노을빛 잔디밭에서 입맞추는 신랑과 신부",
-    imagePosition: "50% 42%",
+    imageAlt: "노을빛 들판에서 서로를 안은 신랑과 신부",
+    imagePosition: "50% 45%",
     /** 사진 아래쪽 영문 문구 */
     caption: ["Forever begins with a single step,", "And love guides us every step of the way."],
   },
@@ -143,8 +142,8 @@ export const wedding = {
   /* ── 인용구 ───────────────────────────────────────────── */
   quote: {
     enabled: true,
-    image: "",
-    imageAlt: "신랑 신부의 웨딩 사진",
+    image: "/images/wedding/quote.jpg",
+    imageAlt: "면사포 아래에서 마주 본 신랑과 신부",
     en: ["You can not be happy every day.", "But there are happy things every day."],
     ko: ["매일 행복할 순 없지만,", "행복한 것들은 매일 있어."],
     source: "〈월트 디즈니〉, 곰돌이 푸 中",
@@ -164,29 +163,27 @@ export const wedding = {
   /* ── D-DAY 배너 ───────────────────────────────────────── */
   ddayBanner: {
     enabled: true,
-    image: "",
-    imageAlt: "신랑 신부의 웨딩 사진",
+    image: "/images/wedding/dday.jpg",
+    imageAlt: "노을빛 들판에서 입맞추는 신랑과 신부",
   },
 
   /* ── 갤러리 ───────────────────────────────────────────── */
   gallery: [
     { src: "/images/wedding/01.jpg", alt: "호숫가에서 입맞추는 신랑과 신부" },
     { src: "/images/wedding/02.jpg", alt: "면사포를 쓰고 이마를 맞댄 두 사람" },
-    { src: "/images/wedding/03.jpg", alt: "다리를 배경으로 마주 안은 신랑과 신부" },
-    { src: "/images/wedding/04.jpg", alt: "부케를 든 신랑과 면사포를 쓴 신부" },
+    { src: "/images/wedding/03.jpg", alt: "다리를 배경으로 손을 맞잡은 신랑과 신부" },
+    { src: "/images/wedding/04.jpg", alt: "강가에서 마주 안은 신랑과 신부" },
     { src: "/images/wedding/05.jpg", alt: "계단에 나란히 앉은 신랑과 신부" },
-    { src: "/images/wedding/06.jpg", alt: "잔디밭에 누워 마주 보는 두 사람" },
-    { src: "/images/wedding/07.jpg", alt: "꽃밭에서 뒤돌아보며 웃는 신부" },
-    { src: "/images/wedding/08.jpg", alt: "잔디밭에 앉아 서로를 담는 신랑과 신부" },
+    { src: "/images/wedding/06.jpg", alt: "부케를 건네는 신랑과 웃는 신부" },
+    { src: "/images/wedding/07.jpg", alt: "잔디밭 돗자리에 누워 마주 보는 두 사람" },
+    { src: "/images/wedding/08.jpg", alt: "붉은 꽃밭을 함께 걷는 신랑과 신부" },
     { src: "/images/wedding/09.jpg", alt: "나무가 늘어선 길을 함께 걷는 두 사람" },
-    { src: "/images/wedding/10.jpg", alt: "붉은 장미 부케를 든 신부의 옆모습" },
-    { src: "/images/wedding/11.jpg", alt: "단풍나무 아래 나란히 앉은 두 사람" },
-    { src: "/images/wedding/12.jpg", alt: "하늘을 배경으로 신부를 안아 올린 신랑" },
-    { src: "/images/wedding/13.jpg", alt: "장미 부케를 들고 마주 보며 웃는 두 사람" },
-    { src: "/images/wedding/14.jpg", alt: "면사포 너머로 장미 부케를 든 신부" },
-    { src: "/images/wedding/15.jpg", alt: "손하트 너머로 바라본 신부" },
-    { src: "/images/wedding/16.jpg", alt: "잔디밭에서 마주 안은 신랑과 신부" },
-    { src: "/images/wedding/17.jpg", alt: "손하트 너머로 바라본 신랑" },
+    { src: "/images/wedding/10.jpg", alt: "단풍나무 아래 나란히 앉은 두 사람" },
+    { src: "/images/wedding/11.jpg", alt: "장미 부케를 들고 나란히 선 신랑과 신부" },
+    { src: "/images/wedding/12.jpg", alt: "하늘을 배경으로 서로를 안은 두 사람" },
+    { src: "/images/wedding/13.jpg", alt: "마주 보며 활짝 웃는 신랑과 신부" },
+    { src: "/images/wedding/14.jpg", alt: "면사포 아래에서 마주 안은 두 사람" },
+    { src: "/images/wedding/15.jpg", alt: "노을빛 들판에서 입맞추는 신랑과 신부" },
   ] satisfies GalleryImage[],
 
   /* ── 우리의 시간 (타임라인) ───────────────────────────── */
@@ -213,8 +210,8 @@ export const wedding = {
     enabled: true,
     heading: "게스트스냅",
     subheading: "신랑·신부의 행복한 순간을 담아주세요",
-    image: "",
-    imageAlt: "사진을 찍는 신랑과 신부",
+    image: "/images/wedding/guestsnap.jpg",
+    imageAlt: "잔디밭에서 카메라로 서로를 담는 신랑과 신부",
     notes: [
       "저희의 스냅 작가님이 되어주세요!",
       "",
@@ -347,7 +344,10 @@ export const wedding = {
   /* ── 마무리 ───────────────────────────────────────────── */
   ending: {
     /** 마지막에 크게 보여줄 사진 (비우면 문구만 표시) */
-    images: [] as GalleryImage[],
+    images: [
+      { src: "/images/wedding/ending-1.jpg", alt: "면사포를 날리며 웃는 신랑과 신부" },
+      { src: "/images/wedding/ending-2.jpg", alt: "노을빛 들판을 함께 걷는 신랑과 신부" },
+    ] satisfies GalleryImage[],
     signature: "Thank you",
     message: "우리의 시작을\n함께해 주세요.",
   },

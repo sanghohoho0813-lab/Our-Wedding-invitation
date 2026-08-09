@@ -79,14 +79,29 @@ npm run lint       # ESLint
 
 ### 이미 들어가 있는 사진
 
+원본 43장 중에서 자리별로 어울리는 컷을 골라 넣었습니다.
+
 ```
 public/images/wedding/
-├─ hero.jpg          첫 화면 (1200×2133)
-├─ 01.jpg ~ 17.jpg   갤러리
-└─ og.jpg            카카오톡·문자 공유 미리보기 (1200×630)
+├─ hero.jpg        첫 화면 (1200×2133)
+├─ quote.jpg       인용구
+├─ groom.jpg       신랑 카드
+├─ bride.jpg       신부 카드
+├─ info.jpg        예식 안내
+├─ dday.jpg        D-day 배너
+├─ guestsnap.jpg   게스트스냅
+├─ ending-1.jpg    마무리 1
+├─ ending-2.jpg    마무리 2
+├─ 01.jpg ~ 15.jpg 갤러리
+└─ og.jpg          공유 미리보기 (1200×630)
 ```
 
-원본에서 다시 만들려면 `node scripts/build-photos.mjs` 를 실행하세요.
+사진을 바꾸려면 `scripts/build-photos.mjs` 의 `PICKS` / `GALLERY` 에서
+파일명만 고치고 다시 실행하면 됩니다.
+
+```bash
+PHOTO_SRC=/원본이/있는/폴더 node scripts/build-photos.mjs
+```
 
 ### 아직 비어 있는 사진 자리
 
@@ -95,16 +110,9 @@ public/images/wedding/
 
 | 자리 | config 위치 | 권장 비율 |
 | --- | --- | --- |
-| 인용구 사진 | `quote.image` | 4:5 |
-| 신랑 인물 사진 | `groom.photo` | 4:5 |
-| 신부 인물 사진 | `bride.photo` | 4:5 |
-| 예식 안내 사진 | `wedding.image` | 4:5 |
-| D-day 배경 사진 | `ddayBanner.image` | 4:3 |
-| 게스트스냅 사진 | `guestSnap.image` | 4:3 |
 | 주차안내 / 포토부스 / 답례품 | `infoTabs.items[].image` | 4:3 |
 | 지도 캡처 | `location.mapImage` | 가로로 긴 이미지 |
 | 타임라인 사진 | `timeline.items[].image` | 1:1 |
-| 마지막 사진 | `ending.images` | 4:3 |
 
 파일은 `public/images/` 아래에 넣고 `/images/파일명.jpg` 형태로 경로를 적으면 됩니다.
 

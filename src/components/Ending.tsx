@@ -1,18 +1,19 @@
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
-import { wedding } from "@/config/wedding";
+import { wedding, type GalleryImage } from "@/config/wedding";
 import { formatDotted, getYear } from "@/lib/date";
 
 export function Ending() {
   const date = wedding.wedding.date;
   const { ending } = wedding;
+  const endingImages: readonly GalleryImage[] = ending.images;
 
   return (
     <section aria-label="맺음말">
-      {ending.images.length > 0 && (
+      {endingImages.length > 0 && (
         <Reveal>
           <div className="flex flex-col">
-            {ending.images.map((image, i) => (
+            {endingImages.map((image, i) => (
               <PhotoSlot
                 key={i}
                 src={image.src}
