@@ -6,6 +6,9 @@
  *  - 갤러리는 원본 프레임을 유지한다.
  *    (카드 크롭은 CSS 가 담당하고, 전체화면 뷰어에서는 자르지 않은 사진을 보여주므로)
  *
+ *  crop 을 지정하면 그 영역만 잘라낸 뒤 크기를 맞춘다. (인물을 크게 보여줄 때 사용)
+ *  crop 이 없으면 position 전략으로 자동 크롭한다. (기본 attention)
+ *
  *  사진을 바꾸고 싶으면 아래 PICKS / GALLERY 의 파일명만 수정하고 다시 실행하세요.
  *    node scripts/build-photos.mjs
  */
@@ -23,9 +26,21 @@ const PICKS = {
   hero: { file: "HYU01511", out: "hero.jpg", width: 1200, height: 2133, quality: 82 },
   // 인용구
   quote: { file: "HYU01444", out: "quote.jpg", width: 1200, height: 1500 },
-  // 신랑 / 신부 카드
-  groom: { file: "HYU00541", out: "groom.jpg", width: 900, height: 1125 },
-  bride: { file: "HYU01011", out: "bride.jpg", width: 900, height: 1125 },
+  // 신랑 / 신부 카드 — 카드가 작으므로 얼굴이 잘 보이도록 직접 잘라낸다
+  groom: {
+    file: "HYU00541",
+    out: "groom.jpg",
+    width: 900,
+    height: 1125,
+    crop: { left: 1120, top: 90, width: 840, height: 1050 },
+  },
+  bride: {
+    file: "HYU01011",
+    out: "bride.jpg",
+    width: 900,
+    height: 1125,
+    crop: { left: 900, top: 1380, width: 960, height: 1200 },
+  },
   // 예식 안내
   info: { file: "HYU01059", out: "info.jpg", width: 1200, height: 1500 },
   // D-day 배너
@@ -34,7 +49,8 @@ const PICKS = {
   guestSnap: { file: "HYU00912", out: "guestsnap.jpg", width: 1400, height: 1050 },
   // 마무리
   ending1: { file: "DSC04429", out: "ending-1.jpg", width: 1400, height: 1050 },
-  ending2: { file: "HYU01617", out: "ending-2.jpg", width: 1400, height: 1050 },
+  // 두 사람의 가운데가 화면 가운데 오도록 자동 크롭 대신 가운데 크롭을 쓴다
+  ending2: { file: "HYU01617", out: "ending-2.jpg", width: 1400, height: 1050, position: "centre" },
 };
 
 /** 공유 미리보기는 첫 화면 사진에서 가로로 잘라 쓴다. */
@@ -66,9 +82,13 @@ await mkdir(OUT, { recursive: true });
 
 /* ── 섹션 사진 ───────────────────────────────────────────── */
 for (const [key, p] of Object.entries(PICKS)) {
-  const buf = await sharp(src(p.file))
-    .rotate()
-    .resize(p.width, p.height, { fit: "cover", position: "attention" })
+  // EXIF 회전을 먼저 적용해야 crop 좌표가 눈에 보이는 사진과 일치한다.
+  const rotated = await sharp(src(p.file)).rotate().toBuffer();
+  const pipeline = sharp(rotated);
+  if (p.crop) pipeline.extract(p.crop);
+
+  const buf = await pipeline
+    .resize(p.width, p.height, { fit: "cover", position: p.position ?? "attention" })
     .jpeg({ quality: p.quality ?? 80, mozjpeg: true })
     .toBuffer();
   await writeFile(path.join(OUT, p.out), buf);
