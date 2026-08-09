@@ -337,7 +337,8 @@ export const wedding = {
   music: {
     enabled: true,
     src: "/audio/wedding-theme.mp3",
-    title: "Our Theme",
+    /** 신랑이 직접 작곡한 곡 */
+    title: "Romantic Wedding Invitation",
     playOnFirstInteraction: true,
   },
 
@@ -350,6 +351,14 @@ export const wedding = {
     ] satisfies GalleryImage[],
     signature: "Thank you",
     message: "우리의 시작을\n함께해 주세요.",
+    /**
+     * 푸터에 아주 작게 들어가는 한 줄.
+     * 필요 없으면 빈 배열로 두세요.
+     */
+    credit: [
+      "이 청첩장은 화면 구성부터 배경음악까지",
+      "신랑이 신부와 하객분들을 위해 직접 만들었습니다.",
+    ],
   },
 
   /* ── 공유 / SEO ───────────────────────────────────────── */

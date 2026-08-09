@@ -7,6 +7,7 @@ export function Ending() {
   const date = wedding.wedding.date;
   const { ending } = wedding;
   const endingImages: readonly GalleryImage[] = ending.images;
+  const credit: readonly string[] = ending.credit;
 
   return (
     <section aria-label="맺음말">
@@ -46,7 +47,21 @@ export function Ending() {
       </div>
 
       <footer className="edge pt-16 pb-[max(env(safe-area-inset-bottom),26px)] text-center">
-        <p className="text-[11px] tracking-[0.06em] text-faint">
+        {credit.length > 0 && (
+          <>
+            {/* 아주 작게 남기는 한 줄 */}
+            <div className="mx-auto mb-5 h-6 w-px bg-line" aria-hidden="true" />
+            <p className="text-[11px] leading-[1.75] tracking-[0.01em] text-faint/85">
+              {credit.map((line, i) => (
+                <span key={i} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+          </>
+        )}
+
+        <p className="mt-6 text-[11px] tracking-[0.06em] text-faint">
           © {getYear(date)} {wedding.groom.name} &amp; {wedding.bride.name}
         </p>
       </footer>

@@ -43,7 +43,7 @@ npm run lint       # ESLint
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
 15 방명록             목록 + 작성 / 삭제
 16 함께한 시간        실시간 카운터  (기본 꺼짐)
-17 맺음말             인사 + 푸터
+17 맺음말             인사 + 크레딧 + 푸터
 ```
 
 - 우측 상단: 음악 켜기/끄기
@@ -70,6 +70,7 @@ npm run lint       # ESLint
 | 계좌번호 | `accounts` | **교체 필요** |
 | 교통 안내 | `location.transport` | **예식장 안내로 확인 필요** |
 | 생년월일 · 키워드 | `groom.birth`, `groom.keywords` | 비어 있음 (입력하면 표시) |
+| 푸터 크레딧 | `ending.credit` | 신랑이 직접 만들었다는 한 줄 (빈 배열로 두면 숨김) |
 
 > `wedding.date` 만 바꾸면 요일 · 달력 · D-day · 영문 날짜가 모두 자동으로 다시 계산됩니다.
 
@@ -120,20 +121,25 @@ PHOTO_SRC=/원본이/있는/폴더 node scripts/build-photos.mjs
 
 ## 5. 음악
 
-`public/audio/wedding-theme.mp3` 에 직접 만든 배경음악이 들어가 있습니다.
-(D major · 66BPM · 72초 · 오르골 + 패드, 끊김 없이 반복)
+`public/audio/wedding-theme.mp3` — **신랑이 직접 작곡한 곡**입니다.
+(192kbps · 약 2분 56초 · 4.2MB, 끝나면 자동으로 다시 재생)
 
-`scripts/make-music.mjs` 의 `PROG`(화음) · `MELODY` · `BPM` 을 고치면 분위기를 바꿀 수 있습니다.
+다른 곡으로 바꾸려면 같은 경로에 덮어쓰면 됩니다.
+파일명을 바꿨다면 `music.src` 도 함께 수정하세요.
+음악을 끄려면 `music.enabled` 를 `false` 로 바꾸면 요청 자체를 하지 않습니다.
+
+`.aif` / `.aiff` 는 브라우저에서 재생되지 않으므로 변환이 필요합니다.
 
 ```bash
-npm i -D @breezystack/lamejs
-node scripts/make-music.mjs
+ffmpeg -i 원본.aif -codec:a libmp3lame -b:a 192k public/audio/wedding-theme.mp3
 ```
 
-다른 곡으로 바꾸려면 `public/audio/wedding-theme.mp3` 를 덮어쓰면 됩니다.
-음악을 끄려면 `music.enabled` 를 `false` 로 바꾸세요.
+### 재생 정책
 
-브라우저 정책상 자동재생은 막혀 있어, **첫 터치에 한 번만** 재생을 시도하고 실패하면 조용히 넘어갑니다.
+브라우저 정책상 자동재생은 막혀 있어, **첫 터치에 한 번만** 재생을 시도하고
+실패하면 조용히 넘어갑니다. 우측 상단 버튼으로 언제든 켜고 끌 수 있고,
+오디오는 최상위에 한 번만 마운트되므로 스크롤해도 끊기지 않습니다.
+파일은 `preload="none"` 이라 실제로 재생을 누르기 전에는 내려받지 않습니다.
 
 ---
 
