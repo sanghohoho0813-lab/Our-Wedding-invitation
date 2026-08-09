@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { wedding } from "@/config/wedding";
-import { formatEnDate } from "@/lib/date";
+import { formatDotted, weekdayKo } from "@/lib/date";
 
 /**
  * 첫 화면.
@@ -44,7 +44,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 h-[46%]"
         style={{
           background:
-            "linear-gradient(to top, rgba(24,22,19,0.56) 0%, rgba(24,22,19,0.28) 32%, rgba(24,22,19,0) 100%)",
+            "linear-gradient(to top, rgba(24,22,19,0.62) 0%, rgba(24,22,19,0.32) 34%, rgba(24,22,19,0) 100%)",
         }}
       />
 
@@ -66,15 +66,26 @@ export function Hero() {
       {/* 날짜 + 문구 */}
       <div className="absolute inset-x-0 bottom-0 edge pb-[max(env(safe-area-inset-bottom),18px)]">
         <div className="hero-copy pb-12 text-center text-white">
-          <p className="latin text-[14px] tracking-[0.06em] text-white/90">
-            ~ {formatEnDate(date)} ~
+          {/* 예식 일시·장소 — 첫 화면에서 바로 확인할 수 있게 */}
+          <p className="text-[16.5px] leading-snug tracking-[0.01em] text-white">
+            {formatDotted(date)}
+            <span className="mx-2 text-white/60">·</span>
+            {weekdayKo(date)} {wedding.wedding.timeLabel}
           </p>
+          <p className="mt-2 text-[14.5px] leading-snug tracking-[-0.01em] text-white/90">
+            {wedding.wedding.venue}
+            {wedding.wedding.hall && ` ${wedding.wedding.hall}`}
+          </p>
+
           {hero.caption.length > 0 && (
-            <div className="latin mt-4 text-[14.5px] leading-[1.7] tracking-[0.01em] text-white/85">
-              {hero.caption.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </div>
+            <>
+              <div className="mx-auto mt-6 h-px w-8 bg-white/35" aria-hidden="true" />
+              <div className="latin mt-6 text-[14px] leading-[1.65] tracking-[0.01em] text-white/80">
+                {hero.caption.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>
