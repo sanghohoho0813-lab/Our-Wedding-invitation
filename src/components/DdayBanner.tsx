@@ -52,7 +52,7 @@ export function DdayBanner() {
         </>
       )}
 
-      <div className={`edge text-center ${hasPhoto ? "absolute inset-x-0 bottom-0 pb-10" : "pb-24"}`}>
+      <div className={`edge text-center ${hasPhoto ? "absolute inset-x-0 bottom-0 pb-6" : "pb-24"}`}>
         <p
           className={`latin text-[38px] font-light leading-none tracking-[0.04em] ${
             hasPhoto ? "text-white" : "text-ink"

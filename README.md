@@ -35,9 +35,9 @@ npm run lint       # ESLint
 06 예식 안내          일시·장소 + 사진 + 달력
 07 D-DAY             남은 날짜
 08 갤러리             3열 그리드 + 전체화면 뷰어(확대 가능)
-09 우리의 시간        타임라인      (기본 꺼짐)
+09 우리의 시간        타임라인 (첫 만남 · 연인이 되던 날)
 10 게스트스냅         안내 + 업로드 버튼
-11 안내 탭            주차안내 / 포토부스 / 답례품
+11 안내 사항          주차안내 (항목이 2개 이상이면 탭으로 표시)
 12 오시는 길          지도 + 지도앱 버튼 + 교통
 13 참석 여부 전달      RSVP 폼
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
@@ -69,7 +69,9 @@ npm run lint       # ESLint
 | 혼주 연락처 | `contacts` | **교체 필요** |
 | 계좌번호 | `accounts` | **교체 필요** |
 | 교통 안내 | `location.transport` | **예식장 안내로 확인 필요** |
-| 생년월일 · 키워드 | `groom.birth`, `groom.keywords` | 비어 있음 (입력하면 표시) |
+| 생년월일 | `groom.birth`, `bride.birth` | **1990. 08. 13 / 1993. 06. 02** |
+| MBTI · 취미 | `groom.keywords`, `bride.keywords` | ENFJ · 신부와 둘만의 시간 보내기 / ISFP (**신부 취미 추가 필요**) |
+| 타임라인 | `timeline.items` | 2022. 08 첫 만남 / 2022. 10. 12 연인 (**중간 이야기 추가 가능**) |
 | 푸터 크레딧 | `ending.creditLead`(강조), `ending.credit` | 신랑이 직접 만들었다는 인사 (비우면 숨김) |
 
 > `wedding.date` 만 바꾸면 요일 · 달력 · D-day · 영문 날짜가 모두 자동으로 다시 계산됩니다.
@@ -113,9 +115,9 @@ PHOTO_SRC=/원본이/있는/폴더 node scripts/build-photos.mjs
 
 | 자리 | config 위치 | 권장 비율 |
 | --- | --- | --- |
-| 주차안내 / 포토부스 / 답례품 | `infoTabs.items[].image` | 4:3 |
+| 주차안내 | `infoTabs.items[].image` | 4:3 |
 | 지도 캡처 | `location.mapImage` | 가로로 긴 이미지 |
-| 타임라인 사진 | `timeline.items[].image` | 1:1 |
+| 타임라인 사진 | `timeline.items[].image` | 1:1 (비워두면 날짜만 표시) |
 
 파일은 `public/images/` 아래에 넣고 `/images/파일명.jpg` 형태로 경로를 적으면 됩니다.
 

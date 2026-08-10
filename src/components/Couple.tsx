@@ -22,7 +22,7 @@ function PersonCard({ label, person }: { label: string; person: Person }) {
   const tel = person.phone.replace(/-/g, "");
 
   return (
-    <div className="min-w-0 text-center">
+    <div className="flex min-w-0 flex-col text-center">
       <PhotoSlot
         src={person.photo}
         alt={person.photoAlt}
@@ -51,8 +51,9 @@ function PersonCard({ label, person }: { label: string; person: Person }) {
         </ul>
       )}
 
+      {/* 키워드 개수가 서로 달라도 양쪽 부모님 줄이 같은 높이에 오도록 아래에 붙인다 */}
       {parentsLine(person) && (
-        <p className="mt-6 text-[12.5px] leading-relaxed text-faint">{parentsLine(person)}</p>
+        <p className="mt-auto pt-6 text-[12.5px] leading-relaxed text-faint">{parentsLine(person)}</p>
       )}
     </div>
   );

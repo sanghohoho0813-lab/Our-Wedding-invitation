@@ -6,7 +6,10 @@ import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { wedding } from "@/config/wedding";
 
-/** 주차안내 / 포토부스 / 답례품 — 탭으로 묶어 세로 길이를 줄인다. */
+/**
+ * 예식 안내 사항.
+ * 항목이 둘 이상이면 탭으로 묶고, 하나뿐이면 탭 없이 제목만 보여준다.
+ */
 export function InfoTabs() {
   const { infoTabs } = wedding;
   const [active, setActive] = useState(0);
@@ -14,11 +17,17 @@ export function InfoTabs() {
   if (!infoTabs.enabled || infoTabs.items.length === 0) return null;
 
   const current = infoTabs.items[active];
+  const single = infoTabs.items.length === 1;
 
   return (
     <section className="pb-24" aria-label="예식 안내 사항">
-      <Reveal className="edge">
-        <div role="tablist" aria-label="안내 항목" className="flex border-b border-line">
+      {single ? (
+        <Reveal className="edge text-center">
+          <h2 className="section-title">{current.label}</h2>
+        </Reveal>
+      ) : (
+        <Reveal className="edge">
+          <div role="tablist" aria-label="안내 항목" className="flex border-b border-line">
           {infoTabs.items.map((tab, i) => (
             <button
               key={tab.key}
@@ -40,12 +49,17 @@ export function InfoTabs() {
                 />
               )}
             </button>
-          ))}
-        </div>
-      </Reveal>
+            ))}
+          </div>
+        </Reveal>
+      )}
 
       <Reveal delay={0.06} className="edge mt-7">
-        <div role="tabpanel" id={`panel-${current.key}`} aria-labelledby={`tab-${current.key}`}>
+        <div
+          {...(single
+            ? {}
+            : { role: "tabpanel", id: `panel-${current.key}`, "aria-labelledby": `tab-${current.key}` })}
+        >
           <PhotoSlot src={current.image} alt={current.imageAlt} ratio="4 / 3" />
 
           <div className="mt-7 text-center">

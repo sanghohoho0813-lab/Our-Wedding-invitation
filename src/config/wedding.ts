@@ -61,9 +61,9 @@ export const wedding = {
     /** TODO: 실제 번호로 교체 */
     phone: "010-0000-0000",
     /** COUPLE 섹션에 표시할 생년월일 — 비우면 표시되지 않습니다. */
-    birth: "",
-    /** 성격·취향 키워드 (레퍼런스처럼 4~5줄 권장). 비우면 표시되지 않습니다. */
-    keywords: [] as string[],
+    birth: "1990. 08. 13",
+    /** 성격·취향 키워드 — 한 줄씩 표시됩니다. 비우면 표시되지 않습니다. */
+    keywords: ["ENFJ", "신부와 둘만의 시간 보내기"],
     photo: "/images/wedding/groom.jpg",
     photoAlt: "부케를 든 신랑 김상호",
     father: "김영훈",
@@ -82,8 +82,9 @@ export const wedding = {
     englishName: "Jiyoon",
     /** TODO: 실제 번호로 교체 */
     phone: "010-0000-0000",
-    birth: "",
-    keywords: [] as string[],
+    birth: "1993. 06. 02",
+    /** TODO: 취미 등 추가하고 싶은 항목을 여기에 넣으세요. */
+    keywords: ["ISFP"],
     photo: "/images/wedding/bride.jpg",
     photoAlt: "꽃밭에 선 신부 창지윤",
     father: "창지환",
@@ -188,11 +189,28 @@ export const wedding = {
 
   /* ── 우리의 시간 (타임라인) ───────────────────────────── */
   timeline: {
-    /** 사진과 내용이 준비되면 true 로 바꾸세요. */
-    enabled: false,
+    enabled: true,
     heading: "우리의 시간",
-    /** TODO: 실제 날짜와 이야기로 교체 */
-    items: [] as TimelineItem[],
+    /**
+     * 사이사이에 기념일을 계속 추가하면 됩니다. (위에서 아래로 시간순)
+     * image 를 비워두면 "사진 준비 중" 자리로 표시됩니다.
+     */
+    items: [
+      {
+        date: "2022. 08",
+        title: "첫 만남",
+        body: "신랑이 운영하던 사교모임에서 처음 만났어요.",
+        highlight: "처음 만났어요",
+        image: "",
+      },
+      {
+        date: "2022. 10. 12",
+        title: "연인이 되던 날",
+        body: "친구에서 연인으로, 함께 걷기 시작했어요.",
+        highlight: "연인으로",
+        image: "",
+      },
+    ] satisfies TimelineItem[],
   },
 
   /* ── 함께한 시간 (실시간 카운터) ──────────────────────── */
@@ -227,7 +245,9 @@ export const wedding = {
     buttonLabel: "사진 및 영상 업로드",
   },
 
-  /* ── 안내 탭 (포토부스 / 주차안내 / 답례품) ───────────── */
+  /* ── 안내 (주차 등) ──────────────────────────────────────
+     항목이 하나면 탭 없이 제목으로만 표시되고,
+     둘 이상이면 자동으로 탭 UI 가 됩니다. */
   infoTabs: {
     enabled: true,
     items: [
@@ -237,20 +257,6 @@ export const wedding = {
         image: "",
         imageAlt: "예식장 주차장",
         body: ["주차 안내는 예식장에서 확인 후 업데이트할 예정입니다."],
-      },
-      {
-        key: "photobooth",
-        label: "포토부스",
-        image: "",
-        imageAlt: "포토부스",
-        body: ["포토부스 운영 여부가 정해지면 안내드리겠습니다."],
-      },
-      {
-        key: "gift",
-        label: "답례품",
-        image: "",
-        imageAlt: "답례품",
-        body: ["답례품 안내가 정해지면 업데이트할 예정입니다."],
       },
     ] satisfies InfoTab[],
   },

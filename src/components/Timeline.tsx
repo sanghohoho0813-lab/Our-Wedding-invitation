@@ -48,16 +48,25 @@ export function Timeline() {
                       className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-soft"
                     />
 
+                    {/* 사진이 아직 없는 항목은 빈 자리 대신 날짜만 크게 둔다 */}
                     <div className={photoLeft ? "order-1" : "order-2"}>
-                      <PhotoSlot
-                        src={item.image}
-                        alt={`${item.title} 사진`}
-                        ratio="1 / 1"
-                        sizes="(max-width: 520px) 42vw, 220px"
-                      />
-                      <p className="mt-2.5 text-center text-[11.5px] tracking-[0.02em] text-faint">
-                        {item.date}
-                      </p>
+                      {item.image ? (
+                        <>
+                          <PhotoSlot
+                            src={item.image}
+                            alt={`${item.title} 사진`}
+                            ratio="1 / 1"
+                            sizes="(max-width: 520px) 42vw, 220px"
+                          />
+                          <p className="mt-2.5 text-center text-[11.5px] tracking-[0.02em] text-faint">
+                            {item.date}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="latin text-center text-[16px] tracking-[0.06em] text-accent">
+                          {item.date}
+                        </p>
+                      )}
                     </div>
 
                     <div className={`${photoLeft ? "order-2" : "order-1"} text-center`}>

@@ -52,8 +52,14 @@ const PICKS = {
   },
   // 예식 안내
   info: { file: "HYU01059", out: "info.jpg", width: 1200, height: 1500 },
-  // D-day 배너
-  dday: { file: "HYU01665", out: "dday.jpg", width: 1400, height: 1050 },
+  // D-day 배너 — 두 사람이 화면 가운데 오도록 크롭 위치를 직접 지정한다
+  dday: {
+    file: "HYU01665",
+    out: "dday.jpg",
+    width: 1400,
+    height: 1050,
+    crop: { left: 146, top: 0, width: 2133, height: 1600 },
+  },
   // 게스트스냅 (카메라를 들고 있는 컷)
   guestSnap: { file: "HYU00912", out: "guestsnap.jpg", width: 1400, height: 1050 },
   // 마무리
