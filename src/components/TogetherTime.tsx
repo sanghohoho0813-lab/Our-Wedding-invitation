@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { Reveal } from "@/components/Reveal";
 import { wedding } from "@/config/wedding";
-import { parseWeddingDate } from "@/lib/date";
+import { formatDotted, parseWeddingDate } from "@/lib/date";
 
 /** "14년 23일 8시간 3분 47초" 형태로 흐르는 시간을 만든다. */
 function elapsed(from: Date, now: Date) {
@@ -50,11 +50,14 @@ export function TogetherTime() {
       <Reveal>
         <p className="text-[15px] tracking-[-0.01em] text-muted">{togetherTime.heading}</p>
         <p
-          className="serif mt-4 text-[17px] tracking-[0.01em] text-ink"
+          className="serif mt-4 text-[19px] leading-relaxed tracking-[0.01em] text-ink"
           aria-live="off"
           suppressHydrationWarning
         >
-          {text ? `"${text}"` : " "}
+          {text || " "}
+        </p>
+        <p className="mt-3 text-[12.5px] tracking-[0.02em] text-faint">
+          {formatDotted(togetherTime.startDate)} 부터
         </p>
       </Reveal>
     </section>

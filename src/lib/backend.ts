@@ -2,13 +2,17 @@
  * ─────────────────────────────────────────────────────────────
  *  참석 여부(RSVP) · 방명록 데이터 레이어
  * ─────────────────────────────────────────────────────────────
- *  지금은 **브라우저 로컬 저장소**에만 저장합니다.
- *  즉, 글을 쓴 사람 본인에게만 보이고 서로 공유되지 않습니다.
+ *  서버가 연결되어 있지 않은 동안에는
  *
- *  Supabase 를 붙일 때는 이 파일의 함수 4개만 바꾸면 되고,
- *  화면 코드는 손대지 않아도 됩니다. (README 6-2 참고)
+ *    - 참석 여부 : 하객의 문자 앱을 열어 신랑에게 바로 보냅니다.
+ *                 (서버 없이도 답이 실제로 신랑에게 도착합니다)
+ *    - 방명록   : 서로의 글을 볼 수 없으므로 아예 표시하지 않습니다.
+ *
+ *  Supabase 를 붙이면 hasRemoteBackend() 가 true 가 되면서
+ *  두 기능 모두 원래의 저장 방식으로 돌아갑니다. (README 6-2 참고)
  * ─────────────────────────────────────────────────────────────
  */
+import { wedding } from "@/config/wedding";
 
 export type RsvpInput = {
   /** "groom" | "bride" */
@@ -37,6 +41,36 @@ export function hasRemoteBackend() {
   return false;
 }
 
+/**
+ * 참석 여부를 어떻게 전달할지.
+ *  - "remote" : 서버에 저장
+ *  - "sms"    : 하객의 문자 앱으로 신랑에게 전송
+ */
+export function rsvpMode(): "remote" | "sms" {
+  return hasRemoteBackend() ? "remote" : "sms";
+}
+
+/** 문자로 보낼 참석 여부 내용 */
+export function buildRsvpMessage(input: RsvpInput) {
+  const lines = [
+    `[${wedding.groom.name} ♥ ${wedding.bride.name} 결혼식]`,
+    `${input.side === "groom" ? "신랑측" : "신부측"} ${input.name}`,
+    input.attending ? `참석 (${input.headcount}명)` : "미참석",
+  ];
+  if (input.attending) lines.push(input.mealYn ? "식사 O" : "식사 X");
+  if (input.message) lines.push(`\n${input.message}`);
+  return lines.join("\n");
+}
+
+/**
+ * 문자 앱을 여는 링크.
+ * iOS 와 안드로이드의 형식이 달라서 양쪽 모두에서 동작하는 "?&" 형태를 쓴다.
+ */
+export function rsvpSmsHref(input: RsvpInput) {
+  const to = wedding.groom.phone.replace(/[^0-9+]/g, "");
+  return `sms:${to}?&body=${encodeURIComponent(buildRsvpMessage(input))}`;
+}
+
 function readLocal<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
@@ -59,6 +93,14 @@ function writeLocal(key: string, value: unknown) {
 /* ── 참석 여부 ────────────────────────────────────────────── */
 
 export async function submitRsvp(input: RsvpInput): Promise<boolean> {
+  if (rsvpMode() === "sms") {
+    if (typeof window === "undefined") return false;
+    // 보낸 내용을 브라우저에도 남겨 두어 "이미 전달했는지" 확인할 수 있게 한다.
+    writeLocal(RSVP_KEY, [...readLocal<RsvpInput[]>(RSVP_KEY, []), input]);
+    window.location.href = rsvpSmsHref(input);
+    return true;
+  }
+
   // TODO(Supabase): await supabase.from("rsvp").insert(input)
   const list = readLocal<RsvpInput[]>(RSVP_KEY, []);
   writeLocal(RSVP_KEY, [...list, input]);

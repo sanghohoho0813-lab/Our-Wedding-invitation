@@ -7,7 +7,7 @@
 `.aif` / `.aiff` 원본은 브라우저에서 재생되지 않으므로 변환이 필요합니다.
 
 ```bash
-ffmpeg -i wedding-theme.aif -codec:a libmp3lame -b:a 192k public/audio/wedding-theme.mp3
+ffmpeg -i wedding-theme.aif -af volume=-1.5dB -codec:a libmp3lame -b:a 96k public/audio/wedding-theme.mp3
 ```
 
 자세한 내용은 프로젝트 루트의 README.md 4번 항목을 참고하세요.

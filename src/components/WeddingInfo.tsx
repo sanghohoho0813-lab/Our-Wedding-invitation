@@ -1,3 +1,4 @@
+import { AddToCalendar } from "@/components/AddToCalendar";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -66,6 +67,10 @@ export function WeddingInfo() {
             ),
           )}
         </div>
+      </Reveal>
+
+      <Reveal delay={0.1}>
+        <AddToCalendar />
       </Reveal>
     </section>
   );

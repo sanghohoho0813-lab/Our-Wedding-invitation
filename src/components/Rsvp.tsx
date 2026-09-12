@@ -7,7 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
-import { submitRsvp } from "@/lib/backend";
+import { rsvpMode, submitRsvp } from "@/lib/backend";
 
 const FIELD =
   "mt-2 w-full rounded-[6px] border border-line bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors focus:border-accent-soft";
@@ -50,7 +50,11 @@ export function Rsvp() {
       setOpen(false);
       setName("");
       setMessage("");
-      showToast("참석 여부가 전달되었습니다.");
+      showToast(
+        rsvpMode() === "sms"
+          ? "문자 앱이 열립니다. 전송을 눌러주세요."
+          : "참석 여부가 전달되었습니다.",
+      );
     } else {
       showToast("전달에 실패했습니다. 잠시 후 다시 시도해 주세요.");
     }
@@ -183,9 +187,16 @@ export function Rsvp() {
             />
           </div>
 
-          <button type="submit" disabled={sending} className="btn-solid w-full disabled:opacity-60">
-            {sending ? "전달 중…" : "전달하기"}
-          </button>
+          <div>
+            <button type="submit" disabled={sending} className="btn-solid w-full disabled:opacity-60">
+              {sending ? "전달 중…" : "전달하기"}
+            </button>
+            {rsvpMode() === "sms" && (
+              <p className="mt-3 text-center text-[12.5px] leading-relaxed text-faint">
+                문자 앱이 열리면 내용을 확인하고 전송해 주세요.
+              </p>
+            )}
+          </div>
         </form>
       </Modal>
     </section>

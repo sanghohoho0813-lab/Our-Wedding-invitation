@@ -12,6 +12,7 @@ import {
   addGuestbookEntry,
   deleteGuestbookEntry,
   fetchGuestbook,
+  hasRemoteBackend,
   type GuestbookEntry,
 } from "@/lib/backend";
 
@@ -47,7 +48,9 @@ export function Guestbook() {
     if (guestbook.enabled) void reload();
   }, [guestbook.enabled, reload]);
 
-  if (!guestbook.enabled) return null;
+  // 서버가 없으면 각자 자기 글만 보이게 되어 방명록 구실을 못 한다.
+  // 그래서 백엔드가 붙기 전까지는 섹션 자체를 보여주지 않는다. (lib/backend.ts 참고)
+  if (!guestbook.enabled || !hasRemoteBackend()) return null;
 
   const visible = showAll ? entries : entries.slice(0, guestbook.pageSize);
 

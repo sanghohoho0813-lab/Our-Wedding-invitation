@@ -71,6 +71,12 @@ export function Location() {
             </div>
           )}
         </div>
+        {/* OpenStreetMap 타일로 만든 지도라 저작자 표기가 필요하다. */}
+        {mapImage && (
+          <p className="mt-2 text-right text-[11px] tracking-[0.01em] text-faint">
+            지도 © OpenStreetMap contributors
+          </p>
+        )}
       </Reveal>
 
       {/* 지도 앱 */}
