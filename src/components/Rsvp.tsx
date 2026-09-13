@@ -35,6 +35,14 @@ export function Rsvp() {
       return;
     }
 
+    // 받는 사람 번호가 아직 등록되지 않았으면 보내는 시늉을 하지 않는다.
+    if (rsvpMode(side) === "unavailable") {
+      showToast(
+        `${side === "groom" ? "신랑" : "신부"} 연락처가 아직 등록되지 않았습니다.`,
+      );
+      return;
+    }
+
     setSending(true);
     const ok = await submitRsvp({
       side,
@@ -51,7 +59,7 @@ export function Rsvp() {
       setName("");
       setMessage("");
       showToast(
-        rsvpMode() === "sms"
+        rsvpMode(side) === "sms"
           ? "문자 앱이 열립니다. 전송을 눌러주세요."
           : "참석 여부가 전달되었습니다.",
       );
@@ -191,9 +199,15 @@ export function Rsvp() {
             <button type="submit" disabled={sending} className="btn-solid w-full disabled:opacity-60">
               {sending ? "전달 중…" : "전달하기"}
             </button>
-            {rsvpMode() === "sms" && (
+            {rsvpMode(side) === "sms" && (
               <p className="mt-3 text-center text-[12.5px] leading-relaxed text-faint">
-                문자 앱이 열리면 내용을 확인하고 전송해 주세요.
+                {side === "groom" ? "신랑" : "신부"}에게 문자로 전달됩니다. 문자 앱이 열리면
+                내용을 확인하고 전송해 주세요.
+              </p>
+            )}
+            {rsvpMode(side) === "unavailable" && (
+              <p className="mt-3 text-center text-[12.5px] leading-relaxed text-faint">
+                {side === "groom" ? "신랑" : "신부"} 연락처 등록 후 이용하실 수 있습니다.
               </p>
             )}
           </div>

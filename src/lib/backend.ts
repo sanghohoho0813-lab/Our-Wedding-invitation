@@ -13,6 +13,7 @@
  * ─────────────────────────────────────────────────────────────
  */
 import { wedding } from "@/config/wedding";
+import { isPlaceholderPhone } from "@/lib/placeholder";
 
 export type RsvpInput = {
   /** "groom" | "bride" */
@@ -42,12 +43,28 @@ export function hasRemoteBackend() {
 }
 
 /**
- * 참석 여부를 어떻게 전달할지.
- *  - "remote" : 서버에 저장
- *  - "sms"    : 하객의 문자 앱으로 신랑에게 전송
+ * 참석 여부를 받을 사람의 번호.
+ * 신랑측 하객은 신랑에게, 신부측 하객은 신부에게 보낸다.
+ * 해당 번호가 아직 예시값이면 "" 를 돌려준다.
  */
-export function rsvpMode(): "remote" | "sms" {
-  return hasRemoteBackend() ? "remote" : "sms";
+export function rsvpRecipient(side: RsvpInput["side"]) {
+  const phone = side === "bride" ? wedding.bride.phone : wedding.groom.phone;
+  return isPlaceholderPhone(phone) ? "" : phone;
+}
+
+/**
+ * 참석 여부를 어떻게 전달할지.
+ *  - "remote"      : 서버에 저장
+ *  - "sms"         : 하객의 문자 앱으로 신랑·신부에게 전송
+ *  - "unavailable" : 받을 번호가 아직 등록되지 않음 (전송을 시도하지 않는다)
+ */
+export function rsvpMode(side?: RsvpInput["side"]): "remote" | "sms" | "unavailable" {
+  if (hasRemoteBackend()) return "remote";
+  if (!side) {
+    // 어느 쪽이든 보낼 수 있는 번호가 하나라도 있으면 문자 모드로 본다.
+    return rsvpRecipient("groom") || rsvpRecipient("bride") ? "sms" : "unavailable";
+  }
+  return rsvpRecipient(side) ? "sms" : "unavailable";
 }
 
 /** 문자로 보낼 참석 여부 내용 */
@@ -67,7 +84,8 @@ export function buildRsvpMessage(input: RsvpInput) {
  * iOS 와 안드로이드의 형식이 달라서 양쪽 모두에서 동작하는 "?&" 형태를 쓴다.
  */
 export function rsvpSmsHref(input: RsvpInput) {
-  const to = wedding.groom.phone.replace(/[^0-9+]/g, "");
+  const to = rsvpRecipient(input.side).replace(/[^0-9+]/g, "");
+  if (!to) return "";
   return `sms:${to}?&body=${encodeURIComponent(buildRsvpMessage(input))}`;
 }
 
@@ -93,11 +111,18 @@ function writeLocal(key: string, value: unknown) {
 /* ── 참석 여부 ────────────────────────────────────────────── */
 
 export async function submitRsvp(input: RsvpInput): Promise<boolean> {
-  if (rsvpMode() === "sms") {
+  const mode = rsvpMode(input.side);
+
+  // 받을 번호가 아직 없으면 문자 앱을 열지 않는다. (010-0000-0000 로 발송 방지)
+  if (mode === "unavailable") return false;
+
+  if (mode === "sms") {
     if (typeof window === "undefined") return false;
+    const href = rsvpSmsHref(input);
+    if (!href) return false;
     // 보낸 내용을 브라우저에도 남겨 두어 "이미 전달했는지" 확인할 수 있게 한다.
     writeLocal(RSVP_KEY, [...readLocal<RsvpInput[]>(RSVP_KEY, []), input]);
-    window.location.href = rsvpSmsHref(input);
+    window.location.href = href;
     return true;
   }
 

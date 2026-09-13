@@ -9,9 +9,12 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { useToast } from "@/components/Toast";
 import { wedding, type Account } from "@/config/wedding";
 import { copyText } from "@/lib/clipboard";
+import { isPlaceholderAccount, PLACEHOLDER_LABEL } from "@/lib/placeholder";
 
 function AccountRow({ account }: { account: Account }) {
   const { showToast } = useToast();
+  // 아직 예시 계좌번호면 복사되지 않도록 막는다.
+  const ready = !isPlaceholderAccount(account);
 
   const handleCopy = async () => {
     const ok = await copyText(account.number.replace(/\s/g, ""));
@@ -26,17 +29,19 @@ function AccountRow({ account }: { account: Account }) {
           {account.holder}
         </p>
         <p className="mt-1.5 text-[14.5px] tracking-[-0.01em] text-[#4a473f]">
-          {account.bank} {account.number}
+          {ready ? `${account.bank} ${account.number}` : PLACEHOLDER_LABEL}
         </p>
       </div>
-      <button
-        type="button"
-        onClick={handleCopy}
-        aria-label={`${account.holder} ${account.bank} 계좌번호 복사`}
-        className="tap shrink-0 rounded-[6px] border border-line px-3.5 text-[12.5px] text-muted active:bg-paper-deep"
-      >
-        복사
-      </button>
+      {ready && (
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label={`${account.holder} ${account.bank} 계좌번호 복사`}
+          className="tap shrink-0 rounded-[6px] border border-line px-3.5 text-[12.5px] text-muted active:bg-paper-deep"
+        >
+          복사
+        </button>
+      )}
     </div>
   );
 }

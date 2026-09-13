@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { wedding } from "@/config/wedding";
 import { buildMonthGrid, getMonth, weekdayKo } from "@/lib/date";
+import { venueLine } from "@/lib/venue";
 
 const WEEKDAY_KO_SHORT = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -22,8 +23,7 @@ export function WeddingInfo() {
           {year}년 {month}월 {day}일 {weekdayKo(date)} {wedding.wedding.timeLabel}
         </p>
         <p className="mt-1.5 text-[16px] leading-relaxed tracking-[-0.01em] text-[#4a473f]">
-          {wedding.wedding.venue}
-          {wedding.wedding.hall && ` ${wedding.wedding.hall}`}
+          {venueLine()}
         </p>
       </Reveal>
 

@@ -4,9 +4,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MessageSquare, Phone } from "lucide-react";
 import { useState } from "react";
 
+import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
-import { wedding } from "@/config/wedding";
+import { wedding, type IntroLine } from "@/config/wedding";
+import { isPlaceholderPhone, PLACEHOLDER_LABEL } from "@/lib/placeholder";
 
 type Person = typeof wedding.groom | typeof wedding.bride;
 
@@ -18,8 +20,30 @@ function parentsLine(person: Person) {
   return person.relation ? `${parents} 의 ${person.relation}` : parents;
 }
 
+/** 소개 한 줄 — 라벨(작게) + 문구 + 미확정 표시 */
+function IntroRow({ line }: { line: IntroLine }) {
+  if (!line.text) return null;
+
+  return (
+    <li>
+      {/* 라벨과 [예시] 표시를 한 줄에 두어 카드가 길어지지 않게 한다. */}
+      {(line.label || line.draft) && (
+        <span className="flex flex-wrap items-center justify-center gap-1.5">
+          {line.label && (
+            <span className="text-[11.5px] tracking-[0.02em] text-faint">{line.label}</span>
+          )}
+          <DraftMark status={line.draft} />
+        </span>
+      )}
+      <span className="mt-1 block text-[13.5px] leading-[1.7] text-muted">{line.text}</span>
+    </li>
+  );
+}
+
 function PersonCard({ label, person }: { label: string; person: Person }) {
   const tel = person.phone.replace(/-/g, "");
+  // 아직 실제 번호가 없으면 전화 버튼을 만들지 않는다.
+  const callable = !isPlaceholderPhone(person.phone);
 
   return (
     <div className="flex min-w-0 flex-col text-center">
@@ -32,26 +56,28 @@ function PersonCard({ label, person }: { label: string; person: Person }) {
 
       <p className="mt-5 text-[15px] tracking-[-0.01em] text-ink">
         {label} {person.name}
-        <a
-          href={`tel:${tel}`}
-          aria-label={`${label} ${person.name}에게 전화하기`}
-          className="-my-2 ml-1 inline-flex h-11 w-11 items-center justify-center align-middle text-accent"
-        >
-          <Phone size={14} strokeWidth={1.6} aria-hidden="true" />
-        </a>
+        {callable && (
+          <a
+            href={`tel:${tel}`}
+            aria-label={`${label} ${person.name}에게 전화하기`}
+            className="-my-2 ml-1 inline-flex h-11 w-11 items-center justify-center align-middle text-accent"
+          >
+            <Phone size={14} strokeWidth={1.6} aria-hidden="true" />
+          </a>
+        )}
       </p>
 
       {person.birth && <p className="mt-1 text-[13.5px] text-muted">{person.birth}</p>}
-
-      {person.keywords.length > 0 && (
-        <ul className="mt-6 space-y-1.5 text-[13.5px] leading-relaxed text-muted">
-          {person.keywords.map((k, i) => (
-            <li key={i}>{k}</li>
-          ))}
-        </ul>
+      {person.mbti && (
+        <p className="latin mt-2 text-[13.5px] tracking-[0.08em] text-accent">{person.mbti}</p>
       )}
 
-      {/* 키워드 개수가 서로 달라도 양쪽 부모님 줄이 같은 높이에 오도록 아래에 붙인다 */}
+      <ul className="mt-5 space-y-4">
+        <IntroRow line={person.likes} />
+        <IntroRow line={person.partnerQuote} />
+      </ul>
+
+      {/* 줄 수가 서로 달라도 양쪽 부모님 줄이 같은 높이에 오도록 아래에 붙인다 */}
       {parentsLine(person) && (
         <p className="mt-auto pt-6 text-[12.5px] leading-relaxed text-faint">{parentsLine(person)}</p>
       )}
@@ -88,6 +114,9 @@ function HostContacts() {
             <ul className="mt-6 divide-y divide-line border-y border-line text-left">
               {people.map((person, i) => {
                 const tel = person.phone.replace(/-/g, "");
+                // 번호가 아직 예시값이면 전화·문자 버튼 대신 안내만 보여준다.
+                const ready = !isPlaceholderPhone(person.phone);
+
                 return (
                   <li key={i} className="flex items-center justify-between gap-4 py-3">
                     <p className="min-w-0 text-[14px] tracking-[-0.01em] text-[#4a473f]">
@@ -95,22 +124,26 @@ function HostContacts() {
                       <span className="mx-2 text-line">·</span>
                       {person.name}
                     </p>
-                    <span className="flex shrink-0 items-center gap-1">
-                      <a
-                        href={`tel:${tel}`}
-                        aria-label={`${person.role} ${person.name}에게 전화하기`}
-                        className="tap w-11 text-muted active:text-ink"
-                      >
-                        <Phone size={15} strokeWidth={1.4} aria-hidden="true" />
-                      </a>
-                      <a
-                        href={`sms:${tel}`}
-                        aria-label={`${person.role} ${person.name}에게 문자 보내기`}
-                        className="tap w-11 text-muted active:text-ink"
-                      >
-                        <MessageSquare size={15} strokeWidth={1.4} aria-hidden="true" />
-                      </a>
-                    </span>
+                    {ready ? (
+                      <span className="flex shrink-0 items-center gap-1">
+                        <a
+                          href={`tel:${tel}`}
+                          aria-label={`${person.role} ${person.name}에게 전화하기`}
+                          className="tap w-11 text-muted active:text-ink"
+                        >
+                          <Phone size={15} strokeWidth={1.4} aria-hidden="true" />
+                        </a>
+                        <a
+                          href={`sms:${tel}`}
+                          aria-label={`${person.role} ${person.name}에게 문자 보내기`}
+                          className="tap w-11 text-muted active:text-ink"
+                        >
+                          <MessageSquare size={15} strokeWidth={1.4} aria-hidden="true" />
+                        </a>
+                      </span>
+                    ) : (
+                      <span className="shrink-0 text-[11.5px] text-faint">{PLACEHOLDER_LABEL}</span>
+                    )}
                   </li>
                 );
               })}

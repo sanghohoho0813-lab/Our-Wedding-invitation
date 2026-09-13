@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
 import { copyText } from "@/lib/clipboard";
+import { kakaoMapHref, naverMapHref } from "@/lib/venue";
 
 type TransportGroup = { icon: string; label: string; lines: readonly string[] };
 
@@ -20,11 +21,11 @@ const ICONS = {
 /** 오시는 길 — 위치 + 지도 앱 버튼 + 교통 안내. */
 export function Location() {
   const { showToast } = useToast();
-  const { venue, address, mapQuery } = wedding.wedding;
+  const { venue, address } = wedding.wedding;
+  const floor: string = wedding.wedding.ceremonyFloor;
   const hall: string = wedding.wedding.hall;
   const tel: string = wedding.wedding.tel;
   const mapImage: string = wedding.location.mapImage;
-  const query = encodeURIComponent(mapQuery || venue);
 
   const handleCopy = async () => {
     const ok = await copyText(address);
@@ -38,7 +39,9 @@ export function Location() {
 
         <Reveal className="mt-8 text-center">
           <p className="text-[17px] leading-snug tracking-[-0.01em] text-ink">{venue}</p>
-          {hall && <p className="mt-1.5 text-[14.5px] text-muted">{hall}</p>}
+          {(floor || hall) && (
+            <p className="mt-1.5 text-[14.5px] text-muted">{[floor, hall].filter(Boolean).join(" ")}</p>
+          )}
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-muted">{address}</p>
           {tel && (
             <a
@@ -83,7 +86,7 @@ export function Location() {
       <Reveal delay={0.08} className="edge mt-3">
         <div className="grid grid-cols-3 gap-2">
           <a
-            href={`https://map.naver.com/v5/search/${query}`}
+            href={naverMapHref()}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline active:bg-paper-deep"
@@ -91,7 +94,7 @@ export function Location() {
             네이버지도
           </a>
           <a
-            href={`https://map.kakao.com/?q=${query}`}
+            href={kakaoMapHref()}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline active:bg-paper-deep"

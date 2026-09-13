@@ -1,3 +1,4 @@
+import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -74,6 +75,7 @@ export function Timeline() {
                       <p className="mt-2.5 text-[13.5px] leading-[1.75] text-muted">
                         <Body text={item.body} highlight={item.highlight} />
                       </p>
+                      {item.draft && <DraftMark status={item.draft} className="mt-2.5" />}
                     </div>
                   </div>
                 </Reveal>

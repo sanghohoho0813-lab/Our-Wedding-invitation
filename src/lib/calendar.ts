@@ -1,5 +1,6 @@
 import { wedding } from "@/config/wedding";
 import { parseWeddingDate } from "@/lib/date";
+import { venueLine } from "@/lib/venue";
 
 /** 예식 시간이 정해져 있지 않을 때 기본으로 잡는 소요 시간(시간). */
 const DURATION_HOURS = 2;
@@ -21,8 +22,7 @@ function eventTitle() {
 }
 
 function eventLocation() {
-  const hall = wedding.wedding.hall ? ` ${wedding.wedding.hall}` : "";
-  return `${wedding.wedding.venue}${hall} (${wedding.wedding.address})`;
+  return `${venueLine()} (${wedding.wedding.address})`;
 }
 
 /** 예식 시작 / 종료 시각 */

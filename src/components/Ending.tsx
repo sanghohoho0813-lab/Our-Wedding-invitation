@@ -1,3 +1,4 @@
+import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { wedding, type GalleryImage } from "@/config/wedding";
@@ -8,6 +9,7 @@ export function Ending() {
   const { ending } = wedding;
   const endingImages: readonly GalleryImage[] = ending.images;
   const credit: readonly string[] = ending.credit;
+  const farewell: readonly string[] = ending.farewell;
   const creditLead: string = ending.creditLead;
 
   return (
@@ -35,6 +37,33 @@ export function Ending() {
             {ending.signature}
           </p>
           <p className="body-ko mt-7 whitespace-pre-line">{ending.message}</p>
+
+          {/* 하객분들께 드리는 인사 */}
+          {farewell.length > 0 && (
+            <div className="mt-12">
+              <div className="mx-auto mb-9 h-px w-8 bg-line" aria-hidden="true" />
+              {farewell.map((line, i) =>
+                line === "" ? (
+                  <div key={i} className="h-4" aria-hidden="true" />
+                ) : (
+                  <p
+                    key={i}
+                    className="text-[14.5px] leading-[1.95] tracking-[-0.01em] text-[#4a473f]"
+                  >
+                    {line}
+                  </p>
+                ),
+              )}
+              {ending.farewellSign && (
+                <p className="mt-6 text-[13.5px] tracking-[0.02em] text-muted">
+                  {ending.farewellSign}
+                </p>
+              )}
+              {ending.farewellDraft && (
+                <DraftMark status={ending.farewellDraft} className="mt-5" />
+              )}
+            </div>
+          )}
 
           <p className="serif mt-12 text-[16px] tracking-[0.02em] text-ink">
             {wedding.groom.name}

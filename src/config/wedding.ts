@@ -10,6 +10,24 @@
  * ─────────────────────────────────────────────────────────────
  */
 
+/**
+ * 아직 확정되지 않은 내용 표시.
+ *
+ *   "example"            → 화면에 [예시] 로 표시
+ *   "needs-confirmation" → 화면에 [확인 필요] 로 표시
+ *
+ * 내용이 확정되면 해당 항목의 draft 줄만 지우면 표시가 사라집니다.
+ */
+export type DraftStatus = "example" | "needs-confirmation";
+
+/** 한 줄짜리 소개 문구 (신랑·신부 소개 카드 등) */
+export type IntroLine = {
+  /** 앞에 붙는 작은 라벨 — 비우면 문구만 표시 */
+  label?: string;
+  text: string;
+  draft?: DraftStatus;
+};
+
 export type GalleryImage = {
   /** /public 기준 경로 또는 외부 CDN URL */
   src: string;
@@ -33,6 +51,7 @@ export type ContactPerson = {
 };
 
 export type TimelineItem = {
+  draft?: DraftStatus;
   /** 화면에 표시할 날짜 */
   date: string;
   /** 소제목 — 예: "첫 만남" */
@@ -48,7 +67,13 @@ export type InfoTab = {
   label: string;
   image: string;
   imageAlt: string;
+  /** 본문. 빈 문자열은 한 줄 띄우기로 표시됩니다. */
   body: string[];
+  /** 시간표처럼 줄 세워 보여줄 내용 — times 가 비어 있으면 표시되지 않습니다. */
+  schedule?: readonly { label: string; times: readonly string[] }[];
+  /** 본문 아래 작은 글씨 안내 */
+  note?: string;
+  draft?: DraftStatus;
 };
 
 export const wedding = {
@@ -58,12 +83,23 @@ export const wedding = {
     firstName: "상호",
     lastName: "김",
     englishName: "Sangho",
-    /** TODO: 실제 번호로 교체 */
+    /** TODO: 실제 번호로 교체. placeholder 인 동안에는 전화·문자 버튼이 나오지 않습니다. */
     phone: "010-0000-0000",
-    /** COUPLE 섹션에 표시할 생년월일 — 비우면 표시되지 않습니다. */
+    /** COUPLE 섹션에 표시할 생년월일 — 비우면("") 표시되지 않습니다. */
     birth: "1990. 08. 13",
-    /** 성격·취향 키워드 — 한 줄씩 표시됩니다. 비우면 표시되지 않습니다. */
-    keywords: ["ENFJ", "신부와 둘만의 시간 보내기"],
+    mbti: "ENFJ",
+    /** 소개 카드에 한 줄씩 들어갑니다. 확정되면 draft 줄만 지우세요. */
+    likes: {
+      label: "좋아하는 것",
+      text: "지윤이와 둘만의 시간 · 여행 · 맛있는 음식",
+      draft: "example",
+    } satisfies IntroLine,
+    /** 상대가 본 나 — 신부가 직접 써주면 가장 좋습니다. */
+    partnerQuote: {
+      label: "지윤이 보는 상호",
+      text: "늘 먼저 움직여주는 사람",
+      draft: "example",
+    } satisfies IntroLine,
     photo: "/images/wedding/groom.jpg",
     photoAlt: "부케를 든 신랑 김상호",
     father: "김영훈",
@@ -80,11 +116,20 @@ export const wedding = {
     firstName: "지윤",
     lastName: "창",
     englishName: "Jiyoon",
-    /** TODO: 실제 번호로 교체 */
+    /** TODO: 실제 번호로 교체. placeholder 인 동안에는 전화·문자 버튼이 나오지 않습니다. */
     phone: "010-0000-0000",
     birth: "1993. 06. 02",
-    /** TODO: 취미 등 추가하고 싶은 항목을 여기에 넣으세요. */
-    keywords: ["ISFP"],
+    mbti: "ISFP",
+    likes: {
+      label: "좋아하는 것",
+      text: "여행 · 카페 · 조용한 시간",
+      draft: "example",
+    } satisfies IntroLine,
+    partnerQuote: {
+      label: "상호가 보는 지윤",
+      text: "함께 있으면 가장 편안한 사람",
+      draft: "example",
+    } satisfies IntroLine,
     photo: "/images/wedding/bride.jpg",
     photoAlt: "꽃밭에 선 신부 창지윤",
     father: "창지환",
@@ -102,12 +147,17 @@ export const wedding = {
     time: "13:00",
     /** 화면에 보여줄 시간 문구 */
     timeLabel: "오후 1시",
+    /** 청첩장 화면에 보여줄 장소명 */
     venue: "연세대학교 신촌캠퍼스 동문회관",
-    /** 홀 이름이 정해지면 입력하세요. 비워두면 표시되지 않습니다. */
+    /** 예식이 열리는 층 — 비우면 표시되지 않습니다. */
+    ceremonyFloor: "2층",
+    /** 정확한 홀 이름이 정해지면 입력하세요. 비워두면 표시되지 않습니다. */
     hall: "",
     address: "서울 서대문구 연세로 50",
-    /** 지도 앱 버튼이 이 검색어로 열립니다. */
-    mapQuery: "연세대학교 동문회관",
+    /** 지도 앱 검색에 쓰는 실제 등록 상호 (화면에는 보이지 않습니다) */
+    mapQuery: "연세동문회관예식장",
+    /** 네이버지도 확정 장소 링크 — 비우면 mapQuery 검색으로 대체됩니다. */
+    naverMapUrl: "https://naver.me/5xgOX94G",
     /** 예식장 대표번호 — 비우면 표시되지 않습니다. */
     tel: "",
     /** 예식 안내 섹션 사진 */
@@ -129,14 +179,18 @@ export const wedding = {
   /* ── 초대의 글 ────────────────────────────────────────── */
   invitation: {
     heading: "저희 결혼합니다",
+    /** 확정되면 draft 줄만 지우세요. */
+    draft: "example" as DraftStatus | undefined,
     body: [
-      "저희의 결혼 소식이",
-      "부담스럽지 않게 다가가길 바라며,",
-      "편한 마음으로 오셔서",
-      "축하해주시면 감사하겠습니다.",
+      "서로의 가장 편한 사람이 되어",
+      "평범한 날들을 오래 함께",
+      "살아가기로 했습니다.",
       "",
-      "혹여 참석이 어려우시더라도 부담 갖지 마시고,",
-      "마음으로 축하해주시면 감사하겠습니다.",
+      "저희 두 사람의 새로운 시작을",
+      "소중한 분들과 함께하고 싶습니다.",
+      "",
+      "편한 마음으로 오셔서",
+      "따뜻하게 축하해 주시면 감사하겠습니다.",
     ],
   },
 
@@ -157,8 +211,18 @@ export const wedding = {
     intro: ["두 사람이 직접 답한", "짧은 인터뷰입니다."],
     buttonLabel: "인터뷰 읽어보기",
     /**
-     * 아래 답변은 알려주신 사실만으로 쓴 **초안**입니다.
-     * 두 분의 말투로 자유롭게 고쳐 주세요. 질문을 더하거나 빼도 됩니다.
+     * 답변이 모두 두 분의 것으로 바뀌면 이 줄을 지우세요.
+     * (모달 맨 위의 안내 문구가 사라집니다)
+     */
+    draft: "example" as DraftStatus | undefined,
+    noticeText: "예시 답변 — 추후 신랑·신부 답변으로 교체 예정",
+    /**
+     * 질문은 자유롭게 더하거나 빼도 됩니다. 넣을 만한 질문 후보:
+     *   - 서로의 첫인상은?
+     *   - 지금 서로에게 어떤 사람인가요?
+     *   - 결혼을 결심한 이유는?
+     *   - 둘이 함께 있을 때 가장 좋아하는 시간은?
+     *   - 우리 둘을 한 문장으로 표현하면?
      */
     qa: [
       {
@@ -237,6 +301,22 @@ export const wedding = {
         highlight: "연인으로",
         image: "",
       },
+      {
+        date: "2023 – 2025",
+        title: "우리다운 평범한 날들",
+        body: "여행하고, 맛있는 것을 먹고, 별일 없는 하루를 함께 보냈습니다.",
+        highlight: "별일 없는 하루",
+        image: "",
+        draft: "example",
+      },
+      {
+        date: "2026",
+        title: "결혼을 준비하며",
+        body: "프러포즈, 상견례, 그리고 오늘까지 하나씩 함께 준비했습니다.",
+        highlight: "함께 준비했습니다",
+        image: "",
+        draft: "example",
+      },
     ] satisfies TimelineItem[],
   },
 
@@ -250,28 +330,54 @@ export const wedding = {
 
   /* ── 게스트스냅 ───────────────────────────────────────── */
   guestSnap: {
-    /** 업로드 저장소를 연결하기 전까지 버튼은 "준비 중" 안내만 띄웁니다. */
     enabled: true,
-    heading: "게스트스냅",
-    subheading: "신랑·신부의 행복한 순간을 담아주세요",
+    heading: "우리의 사진작가가 되어주세요",
+    subheading: "여러분의 시선으로 남겨주신 순간을 오래 간직하겠습니다.",
     image: "/images/wedding/guestsnap.jpg",
     imageAlt: "잔디밭에서 카메라로 서로를 담는 신랑과 신부",
     notes: [
-      "저희의 스냅 작가님이 되어주세요!",
+      "저희가 미처 보지 못한 순간까지",
+      "여러분의 시선으로 남겨주세요.",
       "",
-      "[이런 순간들을 담아주세요!]",
-      "1. 행복한 신랑&신부 사진",
-      "2. 신랑&신부 행진",
-      "3. 가족&친구들과 함께한 순간",
-      "4. 여러분들의 사진",
+      "신랑·신부의 모습은 물론,",
+      "함께 웃고 있는 가족과 친구들,",
+      "예식장의 분위기와 짧은 영상까지 모두 좋아요.",
       "",
-      "당일날, 아래 버튼을 통해 올려주세요!",
-      "많은 참여 부탁드려요!",
+      "보내주신 사진과 영상은",
+      "저희 두 사람이 평생 간직할",
+      "결혼 기록으로 소중히 보관하겠습니다.",
     ],
-    buttonLabel: "사진 및 영상 업로드",
+    /** 커피 선물 안내 — 방식이 확정되면 draft 줄을 지우세요. 필요 없으면 enabled: false */
+    reward: {
+      enabled: true,
+      text: "사진이나 영상을 보내주신 분들께 작은 커피 선물을 준비했습니다. ☕",
+      draft: "example" as DraftStatus | undefined,
+    },
+    buttonLabel: "사진 · 영상 보내기",
+    /**
+     * 업로드 저장소를 아직 연결하지 않았습니다.
+     * 연결 전까지는 버튼이 눌리지 않고 아래 문구만 보여줍니다.
+     * (Supabase Storage 등을 붙이면 uploadReady 를 true 로 바꾸세요)
+     */
+    uploadReady: false,
+    pendingLabel: "예식 당일 오픈됩니다",
+    archiveNote: "보내주신 사진과 영상은 신랑·신부의 개인 웨딩 아카이브에 보관됩니다.",
   },
 
-  /* ── 안내 (주차 등) ──────────────────────────────────────
+  /* ── 셔틀버스 ─────────────────────────────────────────────
+     운행 시간이 확정되면 toVenue / fromVenue 에 시간을 넣어주세요.
+     비어 있는 동안에는 화면에 시간표가 나오지 않습니다. */
+  shuttle: {
+    /** 예식장으로 갈 때 타는 곳 */
+    pickup: "이대역 3번 출구 부근",
+    /** 집으로 돌아갈 때 타는 곳 */
+    returnPickup: "동문회관 지하 1층 던킨도너츠 앞",
+    toVenue: [] as readonly string[],
+    fromVenue: [] as readonly string[],
+    note: "정확한 운행 시간은 예식장 최종 확인 후 안내 예정입니다.",
+  },
+
+  /* ── 안내 (주차 · 식사 · 셔틀) ───────────────────────────
      항목이 하나면 탭 없이 제목으로만 표시되고,
      둘 이상이면 자동으로 탭 UI 가 됩니다. */
   infoTabs: {
@@ -279,10 +385,55 @@ export const wedding = {
     items: [
       {
         key: "parking",
-        label: "주차안내",
+        label: "주차",
         image: "",
         imageAlt: "예식장 주차장",
-        body: ["주차 안내는 예식장에서 확인 후 업데이트할 예정입니다."],
+        body: [
+          "하객 차량은 2시간 무료 주차가 가능합니다.",
+          "",
+          "동문회관 주차장이 만차일 경우",
+          "연세대학교 치과병원 주차장을",
+          "이용하실 수 있습니다.",
+          "",
+          "주차 지원은 차량 1대당",
+          "1회 입·출차에 한해 적용됩니다.",
+        ],
+      },
+      {
+        key: "meal",
+        label: "식사",
+        image: "",
+        imageAlt: "피로연장",
+        body: [
+          "예식 후 같은 층인 2층 피로연장에서",
+          "뷔페 식사가 준비되어 있습니다.",
+          "",
+          "피로연장은 저희 예식 하객분들을 위한",
+          "단독 연회 공간으로 운영됩니다.",
+          "",
+          "하객이 많이 몰리는 경우",
+          "3층 연회장도 함께 이용하실 수 있습니다.",
+        ],
+      },
+      {
+        key: "shuttle",
+        label: "셔틀버스",
+        image: "",
+        imageAlt: "셔틀버스",
+        body: [
+          "이대역 3번 출구 부근에서",
+          "동문회관까지 셔틀버스가 운행됩니다.",
+          "",
+          "귀가 셔틀은 동문회관 지하 1층",
+          "던킨도너츠 앞에서 탑승합니다.",
+        ],
+        /** 시간이 확정되면 config 의 shuttle 에 넣어주세요. */
+        schedule: [
+          { label: "이대역 → 동문회관", times: [] },
+          { label: "동문회관 → 이대역", times: [] },
+        ],
+        note: "정확한 운행 시간은 예식장 최종 확인 후 안내 예정입니다.",
+        draft: "needs-confirmation",
       },
     ] satisfies InfoTab[],
   },
@@ -295,11 +446,18 @@ export const wedding = {
      * 예식장에서 받은 약도로 바꾸고 싶으면 그 파일 경로를 넣으세요.
      */
     mapImage: "/images/wedding/map.jpg",
-    /** TODO: 예식장에서 안내받은 실제 정보로 확인 후 교체하세요. */
+    /**
+     * 오시는 길에는 큰 줄기만 적습니다.
+     * 주차 · 식사 · 셔틀 상세 안내는 infoTabs 에서 보여줍니다.
+     */
     transport: [
-      { icon: "subway", label: "지하철", lines: ["2호선 신촌역에서 도보 약 10분"] },
-      { icon: "bus", label: "버스", lines: ["연세대학교 · 신촌역 정류장 하차"] },
-      { icon: "car", label: "주차", lines: ["교내 주차장 이용", "예식 당일 주차 안내는 예식장에 문의해 주세요."] },
+      {
+        icon: "subway",
+        label: "지하철",
+        lines: ["2호선 신촌역 · 2호선 이대역에서 가까운 거리에 있습니다.", "이대역에서는 셔틀버스를 이용하실 수 있습니다."],
+      },
+      { icon: "bus", label: "버스", lines: ["연세대학교 · 신촌역 정류장에서 하차하세요."] },
+      { icon: "car", label: "자가용", lines: ["내비게이션에 \"연세동문회관예식장\" 을 검색하세요.", "주차 안내는 위쪽 안내의 주차 탭을 참고해 주세요."] },
     ],
   },
 
@@ -387,6 +545,20 @@ export const wedding = {
     signature: "Thank you",
     message: "우리의 시작을\n함께해 주세요.",
     /**
+     * 하객분들께 드리는 마지막 인사.
+     * 확정되면 farewellDraft 줄만 지우세요. 비우면 표시되지 않습니다.
+     */
+    farewellDraft: "example" as DraftStatus | undefined,
+    farewell: [
+      "저희의 시작을 축하하기 위해",
+      "귀한 시간을 내어주셔서 감사합니다.",
+      "",
+      "오늘 보내주신 마음과",
+      "함께 남겨주신 사진 한 장까지",
+      "오래오래 기억하며 잘 살겠습니다.",
+    ],
+    farewellSign: "상호 · 지윤 드림",
+    /**
      * 푸터에 들어가는 짧은 인사.
      * creditLead 는 강조(베이지)로, creditBody 는 작은 회색으로 표시됩니다.
      * 필요 없으면 빈 문자열 / 빈 배열로 두세요.
@@ -397,8 +569,8 @@ export const wedding = {
 
   /* ── 공유 / SEO ───────────────────────────────────────── */
   share: {
-    /** 배포 후 실제 도메인으로 바꿔주세요. */
-    url: "https://our-wedding-invitation.vercel.app",
+    /** 최종 도메인 */
+    url: "https://www.sh-jy-wedding.app",
     title: "김상호 ♥ 창지윤 결혼합니다",
     description:
       "2026년 12월 20일 일요일 오후 1시, 연세대학교 신촌캠퍼스 동문회관에서 저희 두 사람의 새로운 시작에 초대합니다.",

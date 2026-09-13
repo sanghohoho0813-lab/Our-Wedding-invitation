@@ -5,6 +5,7 @@ import { AudioProvider } from "@/components/AudioProvider";
 import { ToastProvider } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
+import { venueLine } from "@/lib/venue";
 
 import "./globals.css";
 
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
   title: wedding.share.title,
   description: wedding.share.description,
   applicationName: wedding.share.title,
-  keywords: ["모바일 청첩장", "결혼식", wedding.groom.name, wedding.bride.name, wedding.wedding.venue],
+  /* 검색 노출을 막으므로 keywords 는 두지 않는다. */
   openGraph: {
     type: "website",
     locale: "ko_KR",
@@ -70,8 +71,17 @@ export const metadata: Metadata = {
     description: wedding.share.description,
     images: [wedding.share.ogImage],
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
+  /**
+   * 연락처 · 계좌번호 같은 개인정보가 들어가므로 검색엔진에는 노출하지 않는다.
+   * 링크를 받은 하객은 그대로 열람할 수 있다. (접속 차단이 아님)
+   */
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: { index: false, follow: false, noimageindex: true },
+  },
+  alternates: { canonical: siteUrl },
 };
 
 export const viewport: Viewport = {
@@ -94,7 +104,7 @@ function StructuredData() {
     image: [new URL(wedding.share.ogImage, siteUrl).toString()],
     location: {
       "@type": "Place",
-      name: `${wedding.wedding.venue} ${wedding.wedding.hall}`,
+      name: venueLine(),
       address: wedding.wedding.address,
     },
   };
@@ -133,8 +143,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <noscript>
           <div style={{ padding: "24px", textAlign: "center" }}>
             {wedding.groom.name} · {wedding.bride.name} — {formatDotted(wedding.wedding.date)}{" "}
-            {weekdayKo(wedding.wedding.date)} {wedding.wedding.timeLabel}, {wedding.wedding.venue}{" "}
-            {wedding.wedding.hall}
+            {weekdayKo(wedding.wedding.date)} {wedding.wedding.timeLabel}, {venueLine()}
           </div>
         </noscript>
       </body>

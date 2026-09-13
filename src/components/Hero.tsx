@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
+import { venueLine } from "@/lib/venue";
 
 /**
  * 첫 화면.
@@ -73,8 +74,7 @@ export function Hero() {
             {weekdayKo(date)} {wedding.wedding.timeLabel}
           </p>
           <p className="mt-2 text-[14.5px] leading-snug tracking-[-0.01em] text-white/90">
-            {wedding.wedding.venue}
-            {wedding.wedding.hall && ` ${wedding.wedding.hall}`}
+            {venueLine()}
           </p>
 
           {hero.caption.length > 0 && (

@@ -273,3 +273,21 @@ img {
   height: 1px;
   background: linear-gradient(to right, transparent, var(--color-line) 22%, var(--color-line) 78%, transparent);
 }
+
+/**
+ * 아직 확정되지 않은 내용 표시 — [예시] / [확인 필요]
+ * 내용이 모두 확정되면 config 에서 draft 값을 지우면 사라집니다.
+ */
+@utility draft-mark {
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-paper-deep);
+  padding: 1px 8px 2px;
+  font-size: 10.5px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--color-faint);
+}

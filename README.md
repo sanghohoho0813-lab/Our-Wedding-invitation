@@ -6,6 +6,8 @@
 - Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide Icons
 - 콘텐츠 폭 최대 520px, PC에서는 중앙 정렬
 - 정적 페이지 (QR 코드로 열었을 때 바로 보이도록 / 로그인 없음)
+- 도메인: **https://www.sh-jy-wedding.app**
+- 연락처 · 계좌번호가 들어가므로 **검색엔진에는 노출되지 않습니다** (noindex, nofollow)
 
 ---
 
@@ -36,8 +38,8 @@ npm run lint       # ESLint
 07 D-DAY             남은 날짜
 08 갤러리             3열 그리드 + 전체화면 뷰어(확대 가능)
 09 우리의 시간        타임라인 (첫 만남 · 연인이 되던 날)
-10 게스트스냅         안내 + 업로드 버튼
-11 안내 사항          주차안내 (항목이 2개 이상이면 탭으로 표시)
+10 게스트스냅         하객 참여 안내 (업로드는 예식 당일 오픈)
+11 안내 사항          주차 / 식사 / 셔틀버스 탭
 12 오시는 길          지도 + 지도앱 버튼 + 교통
 13 참석 여부 전달      RSVP 폼
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
@@ -55,6 +57,25 @@ npm run lint       # ESLint
 
 ## 3. 내용 수정은 이 파일 하나만 — `src/config/wedding.ts`
 
+### 아직 확정되지 않은 내용 표시
+
+두 분이 최종 확정하지 않은 문구는 화면에 작은 표시가 함께 나옵니다.
+
+| config | 화면 | 뜻 |
+| --- | --- | --- |
+| `draft: "example"` | `[예시]` | 제가 쓴 초안입니다. 두 분의 말로 바꿔주세요 |
+| `draft: "needs-confirmation"` | `[확인 필요]` | 사실 확인이 끝나지 않은 정보입니다 |
+
+**확정되면 그 항목의 `draft` 줄만 지우면 표시가 사라집니다.** 내용은 그대로 남습니다.
+지금 `[예시]` / `[확인 필요]` 가 붙어 있는 곳:
+초대의 글 · 신랑/신부 소개 4줄 · 웨딩 인터뷰(모달 상단) · 타임라인 2개 · 게스트스냅 커피 선물 · 셔틀버스 · 맺음말 인사.
+
+### 아직 값이 없는 개인정보
+
+전화번호가 `010-0000-0000`, 계좌가 `000000-00-000000` / 은행명이 `은행명` 인 동안에는
+**전화·문자 버튼과 계좌 복사 버튼이 아예 나오지 않고** `[정보 입력 예정]` 으로만 보입니다.
+실제 값을 넣으면 코드 수정 없이 자동으로 다시 켜집니다. (`src/lib/placeholder.ts`)
+
 컴포넌트 안에는 개인정보를 하드코딩하지 않았습니다.
 
 | 항목 | 위치 | 상태 |
@@ -62,15 +83,26 @@ npm run lint       # ESLint
 | 신랑 / 신부 | `groom.name`, `bride.name` | **김상호 · 창지윤** |
 | 부모님 | `groom.father/mother`, `bride.father/mother` | **김영훈 · 원정연 / 창지환 · 유병연** |
 | 예식 일시 | `wedding.date`, `wedding.timeLabel` | **2026-12-20(일) 오후 1시** |
-| 예식장 / 주소 | `wedding.venue`, `address` | **연세대학교 신촌캠퍼스 동문회관 / 서울 서대문구 연세로 50** |
-| 홀 이름 | `wedding.hall` | 비어 있음 (입력하면 표시) |
+| 예식장 (화면 표시용) | `wedding.venue` | **연세대학교 신촌캠퍼스 동문회관** |
+| 예식 층 | `wedding.ceremonyFloor` | **2층** — 장소명 뒤에 자동으로 붙습니다 |
+| 주소 | `wedding.address` | **서울 서대문구 연세로 50** |
+| 지도 검색용 상호 | `wedding.mapQuery` | **연세동문회관예식장** (화면에는 보이지 않음) |
+| 네이버지도 링크 | `wedding.naverMapUrl` | **https://naver.me/5xgOX94G** |
+| 홀 이름 | `wedding.hall` | 비어 있음 (입력하면 층 뒤에 표시) |
 | 신랑·신부 연락처 | `groom.phone`, `bride.phone` | **교체 필요** |
 | 혼주 연락처 | `contacts` | **교체 필요** |
 | 계좌번호 | `accounts` | **교체 필요** |
 | 교통 안내 | `location.transport` | **예식장 안내로 확인 필요** |
 | 생년월일 | `groom.birth`, `bride.birth` | **1990. 08. 13 / 1993. 06. 02** |
-| MBTI · 취미 | `groom.keywords`, `bride.keywords` | ENFJ · 신부와 둘만의 시간 보내기 / ISFP (**신부 취미 추가 필요**) |
-| 타임라인 | `timeline.items` | 2022. 08 첫 만남 / 2022. 10. 12 연인 (**중간 이야기 추가 가능**) |
+| MBTI | `groom.mbti`, `bride.mbti` | ENFJ / ISFP |
+| 좋아하는 것 | `groom.likes`, `bride.likes` | `[예시]` — **두 분 답변 필요** |
+| 서로가 보는 상대 | `groom.partnerQuote`, `bride.partnerQuote` | `[예시]` — **서로가 한 줄씩 써주면 가장 좋습니다** |
+| 초대의 글 | `invitation.body` | `[예시]` — **최종 문구 확인 필요** |
+| 웨딩 인터뷰 | `interview.qa` | `[예시]` — **답변 교체 필요** |
+| 타임라인 | `timeline.items` | 2022. 08 · 2022. 10. 12 (확정) + 2023~2025 · 2026 `[예시]` |
+| 게스트스냅 커피 선물 | `guestSnap.reward` | `[예시]` — 지급 방식 확정 후 교체 |
+| 셔틀버스 시간표 | `shuttle.toVenue`, `shuttle.fromVenue` | `[확인 필요]` — 비어 있으면 화면에 시간표가 나오지 않습니다 |
+| 맺음말 인사 | `ending.farewell` | `[예시]` — **최종 문구 확인 필요** |
 | 푸터 크레딧 | `ending.creditLead`(강조), `ending.credit` | 신랑이 직접 만들었다는 인사 (비우면 숨김) |
 
 > `wedding.date` 만 바꾸면 요일 · 달력 · D-day · 영문 날짜가 모두 자동으로 다시 계산됩니다.
@@ -164,13 +196,21 @@ ffmpeg -i 원본.aif -af volume=-1.5dB -codec:a libmp3lame -b:a 96k public/audio
 
 | 기능 | 서버 없을 때 | Supabase 연결 후 |
 | --- | --- | --- |
-| 참석 여부 | 하객의 **문자 앱**이 열려 신랑에게 바로 전송 | 서버에 저장 |
+| 참석 여부 | 하객의 **문자 앱**이 열려 신랑·신부에게 바로 전송 | 서버에 저장 |
 | 방명록 | 섹션을 **아예 표시하지 않음** | 목록 + 작성 / 삭제 |
 
 방명록은 서버가 없으면 각자 자기 글만 보이게 되어 기능을 못 하므로 숨깁니다.
 참석 여부는 문자로 실제 신랑에게 도착하므로 그대로 켜 두어도 됩니다.
 
-> ⚠️ 문자가 가는 번호는 `groom.phone` 입니다. **실제 번호로 꼭 바꿔주세요.**
+문자는 하객이 고른 쪽으로 갑니다.
+
+| 하객 선택 | 받는 사람 |
+| --- | --- |
+| 신랑측 | `groom.phone` |
+| 신부측 | `bride.phone` |
+
+> ⚠️ 해당 번호가 아직 `010-0000-0000` 이면 **문자 앱을 열지 않고** 안내만 띄웁니다.
+> 두 번호 모두 실제 번호로 바꿔주세요.
 
 ### 6-2. Supabase 연결 방법
 
@@ -216,9 +256,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 ### 6-3. 게스트스냅 업로드
 
-지금은 버튼을 눌러도 "업로드는 준비 중입니다" 안내만 나옵니다.
-Supabase Storage 버킷을 만든 뒤 `src/components/GuestSnap.tsx` 의 `onClick` 에
-업로드 로직을 연결하면 됩니다. 사용하지 않으려면 `guestSnap.enabled` 를 `false` 로 두세요.
+업로드 저장소는 아직 연결하지 않았습니다.
+되는 것처럼 보이면 안 되므로 버튼을 누를 수 없게 두고 `예식 당일 오픈됩니다` 만 보여줍니다.
+
+저장소를 붙인 뒤 `guestSnap.uploadReady` 를 `true` 로 바꾸면 버튼이 활성화됩니다.
+안내 문구(`guestSnap.notes`), 커피 선물 문구(`guestSnap.reward`), 보관 안내(`guestSnap.archiveNote`)
+는 모두 config 에서 바꿀 수 있습니다.
 
 ### 6-4. 카카오톡 공유
 
@@ -286,7 +329,8 @@ src/
 - [ ] **교통 안내** 확인
 - [ ] 비어 있는 **사진 자리** 채우기 (4번 표)
 - [ ] 홀 이름이 정해지면 `wedding.hall` 입력
-- [ ] `share.url` 을 실제 도메인으로 변경
+- [ ] 화면에 남은 `[예시]` · `[확인 필요]` 표시 모두 정리 (해당 항목의 `draft` 줄 삭제)
+- [ ] 셔틀버스 운행 시간 확인 후 `shuttle.toVenue` / `shuttle.fromVenue` 입력
 - [ ] **카카오 JavaScript 키** 입력 (`share.kakaoJavascriptKey`, 6-4 참고)
 - [ ] 카카오톡에 링크를 보내 미리보기(og.jpg) 확인
 - [ ] **웨딩 인터뷰** 답변을 두 분의 말로 다듬기 (지금은 초안)

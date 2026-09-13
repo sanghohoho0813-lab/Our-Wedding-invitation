@@ -29,6 +29,13 @@ export function Interview() {
       </Reveal>
 
       <Modal open={open} onClose={() => setOpen(false)} title={interview.heading}>
+        {/* 답변이 모두 두 분의 것으로 바뀌면 config 의 interview.draft 를 지우세요. */}
+        {interview.draft && (
+          <p className="-mt-1 mb-7 rounded-[6px] border border-line bg-paper-deep px-4 py-3 text-center text-[12px] leading-relaxed text-faint">
+            [{interview.noticeText}]
+          </p>
+        )}
+
         <dl className="space-y-8">
           {interview.qa.map((item, i) => (
             <div key={i}>
