@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
+import { EntryGate } from "@/components/EntryGate";
 import { FloatingButtons } from "@/components/FloatingButtons";
 import { MusicToggle } from "@/components/MusicToggle";
 import { wedding } from "@/config/wedding";
@@ -11,6 +12,8 @@ type AudioContextValue = {
   isPlaying: boolean;
   isReady: boolean;
   toggle: () => void;
+  /** 사용자 제스처 안에서 호출해 소리를 켠다 (입장 화면에서 사용) */
+  startMusic: () => void;
 };
 
 const AudioCtx = createContext<AudioContextValue | null>(null);
@@ -183,7 +186,16 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("visibilitychange", resume);
   }, [isReady, sync]);
 
-  const value = useMemo(() => ({ isPlaying, isReady, toggle }), [isPlaying, isReady, toggle]);
+  /** 입장 화면의 "열기" 처럼, 확실한 사용자 제스처 안에서 소리를 켤 때 쓴다. */
+  const startMusic = useCallback(() => {
+    userPaused.current = false;
+    void startAudible({ fromStart: true });
+  }, [startAudible]);
+
+  const value = useMemo(
+    () => ({ isPlaying, isReady, toggle, startMusic }),
+    [isPlaying, isReady, toggle, startMusic],
+  );
 
   return (
     <AudioCtx.Provider value={value}>
@@ -213,6 +225,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       )}
       {isReady && <MusicToggle />}
       <FloatingButtons />
+      <EntryGate />
     </AudioCtx.Provider>
   );
 }
