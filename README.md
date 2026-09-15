@@ -189,6 +189,9 @@ Chrome · Safari · 삼성인터넷 · 카카오톡 인앱 브라우저 모두 �
 
 하객 입장에서는 "열었더니 음악이 나온다" 가 됩니다. 음악 버튼을 따로 누를 필요가 없습니다.
 
+한 번 입장한 뒤에는 같은 브라우저 세션 안에서 다시 묻지 않습니다.
+(지도 앱에 갔다가 돌아오거나 새로고침해도 또 열라고 하지 않고, 첫 터치에서 음악이 이어집니다)
+
 입장 화면이 필요 없으면 `entry.enabled` 를 `false` 로 바꾸세요.
 그 경우 음악은 하객이 화면을 처음 건드릴 때 켜지고,
 2.2초가 지나도 소리가 없으면 음악 버튼 옆에 `음악 켜기` 안내가 잠깐 나옵니다.
@@ -325,6 +328,16 @@ src/
 
 - 제목: `Noto Serif KR` / 본문: `Noto Sans KR` / 영문: `Cormorant Garamond` / HERO 필기체: `Parisienne`
 - 필기체를 바꾸려면 `layout.tsx` 의 `Parisienne` 하나만 교체하면 됩니다.
+
+### 성능 · 보안 메모
+
+- 한글 폰트는 실제로 쓰는 굵기(400 · 500)만 싣습니다. 굵기 하나가 @font-face 100여 개라
+  굵기를 늘리면 렌더링을 막는 CSS 가 수십 KB 씩 늘어납니다.
+- 모든 응답에 `X-Content-Type-Options` · `X-Frame-Options` · `Referrer-Policy` ·
+  `Permissions-Policy` · `X-Robots-Tag: noindex` 헤더가 붙습니다. (`next.config.ts`)
+- `/manifest.webmanifest` — "홈 화면에 추가" 시 이름 · 아이콘 · 배경색.
+- 잘못된 주소(404) 와 예기치 못한 오류 화면도 청첩장과 같은 톤으로 안내합니다.
+- Lighthouse(모바일) 접근성 100 · 권장사항 100. 검색 노출은 의도적으로 막았습니다.
 
 ### 알아두면 좋은 구현 포인트
 

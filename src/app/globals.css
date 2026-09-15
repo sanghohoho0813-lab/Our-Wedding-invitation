@@ -12,6 +12,8 @@
   --color-accent: #a68e63;
   --color-accent-soft: #b9a684;
   --color-accent-pale: #f3ede2;
+  /* 작은 글씨에 accent 색을 쓸 때 — 대비 4.5:1 을 넘기는 진한 베이지 */
+  --color-accent-deep: #886b4a;
 
   --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Malgun Gothic", sans-serif;
@@ -289,5 +291,5 @@ img {
   line-height: 1.6;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  color: var(--color-faint);
+  color: var(--color-muted);
 }

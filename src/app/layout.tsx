@@ -9,9 +9,14 @@ import { venueLine } from "@/lib/venue";
 
 import "./globals.css";
 
+/*
+ * 한글 폰트는 굵기 하나마다 100 개가 넘는 unicode-range 조각을 @font-face 로 선언해서
+ * 굵기를 하나 늘릴 때마다 렌더링을 막는 CSS 가 수십 KB 씩 늘어난다.
+ * 실제로 쓰는 굵기(400 · 500)만 싣는다. (300 은 라틴 서체에서만 쓴다)
+ */
 const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["400", "500"],
   variable: "--font-noto-sans-kr",
   display: "swap",
   preload: false,
@@ -19,7 +24,7 @@ const notoSansKr = Noto_Sans_KR({
 
 const notoSerifKr = Noto_Serif_KR({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-noto-serif-kr",
   display: "swap",
   preload: false,
@@ -122,6 +127,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko" className={`${notoSansKr.variable} ${notoSerifKr.variable} ${cormorant.variable} ${script.variable}`}>
       <head>
         <StructuredData />
+        {/* 자바스크립트가 꺼져 있으면 입장 화면은 눌러도 열리지 않으므로 아예 숨긴다. */}
+        <noscript>
+          <style>{`[data-entry-gate]{display:none !important}`}</style>
+        </noscript>
         {/*
           카카오톡 공유를 켜려면 config/wedding.ts 에 kakaoJavascriptKey 를 넣고
           아래 스크립트 주석을 해제하세요.

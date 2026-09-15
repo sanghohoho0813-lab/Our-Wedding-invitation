@@ -82,7 +82,7 @@ export function Ending() {
             <div className="mx-auto mb-6 h-6 w-px bg-line" aria-hidden="true" />
 
             {creditLead && (
-              <p className="serif text-[13px] leading-[1.7] tracking-[0.01em] text-accent">
+              <p className="serif text-[13px] leading-[1.7] tracking-[0.01em] text-accent-deep">
                 {creditLead}
               </p>
             )}

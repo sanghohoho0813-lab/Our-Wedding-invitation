@@ -17,22 +17,37 @@ import { venueLine } from "@/lib/venue";
  * 그래서 청첩장을 여는 동작 자체를 그 한 번의 터치로 삼는다.
  * 하객 입장에서는 "열었더니 음악이 나온다" 가 된다.
  *
- * 자바스크립트가 없거나 꺼져 있으면 이 화면은 아예 그려지지 않고
- * 청첩장이 그대로 보인다. (마운트 후에만 렌더링)
+ * 서버 HTML 에도 그려 둔다. 그래야 자바스크립트가 내려오기 전에
+ * 청첩장이 잠깐 보였다가 입장 화면이 덮이는 깜빡임이 없다.
+ * 자바스크립트가 꺼져 있으면 layout 의 <noscript> 스타일이 이 화면을 숨긴다.
+ *
+ * 한 번 입장한 뒤에는(같은 브라우저 세션 안에서) 다시 보여주지 않는다.
+ * 지도 앱에 갔다가 돌아오거나 새로고침했을 때 또 열라고 하지 않기 위해서다.
  */
+const ENTERED_KEY = "wedding:entered";
 export function EntryGate() {
   const { entry, hero } = wedding;
   const { startMusic } = useAudio();
   const reduceMotion = useReducedMotion();
 
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(true);
+  /** 이미 입장한 세션이면 애니메이션 없이 곧바로 걷어낸다 */
+  const [instant, setInstant] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    try {
+      if (window.sessionStorage.getItem(ENTERED_KEY) === "1") {
+        setInstant(true);
+        setOpen(false);
+      }
+    } catch {
+      // 프라이빗 모드 등에서 저장소를 못 쓰면 그냥 입장 화면을 보여준다.
+    }
+  }, []);
 
   // 입장 전에는 뒤쪽이 스크롤되지 않게 막는다.
   useEffect(() => {
-    if (!mounted || !open || !entry.enabled) return;
+    if (!open || !entry.enabled) return;
 
     const { body } = document;
     const prev = body.style.overflow;
@@ -42,14 +57,19 @@ export function EntryGate() {
     return () => {
       body.style.overflow = prev;
     };
-  }, [mounted, open, entry.enabled]);
+  }, [open, entry.enabled]);
 
-  if (!entry.enabled || !mounted) return null;
+  if (!entry.enabled) return null;
 
   const handleEnter = () => {
     // 이 클릭이 브라우저가 요구하는 "사용자 제스처" 다. 여기서 소리를 켠다.
     startMusic();
     setOpen(false);
+    try {
+      window.sessionStorage.setItem(ENTERED_KEY, "1");
+    } catch {
+      // 저장 실패는 무시한다.
+    }
   };
 
   const date = wedding.wedding.date;
@@ -62,9 +82,10 @@ export function EntryGate() {
           initial={false}
           exit={{ opacity: 0 }}
           transition={{
-            duration: reduceMotion ? 0 : 0.8,
+            duration: reduceMotion || instant ? 0 : 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
+          data-entry-gate
           className="fixed inset-0 z-[100] bg-paper"
           role="dialog"
           aria-modal="true"
