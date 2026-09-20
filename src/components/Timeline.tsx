@@ -28,7 +28,7 @@ export function Timeline() {
 
   return (
     <section className="edge pb-24" aria-labelledby="timeline-heading">
-      <SectionHeading title={timeline.heading} />
+      <SectionHeading id="timeline-heading" title={timeline.heading} />
 
       <div className="relative mt-12">
         {/* 가운데 세로선 */}

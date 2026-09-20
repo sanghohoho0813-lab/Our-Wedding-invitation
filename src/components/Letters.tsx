@@ -11,7 +11,7 @@ export function Letters() {
 
   return (
     <section className="edge pb-24" aria-labelledby="letters-heading">
-      <SectionHeading title={letters.heading} />
+      <SectionHeading id="letters-heading" title={letters.heading} />
 
       <div className="mt-9 space-y-4">
         {items.map((letter, i) => (

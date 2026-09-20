@@ -6,6 +6,7 @@ import { useState } from "react";
 import { GalleryViewer } from "@/components/GalleryViewer";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
+import { blurFor } from "@/config/blur";
 import { type GalleryImage } from "@/config/wedding";
 
 /** 처음에 보여줄 장수 (3열 × 3줄) */
@@ -33,7 +34,7 @@ export function PhotoGrid({ id, title, body, images }: Props) {
 
   return (
     <section className="edge pb-24" aria-labelledby={`${id}-heading`}>
-      <SectionHeading title={title} body={body} />
+      <SectionHeading id={`${id}-heading`} title={title} body={body} />
 
       <Reveal className="mt-9">
         <ul className="grid grid-cols-3 gap-1.5">
@@ -51,6 +52,8 @@ export function PhotoGrid({ id, title, body, images }: Props) {
                   alt={image.alt}
                   fill
                   loading="lazy"
+                  placeholder={blurFor(image.src) ? "blur" : "empty"}
+                  blurDataURL={blurFor(image.src)}
                   sizes="(max-width: 520px) 32vw, 166px"
                   className="object-cover"
                   style={{ objectPosition: image.objectPosition ?? "center" }}

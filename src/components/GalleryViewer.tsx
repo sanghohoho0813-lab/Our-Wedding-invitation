@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { blurFor } from "@/config/blur";
 import type { GalleryImage } from "@/config/wedding";
 
 type Props = {
@@ -272,6 +273,8 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
                 height={1600}
                 sizes="100vw"
                 priority
+                placeholder={blurFor(image.src) ? "blur" : "empty"}
+                blurDataURL={blurFor(image.src)}
                 draggable={false}
                 onClick={onImageTap}
                 className="h-auto max-h-full w-auto max-w-full select-none object-contain"

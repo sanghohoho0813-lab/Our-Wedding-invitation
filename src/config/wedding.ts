@@ -219,9 +219,9 @@ export const wedding = {
     image: "/images/wedding/quote.jpg",
     imageAlt: "면사포 아래에서 마주 본 신랑과 신부",
     /** 영문 문구가 필요 없으면 빈 배열로 두세요. */
-    en: [] as string[],
-    ko: ["닮은 점은 함께 웃고,", "다른 점은 서로 채워주는 사이."],
-    source: "",
+    en: ["You can not be happy every day.", "But there are happy things every day."] as string[],
+    ko: ["매일 행복할 순 없지만,", "행복한 것들은 매일 있어."],
+    source: "〈월트 디즈니〉, 곰돌이 푸 中",
   },
 
   /* ── 웨딩 인터뷰 ──────────────────────────────────────── */
@@ -270,6 +270,15 @@ export const wedding = {
           {
             who: "bride",
             text: "같이 맛있는 거 먹으면서 반주하는 시간이요. 여행 가서 멋진 풍경을 보고, 새로운 걸 함께 해보는 것도 좋아해요.",
+          },
+        ],
+      },
+      {
+        q: "두 분을 한 문장으로 표현하면?",
+        answers: [
+          {
+            who: "bride",
+            text: "닮은 점은 함께 웃고, 다른 점은 서로 채워주는 사이.",
           },
         ],
       },
@@ -432,7 +441,7 @@ export const wedding = {
     ],
     /** 커피 선물 안내 — 방식이 확정되면 draft 줄을 지우세요. 필요 없으면 enabled: false */
     reward: {
-      enabled: true,
+      enabled: false,
       text: "사진이나 영상을 보내주신 분들께 작은 커피 선물을 준비했습니다. ☕",
       draft: "example" as DraftStatus | undefined,
     },
@@ -617,7 +626,8 @@ export const wedding = {
   entry: {
     enabled: true,
     buttonLabel: "청첩장 열기",
-    note: "음악과 함께 준비했습니다.",
+    /** 버튼 아래 작은 안내. 비우면 표시되지 않습니다. */
+    note: "",
   },
 
   /* ── 음악 ─────────────────────────────────────────────── */

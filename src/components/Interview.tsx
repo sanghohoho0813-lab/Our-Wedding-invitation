@@ -22,7 +22,7 @@ export function Interview() {
 
   return (
     <section className="edge pb-24" aria-labelledby="interview-heading">
-      <SectionHeading title={interview.heading} body={interview.intro} />
+      <SectionHeading id="interview-heading" title={interview.heading} body={interview.intro} />
 
       <Reveal delay={0.06} className="mt-8 text-center">
         <button

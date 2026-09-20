@@ -7,7 +7,7 @@ export function Invitation() {
 
   return (
     <section className="edge pt-24 pb-24" aria-labelledby="invitation-heading">
-      <SectionHeading title={heading} body={body} />
+      <SectionHeading id="invitation-heading" title={heading} body={body} />
 
       {draft && (
         <div className="mt-7 text-center">

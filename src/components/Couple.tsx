@@ -12,6 +12,8 @@ import { isPlaceholderPhone, PLACEHOLDER_LABEL } from "@/lib/placeholder";
 
 type Person = typeof wedding.groom | typeof wedding.bride;
 
+const { groom, bride } = wedding;
+
 function parentsLine(person: Person) {
   const father = person.father ? `${person.fatherPrefix}${person.father}` : "";
   const mother = person.mother ? `${person.motherPrefix}${person.mother}` : "";
@@ -20,33 +22,14 @@ function parentsLine(person: Person) {
   return person.relation ? `${parents} 의 ${person.relation}` : parents;
 }
 
-/** 소개 한 줄 — 라벨(작게) + 문구 + 미확정 표시 */
-function IntroRow({ line }: { line: IntroLine }) {
-  if (!line.text) return null;
-
-  return (
-    <li>
-      {/* 라벨과 [예시] 표시를 한 줄에 두어 카드가 길어지지 않게 한다. */}
-      {(line.label || line.draft) && (
-        <span className="flex flex-wrap items-center justify-center gap-1.5">
-          {line.label && (
-            <span className="text-[11.5px] tracking-[0.02em] text-faint">{line.label}</span>
-          )}
-          <DraftMark status={line.draft} />
-        </span>
-      )}
-      <span className="mt-1 block text-[13.5px] leading-[1.7] text-muted">{line.text}</span>
-    </li>
-  );
-}
-
-function PersonCard({ label, person }: { label: string; person: Person }) {
+/** 사진 + 이름 + 전화 버튼 */
+function PersonHead({ label, person }: { label: string; person: Person }) {
   const tel = person.phone.replace(/-/g, "");
   // 아직 실제 번호가 없으면 전화 버튼을 만들지 않는다.
   const callable = !isPlaceholderPhone(person.phone);
 
   return (
-    <div className="flex min-w-0 flex-col text-center">
+    <div className="min-w-0 text-center">
       <PhotoSlot
         src={person.photo}
         alt={person.photoAlt}
@@ -66,21 +49,93 @@ function PersonCard({ label, person }: { label: string; person: Person }) {
           </a>
         )}
       </p>
+    </div>
+  );
+}
 
-      {person.birth && <p className="mt-1 text-[13.5px] text-muted">{person.birth}</p>}
-      {person.mbti && (
-        <p className="latin mt-2 text-[13.5px] tracking-[0.08em] text-accent">{person.mbti}</p>
+/** 값 한 칸 — 라벨이 있으면 값 위에 작게 붙인다. */
+function Cell({ line }: { line: IntroLine }) {
+  if (!line.text) return <span aria-hidden="true" />;
+
+  return (
+    <div className="min-w-0 text-center">
+      {line.label && (
+        <span className="block text-[11.5px] leading-tight tracking-[0.02em] text-faint">
+          {line.label}
+        </span>
       )}
+      <span className="mt-1.5 block text-[13.5px] leading-[1.7] text-muted">{line.text}</span>
+      {line.draft && <DraftMark status={line.draft} className="mt-2" />}
+    </div>
+  );
+}
 
-      <ul className="mt-5 space-y-4">
-        <IntroRow line={person.likes} />
-        <IntroRow line={person.partnerQuote} />
-      </ul>
+/**
+ * 신랑 · 신부의 정보를 담는 연한 박스.
+ *
+ * 두 사람의 줄 수가 달라도 같은 항목이 같은 높이에 오도록
+ * 카드를 따로 두지 않고 **한 격자 안에서 행 단위로** 배치한다.
+ */
+function ProfileBox() {
+  const rows: { key: string; label?: string; left: IntroLine; right: IntroLine }[] = [];
 
-      {/* 줄 수가 서로 달라도 양쪽 부모님 줄이 같은 높이에 오도록 아래에 붙인다 */}
-      {parentsLine(person) && (
-        <p className="mt-auto pt-6 text-[12.5px] leading-relaxed text-faint">{parentsLine(person)}</p>
-      )}
+  if (groom.birth || bride.birth) {
+    rows.push({
+      key: "birth",
+      left: { text: groom.birth },
+      right: { text: bride.birth },
+    });
+  }
+  if (groom.mbti || bride.mbti) {
+    rows.push({
+      key: "mbti",
+      left: { text: groom.mbti },
+      right: { text: bride.mbti },
+    });
+  }
+  if (groom.likes.text || bride.likes.text) {
+    rows.push({
+      key: "likes",
+      // 라벨이 양쪽 같으면 가운데에 한 번만 쓴다.
+      label: groom.likes.label,
+      left: { ...groom.likes, label: undefined },
+      right: { ...bride.likes, label: undefined },
+    });
+  }
+  if (groom.partnerQuote.text || bride.partnerQuote.text) {
+    rows.push({ key: "partner", left: groom.partnerQuote, right: bride.partnerQuote });
+  }
+
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="mt-6 rounded-[12px] bg-paper-soft px-5 py-7">
+      {rows.map((row, i) => (
+        <div key={row.key} className={i === 0 ? "" : "mt-6 border-t border-line/70 pt-6"}>
+          {row.label && (
+            <p className="mb-3 text-center text-[11.5px] tracking-[0.02em] text-faint">
+              {row.label}
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-x-4">
+            {row.key === "mbti" ? (
+              <>
+                <p className="latin text-center text-[13.5px] tracking-[0.08em] text-accent">
+                  {row.left.text}
+                </p>
+                <p className="latin text-center text-[13.5px] tracking-[0.08em] text-accent">
+                  {row.right.text}
+                </p>
+              </>
+            ) : (
+              <>
+                <Cell line={row.left} />
+                <Cell line={row.right} />
+              </>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -92,7 +147,7 @@ function HostContacts() {
   if (people.length === 0) return null;
 
   return (
-    <div className="mt-12 text-center">
+    <div className="mt-10 text-center">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -160,12 +215,27 @@ export function Couple() {
     <section className="edge pb-24" aria-label="신랑 신부 소개">
       <Reveal>
         <div className="grid grid-cols-2 gap-4">
-          <PersonCard label="신랑" person={wedding.groom} />
-          <PersonCard label="신부" person={wedding.bride} />
+          <PersonHead label="신랑" person={groom} />
+          <PersonHead label="신부" person={bride} />
         </div>
       </Reveal>
 
       <Reveal delay={0.06}>
+        <ProfileBox />
+
+        {(parentsLine(groom) || parentsLine(bride)) && (
+          <div className="mt-6 grid grid-cols-2 gap-x-4">
+            <p className="text-center text-[12.5px] leading-relaxed text-faint">
+              {parentsLine(groom)}
+            </p>
+            <p className="text-center text-[12.5px] leading-relaxed text-faint">
+              {parentsLine(bride)}
+            </p>
+          </div>
+        )}
+      </Reveal>
+
+      <Reveal delay={0.1}>
         <HostContacts />
       </Reveal>
     </section>

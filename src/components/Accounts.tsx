@@ -96,7 +96,7 @@ export function Accounts() {
 
   return (
     <section className="edge pb-24" aria-labelledby="accounts-heading">
-      <SectionHeading title={heading} body={body} />
+      <SectionHeading id="accounts-heading" title={heading} body={body} />
 
       <Reveal delay={0.06}>
         <div className="mt-9 space-y-2.5">

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 
+import { blurFor } from "@/config/blur";
+
 type Props = {
   src: string;
   alt: string;
@@ -31,6 +33,8 @@ export function PhotoSlot({
   priority = false,
 }: Props) {
   const radius = rounded ? "rounded-[10px]" : "";
+  // 사진이 다 내려오기 전에 회색 칸 대신 흐릿한 색감을 먼저 보여준다.
+  const blur = blurFor(src);
 
   if (!src) {
     return (
@@ -58,6 +62,8 @@ export function PhotoSlot({
         sizes={sizes}
         priority={priority}
         loading={priority ? undefined : "lazy"}
+        placeholder={blur ? "blur" : "empty"}
+        blurDataURL={blur}
         className="object-cover"
         style={{ objectPosition }}
       />

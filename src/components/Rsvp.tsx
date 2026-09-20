@@ -70,7 +70,7 @@ export function Rsvp() {
 
   return (
     <section className="edge pb-24" aria-labelledby="rsvp-heading">
-      <SectionHeading title={rsvp.heading} body={rsvp.body} />
+      <SectionHeading id="rsvp-heading" title={rsvp.heading} body={rsvp.body} />
 
       <Reveal delay={0.06} className="mt-9 text-center">
         <button

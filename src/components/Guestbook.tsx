@@ -95,7 +95,7 @@ export function Guestbook() {
 
   return (
     <section className="edge pb-24" aria-labelledby="guestbook-heading">
-      <SectionHeading title={guestbook.heading} />
+      <SectionHeading id="guestbook-heading" title={guestbook.heading} />
 
       <Reveal delay={0.06} className="mt-9">
         {entries.length === 0 ? (
