@@ -14,13 +14,15 @@ export function QuoteBlock() {
       </Reveal>
 
       <Reveal className="edge mt-16 text-center">
-        <div className="latin text-[15px] leading-[1.8] tracking-[0.01em] text-muted">
-          {quote.en.map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-        </div>
+        {quote.en.length > 0 && (
+          <div className="latin text-[15px] leading-[1.8] tracking-[0.01em] text-muted">
+            {quote.en.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        )}
 
-        <div className="body-ko mt-7">
+        <div className={`body-ko ${quote.en.length > 0 ? "mt-7" : ""}`}>
           {quote.ko.map((line, i) => (
             <p key={i}>{line}</p>
           ))}

@@ -7,6 +7,7 @@ import { Guestbook } from "@/components/Guestbook";
 import { GuestSnap } from "@/components/GuestSnap";
 import { Hero } from "@/components/Hero";
 import { InfoTabs } from "@/components/InfoTabs";
+import { Letters } from "@/components/Letters";
 import { Interview } from "@/components/Interview";
 import { Invitation } from "@/components/Invitation";
 import { Location } from "@/components/Location";
@@ -28,6 +29,7 @@ export default function Page() {
       <DdayBanner />
       <Gallery />
       <Timeline />
+      <Letters />
       <GuestSnap />
       <InfoTabs />
       <Location />

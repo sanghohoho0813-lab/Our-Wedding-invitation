@@ -5,7 +5,13 @@ import { useState } from "react";
 import { Modal } from "@/components/Modal";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { wedding } from "@/config/wedding";
+import { wedding, type InterviewAnswer } from "@/config/wedding";
+
+const WHO_LABEL: Record<InterviewAnswer["who"], string> = {
+  groom: "신랑",
+  bride: "신부",
+  both: "",
+};
 
 /** 웨딩 인터뷰 — 버튼을 누르면 질문·답변이 모달로 열린다. */
 export function Interview() {
@@ -29,25 +35,36 @@ export function Interview() {
       </Reveal>
 
       <Modal open={open} onClose={() => setOpen(false)} title={interview.heading}>
-        {/* 답변이 모두 두 분의 것으로 바뀌면 config 의 interview.draft 를 지우세요. */}
-        {interview.draft && (
-          <p className="-mt-1 mb-7 rounded-[6px] border border-line bg-paper-deep px-4 py-3 text-center text-[12px] leading-relaxed text-faint">
-            [{interview.noticeText}]
-          </p>
-        )}
-
-        <dl className="space-y-8">
+        <dl className="space-y-9">
           {interview.qa.map((item, i) => (
             <div key={i}>
               <dt className="text-[14.5px] leading-relaxed tracking-[-0.01em] text-accent">
                 Q. {item.q}
               </dt>
-              <dd className="mt-2.5 text-[14.5px] leading-[1.9] tracking-[-0.01em] text-[#4a473f]">
-                {item.a}
-              </dd>
+              {item.answers
+                .filter((answer) => answer.text)
+                .map((answer, j) => (
+                  <dd key={j} className="mt-3">
+                    {WHO_LABEL[answer.who] && (
+                      <span className="block text-[12px] tracking-[0.02em] text-faint">
+                        {WHO_LABEL[answer.who]}
+                      </span>
+                    )}
+                    <span className="mt-1 block text-[14.5px] leading-[1.9] tracking-[-0.01em] text-[#4a473f]">
+                      {answer.text}
+                    </span>
+                  </dd>
+                ))}
             </div>
           ))}
         </dl>
+
+        {/* 신랑 답변이 모두 채워지면 config 의 pendingNote 를 비우세요. */}
+        {interview.pendingNote && (
+          <p className="mt-9 border-t border-line pt-6 text-center text-[12px] leading-relaxed text-faint">
+            {interview.pendingNote}
+          </p>
+        )}
       </Modal>
     </section>
   );

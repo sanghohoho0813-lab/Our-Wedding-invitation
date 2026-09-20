@@ -2,7 +2,7 @@ import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { wedding } from "@/config/wedding";
+import { wedding, type TimelineItem } from "@/config/wedding";
 
 /** 본문 안의 강조 문구만 형광펜 처리한다. */
 function Body({ text, highlight }: { text: string; highlight?: string }) {
@@ -22,7 +22,9 @@ function Body({ text, highlight }: { text: string; highlight?: string }) {
 /** 우리의 시간 — 좌우로 번갈아 놓이는 타임라인. */
 export function Timeline() {
   const { timeline } = wedding;
-  if (!timeline.enabled || timeline.items.length === 0) return null;
+  // 항목에 draft 가 하나도 없어도 타입이 좁혀지지 않도록 명시한다.
+  const items: readonly TimelineItem[] = timeline.items;
+  if (!timeline.enabled || items.length === 0) return null;
 
   return (
     <section className="edge pb-24" aria-labelledby="timeline-heading">
@@ -36,7 +38,7 @@ export function Timeline() {
         />
 
         <ol className="space-y-10">
-          {timeline.items.map((item, i) => {
+          {items.map((item, i) => {
             const photoLeft = i % 2 === 0;
 
             return (

@@ -62,6 +62,27 @@ export type TimelineItem = {
   image: string;
 };
 
+/** 인터뷰 한 줄 — 누가 답했는지 함께 표시한다. */
+export type InterviewAnswer = {
+  who: "groom" | "bride" | "both";
+  text: string;
+  draft?: DraftStatus;
+};
+
+export type InterviewItem = {
+  q: string;
+  answers: readonly InterviewAnswer[];
+};
+
+/** 서로에게 남기는 짧은 편지 */
+export type Letter = {
+  /** 누가 쓴 편지인지 */
+  from: "groom" | "bride";
+  label: string;
+  body: string[];
+  draft?: DraftStatus;
+};
+
 export type InfoTab = {
   key: string;
   label: string;
@@ -97,8 +118,7 @@ export const wedding = {
     /** 상대가 본 나 — 신부가 직접 써주면 가장 좋습니다. */
     partnerQuote: {
       label: "지윤이 보는 상호",
-      text: "늘 먼저 움직여주는 사람",
-      draft: "example",
+      text: "너무 귀엽고 깜찍하지만 한편으로는 듬직한 아기강아지",
     } satisfies IntroLine,
     photo: "/images/wedding/groom.jpg",
     photoAlt: "부케를 든 신랑 김상호",
@@ -122,8 +142,7 @@ export const wedding = {
     mbti: "ISFP",
     likes: {
       label: "좋아하는 것",
-      text: "여행 · 카페 · 조용한 시간",
-      draft: "example",
+      text: "인형뽑기 · 산책",
     } satisfies IntroLine,
     partnerQuote: {
       label: "상호가 보는 지윤",
@@ -199,9 +218,10 @@ export const wedding = {
     enabled: true,
     image: "/images/wedding/quote.jpg",
     imageAlt: "면사포 아래에서 마주 본 신랑과 신부",
-    en: ["You can not be happy every day.", "But there are happy things every day."],
-    ko: ["매일 행복할 순 없지만,", "행복한 것들은 매일 있어."],
-    source: "〈월트 디즈니〉, 곰돌이 푸 中",
+    /** 영문 문구가 필요 없으면 빈 배열로 두세요. */
+    en: [] as string[],
+    ko: ["닮은 점은 함께 웃고,", "다른 점은 서로 채워주는 사이."],
+    source: "",
   },
 
   /* ── 웨딩 인터뷰 ──────────────────────────────────────── */
@@ -211,45 +231,58 @@ export const wedding = {
     intro: ["두 사람이 직접 답한", "짧은 인터뷰입니다."],
     buttonLabel: "인터뷰 읽어보기",
     /**
-     * 답변이 모두 두 분의 것으로 바뀌면 이 줄을 지우세요.
-     * (모달 맨 위의 안내 문구가 사라집니다)
+     * 신랑 답변이 도착하면
+     *   1) 각 질문의 answers 에 { who: "groom", text: "..." } 를 추가하고
+     *   2) 아래 pendingNote 를 빈 문자열로 두세요.
      */
-    draft: "example" as DraftStatus | undefined,
-    noticeText: "예시 답변 — 추후 신랑·신부 답변으로 교체 예정",
-    /**
-     * 질문은 자유롭게 더하거나 빼도 됩니다. 넣을 만한 질문 후보:
-     *   - 서로의 첫인상은?
-     *   - 지금 서로에게 어떤 사람인가요?
-     *   - 결혼을 결심한 이유는?
-     *   - 둘이 함께 있을 때 가장 좋아하는 시간은?
-     *   - 우리 둘을 한 문장으로 표현하면?
-     */
+    pendingNote: "신랑의 답변은 곧 더해집니다.",
     qa: [
       {
         q: "두 분은 어떻게 만나셨나요?",
-        a: "신랑이 운영하던 사교모임에서 처음 만났어요. 2022년 8월이었습니다.",
+        answers: [
+          {
+            who: "both",
+            text: "2022년 8월, 신랑이 운영하던 사교모임에서 처음 만났어요. 두 달 뒤인 10월 12일에 연인이 되었습니다.",
+          },
+        ],
       },
       {
-        q: "연인이 되기까지 얼마나 걸렸나요?",
-        a: "두 달이요. 2022년 10월 12일, 친구에서 연인이 되었습니다. 그날부터 지금까지 하루도 빠짐없이 함께였어요.",
+        q: "서로의 첫인상은 어땠나요?",
+        answers: [
+          {
+            who: "bride",
+            text: "멋진 모임장이라고 생각했어요. 그런데 몸이 크고 너무 어른 같아서, 처음엔 말 걸기가 쉽지 않았어요.",
+          },
+        ],
       },
       {
-        q: "두 분의 MBTI가 궁금해요.",
-        a: "신랑은 ENFJ, 신부는 ISFP예요. 한 사람은 앞장서서 계획하고 한 사람은 그 옆에서 편안하게 만들어 주는, 생각보다 잘 맞는 조합이더라고요.",
+        q: "지금 서로에게 어떤 사람인가요?",
+        answers: [
+          {
+            who: "bride",
+            text: "너무 귀엽고 깜찍한데, 한편으로는 듬직한 아기강아지 같아요.",
+          },
+        ],
       },
       {
-        q: "요즘 가장 좋아하는 시간은 언제인가요?",
-        a: "특별한 곳에 가지 않아도 둘만 있는 시간이 제일 좋아요. 신랑의 취미가 '신부와 둘만의 시간 보내기'일 정도니까요.",
+        q: "둘이 함께 있을 때 가장 좋아하는 시간은?",
+        answers: [
+          {
+            who: "bride",
+            text: "같이 맛있는 거 먹으면서 반주하는 시간이요. 여행 가서 멋진 풍경을 보고, 새로운 걸 함께 해보는 것도 좋아해요.",
+          },
+        ],
       },
       {
-        q: "이 청첩장은 누가 만들었나요?",
-        a: "화면 구성부터 배경음악까지 신랑이 직접 만들었습니다. 신부와 하객분들께 드리는 첫 번째 선물이에요.",
+        q: "결혼을 결심하게 된 순간이 있나요?",
+        answers: [
+          {
+            who: "bride",
+            text: "어떤 상황에서도 저부터 챙겨주는 모습이요. 제가 예민할 때도 휩쓸리지 않고 차분히 들어줘요. 좋은 남편, 좋은 아빠가 될 것 같은 가정적인 모습에 마음이 놓였습니다.",
+          },
+        ],
       },
-      {
-        q: "하객분들께 한마디 해주세요.",
-        a: "바쁜 걸음 해주시는 것만으로도 큰 선물입니다. 오셔서 저희의 시작을 함께 봐주세요. 감사합니다.",
-      },
-    ] as { q: string; a: string }[],
+    ] satisfies InterviewItem[],
   },
 
   /* ── D-DAY 배너 ───────────────────────────────────────── */
@@ -276,6 +309,20 @@ export const wedding = {
     { src: "/images/wedding/13.jpg", alt: "마주 보며 활짝 웃는 신랑과 신부" },
     { src: "/images/wedding/14.jpg", alt: "면사포 아래에서 마주 안은 두 사람" },
     { src: "/images/wedding/15.jpg", alt: "노을빛 들판에서 입맞추는 신랑과 신부" },
+
+    /* 연애 중 휴대폰으로 찍은 일상 사진 — scripts/build-daily.mjs 로 만듭니다 */
+    { src: "/images/daily/01.jpg", alt: "벚꽃 아래에서 볼을 맞댄 두 사람" },
+    { src: "/images/daily/02.jpg", alt: "숲이 보이는 난간에서 함께 웃는 두 사람" },
+    { src: "/images/daily/03.jpg", alt: "꽃밭을 배경으로 나란히 선 두 사람" },
+    { src: "/images/daily/04.jpg", alt: "마주 앉아 함께 저녁을 먹는 두 사람" },
+    { src: "/images/daily/05.jpg", alt: "인형뽑기장 불빛 아래에서 웃는 두 사람" },
+    { src: "/images/daily/06.jpg", alt: "강가 노을을 배경으로 안은 두 사람" },
+    { src: "/images/daily/07.jpg", alt: "물 위에서 손으로 하트를 만든 두 사람" },
+    { src: "/images/daily/08.jpg", alt: "모래언덕에서 함께 뛰어오른 두 사람" },
+    { src: "/images/daily/09.jpg", alt: "모래언덕에서 마주 본 두 사람" },
+    { src: "/images/daily/10.jpg", alt: "야자수가 보이는 창가에서 웃는 두 사람" },
+    { src: "/images/daily/11.jpg", alt: "양이 있는 초원에 나란히 선 두 사람" },
+    { src: "/images/daily/12.jpg", alt: "겨울 바다에서 볼에 입맞추는 두 사람" },
   ] satisfies GalleryImage[],
 
   /* ── 우리의 시간 (타임라인) ───────────────────────────── */
@@ -302,22 +349,34 @@ export const wedding = {
         image: "",
       },
       {
-        date: "2023 – 2025",
-        title: "우리다운 평범한 날들",
-        body: "여행하고, 맛있는 것을 먹고, 별일 없는 하루를 함께 보냈습니다.",
-        highlight: "별일 없는 하루",
-        image: "",
-        draft: "example",
-      },
-      {
-        date: "2026",
-        title: "결혼을 준비하며",
-        body: "프러포즈, 상견례, 그리고 오늘까지 하나씩 함께 준비했습니다.",
-        highlight: "함께 준비했습니다",
-        image: "",
-        draft: "example",
+        date: "2024. 04",
+        title: "함께 떠난 첫 해외여행",
+        body: "태국에서 보낸 닷새. 둘이서만 떠난 첫 여행이었어요.",
+        highlight: "둘이서만 떠난",
+        image: "/images/daily/thailand.jpg",
       },
     ] satisfies TimelineItem[],
+  },
+
+  /* ── 서로에게 (짧은 편지) ────────────────────────────────
+     신랑 편지가 오면 items 에 { from: "groom", label: "신랑이 신부에게", body: [...] }
+     를 추가하세요. 순서는 배열 순서 그대로입니다. */
+  letters: {
+    enabled: true,
+    heading: "서로에게",
+    items: [
+      {
+        from: "bride",
+        label: "신부가 신랑에게",
+        body: [
+          "내가 항상 오빠에게 하는 말,",
+          "나에게로 와줘서 정말 고맙다는 말~ 알지?",
+          "",
+          "힘든 일이 있어도 서로에게 의지하면서",
+          "잘 살아보자 ❤️",
+        ],
+      },
+    ] satisfies Letter[],
   },
 
   /* ── 함께한 시간 (실시간 카운터) ──────────────────────── */
@@ -566,14 +625,13 @@ export const wedding = {
      * 하객분들께 드리는 마지막 인사.
      * 확정되면 farewellDraft 줄만 지우세요. 비우면 표시되지 않습니다.
      */
-    farewellDraft: "example" as DraftStatus | undefined,
+    farewellDraft: undefined as DraftStatus | undefined,
     farewell: [
-      "저희의 시작을 축하하기 위해",
-      "귀한 시간을 내어주셔서 감사합니다.",
+      "소중한 주말에 저희의 결혼식을",
+      "축하해 주러 오셔서 정말 감사합니다.",
       "",
-      "오늘 보내주신 마음과",
-      "함께 남겨주신 사진 한 장까지",
-      "오래오래 기억하며 잘 살겠습니다.",
+      "축하해 주신 만큼",
+      "행복하게 잘 살겠습니다!",
     ],
     farewellSign: "상호 · 지윤 드림",
     /**
