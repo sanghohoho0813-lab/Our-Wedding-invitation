@@ -1,5 +1,6 @@
 import { Accounts } from "@/components/Accounts";
 import { Couple } from "@/components/Couple";
+import { DailyGallery } from "@/components/DailyGallery";
 import { DdayBanner } from "@/components/DdayBanner";
 import { Ending } from "@/components/Ending";
 import { Gallery } from "@/components/Gallery";
@@ -29,6 +30,7 @@ export default function Page() {
       <DdayBanner />
       <Gallery />
       <Timeline />
+      <DailyGallery />
       <Letters />
       <GuestSnap />
       <InfoTabs />

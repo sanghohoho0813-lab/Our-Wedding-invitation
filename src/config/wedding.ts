@@ -309,21 +309,45 @@ export const wedding = {
     { src: "/images/wedding/13.jpg", alt: "마주 보며 활짝 웃는 신랑과 신부" },
     { src: "/images/wedding/14.jpg", alt: "면사포 아래에서 마주 안은 두 사람" },
     { src: "/images/wedding/15.jpg", alt: "노을빛 들판에서 입맞추는 신랑과 신부" },
-
-    /* 연애 중 휴대폰으로 찍은 일상 사진 — scripts/build-daily.mjs 로 만듭니다 */
-    { src: "/images/daily/01.jpg", alt: "벚꽃 아래에서 볼을 맞댄 두 사람" },
-    { src: "/images/daily/02.jpg", alt: "숲이 보이는 난간에서 함께 웃는 두 사람" },
-    { src: "/images/daily/03.jpg", alt: "꽃밭을 배경으로 나란히 선 두 사람" },
-    { src: "/images/daily/04.jpg", alt: "마주 앉아 함께 저녁을 먹는 두 사람" },
-    { src: "/images/daily/05.jpg", alt: "인형뽑기장 불빛 아래에서 웃는 두 사람" },
-    { src: "/images/daily/06.jpg", alt: "강가 노을을 배경으로 안은 두 사람" },
-    { src: "/images/daily/07.jpg", alt: "물 위에서 손으로 하트를 만든 두 사람" },
-    { src: "/images/daily/08.jpg", alt: "모래언덕에서 함께 뛰어오른 두 사람" },
-    { src: "/images/daily/09.jpg", alt: "모래언덕에서 마주 본 두 사람" },
-    { src: "/images/daily/10.jpg", alt: "야자수가 보이는 창가에서 웃는 두 사람" },
-    { src: "/images/daily/11.jpg", alt: "양이 있는 초원에 나란히 선 두 사람" },
-    { src: "/images/daily/12.jpg", alt: "겨울 바다에서 볼에 입맞추는 두 사람" },
   ] satisfies GalleryImage[],
+
+  /* ── 우리의 일상 ──────────────────────────────────────────
+     연애하며 휴대폰으로 찍은 사진들.
+     scripts/build-daily.mjs 를 실행하면 아래 배열을 그대로 뽑아줍니다. */
+  dailyGallery: {
+    enabled: true,
+    heading: "우리의 일상",
+    body: ["화보가 아닌, 우리가 살아온 모습입니다."],
+    images: [
+      { src: "/images/daily/01.jpg", alt: "벚꽃 아래에서 볼을 맞댄 두 사람" },
+      { src: "/images/daily/02.jpg", alt: "숲이 보이는 난간에서 함께 웃는 두 사람" },
+      { src: "/images/daily/03.jpg", alt: "꽃밭을 배경으로 나란히 선 두 사람" },
+      { src: "/images/daily/04.jpg", alt: "겨울 바다에서 볼에 입맞추는 두 사람" },
+      { src: "/images/daily/05.jpg", alt: "야경 조명 앞에서 장난스럽게 웃는 두 사람" },
+      { src: "/images/daily/06.jpg", alt: "마주 앉아 함께 저녁을 먹는 두 사람" },
+      { src: "/images/daily/07.jpg", alt: "음료를 앞에 두고 붙어 앉은 두 사람" },
+      { src: "/images/daily/08.jpg", alt: "인형뽑기장 불빛 아래에서 웃는 두 사람" },
+      { src: "/images/daily/09.jpg", alt: "인형뽑기장에서 나란히 기댄 두 사람" },
+      { src: "/images/daily/10.jpg", alt: "네 컷 사진기로 남긴 두 사람" },
+      { src: "/images/daily/11.jpg", alt: "조명 아래에서 얼굴을 맞댄 두 사람" },
+      { src: "/images/daily/12.jpg", alt: "저녁 자리에서 함께 찍은 두 사람" },
+      { src: "/images/daily/13.jpg", alt: "거울에 비친 두 사람" },
+      { src: "/images/daily/14.jpg", alt: "집에서 장난스럽게 찍은 두 사람" },
+      { src: "/images/daily/15.jpg", alt: "운동하는 서로를 찍어주는 두 사람" },
+      { src: "/images/daily/16.jpg", alt: "운동복 차림으로 나란히 선 두 사람" },
+      { src: "/images/daily/17.jpg", alt: "운동 중에 마주 본 두 사람" },
+      { src: "/images/daily/18.jpg", alt: "운동기구 위에서 힘내는 신부" },
+      { src: "/images/daily/19.jpg", alt: "양이 있는 초원에서 마주 안은 두 사람" },
+      { src: "/images/daily/20.jpg", alt: "양이 있는 초원에 나란히 선 두 사람" },
+      { src: "/images/daily/21.jpg", alt: "강가 노을을 배경으로 안은 두 사람" },
+      { src: "/images/daily/22.jpg", alt: "야자수가 보이는 창가에서 웃는 두 사람" },
+      { src: "/images/daily/23.jpg", alt: "물가에서 어깨를 맞댄 두 사람" },
+      { src: "/images/daily/24.jpg", alt: "분홍색 지프차에 앉은 신랑" },
+      { src: "/images/daily/25.jpg", alt: "물 위에서 손으로 하트를 만든 두 사람" },
+      { src: "/images/daily/26.jpg", alt: "모래언덕에서 함께 뛰어오른 두 사람" },
+      { src: "/images/daily/27.jpg", alt: "모래언덕에서 마주 본 두 사람" },
+    ] satisfies GalleryImage[],
+  },
 
   /* ── 우리의 시간 (타임라인) ───────────────────────────── */
   timeline: {
@@ -351,9 +375,9 @@ export const wedding = {
       {
         date: "2024. 04",
         title: "함께 떠난 첫 해외여행",
-        body: "태국에서 보낸 닷새. 둘이서만 떠난 첫 여행이었어요.",
+        body: "베트남에서 보낸 닷새. 둘이서만 떠난 첫 여행이었어요.",
         highlight: "둘이서만 떠난",
-        image: "/images/daily/thailand.jpg",
+        image: "",
       },
     ] satisfies TimelineItem[],
   },
