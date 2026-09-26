@@ -98,9 +98,9 @@ npm run lint       # ESLint
 | 지도 검색용 상호 | `wedding.mapQuery` | **연세동문회관예식장** (화면에는 보이지 않음) |
 | 네이버지도 링크 | `wedding.naverMapUrl` | **https://naver.me/5xgOX94G** |
 | 홀 이름 | `wedding.hall` | 비어 있음 (입력하면 층 뒤에 표시) |
-| 신랑·신부 연락처 | `groom.phone`, `bride.phone` | **교체 필요** |
-| 혼주 연락처 | `contacts` | **교체 필요** |
-| 계좌번호 | `accounts` | **교체 필요** |
+| 신랑·신부 연락처 | `groom.phone`, `bride.phone` | 입력 완료 |
+| 혼주 연락처 | `contacts` | 입력 완료 (4명) |
+| 계좌번호 | `accounts` | 입력 완료 (6개) |
 | 교통 안내 | `location.transport` | **예식장 안내로 확인 필요** |
 | 생년월일 | `groom.birth`, `bride.birth` | **1990. 08. 13 / 1993. 06. 02** |
 | MBTI | `groom.mbti`, `bride.mbti` | ENFJ / ISFP |
@@ -386,9 +386,9 @@ src/
 
 ## 8. 배포 전 체크리스트
 
-- [ ] 신랑·신부 **연락처** 입력 (참석 여부 문자가 `groom.phone` 으로 갑니다)
-- [ ] 혼주 **연락처** 입력
-- [ ] **계좌번호** 입력
+- [x] 신랑·신부 **연락처** 입력
+- [x] 혼주 **연락처** 입력
+- [x] **계좌번호** 입력
 - [ ] **교통 안내** 확인
 - [ ] 비어 있는 **사진 자리** 채우기 (4번 표)
 - [ ] 홀 이름이 정해지면 `wedding.hall` 입력

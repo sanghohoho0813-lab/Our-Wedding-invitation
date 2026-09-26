@@ -104,8 +104,7 @@ export const wedding = {
     firstName: "상호",
     lastName: "김",
     englishName: "Sangho",
-    /** TODO: 실제 번호로 교체. placeholder 인 동안에는 전화·문자 버튼이 나오지 않습니다. */
-    phone: "010-0000-0000",
+    phone: "010-9239-2430",
     /** COUPLE 섹션에 표시할 생년월일 — 비우면("") 표시되지 않습니다. */
     birth: "1990. 08. 13",
     mbti: "ENFJ",
@@ -136,8 +135,7 @@ export const wedding = {
     firstName: "지윤",
     lastName: "창",
     englishName: "Jiyoon",
-    /** TODO: 실제 번호로 교체. placeholder 인 동안에는 전화·문자 버튼이 나오지 않습니다. */
-    phone: "010-0000-0000",
+    phone: "010-8235-7641",
     birth: "1993. 06. 02",
     mbti: "ISFP",
     likes: {
@@ -571,7 +569,6 @@ export const wedding = {
   },
 
   /* ── 마음 전하실 곳 ───────────────────────────────────── */
-  /** TODO: 실제 계좌번호로 교체 */
   accounts: {
     heading: "마음 전하실 곳",
     body: [
@@ -583,14 +580,14 @@ export const wedding = {
       "따뜻한 마음에 깊이 감사드립니다.",
     ],
     groom: [
-      { bank: "은행명", holder: "김상호", number: "000000-00-000000", relation: "신랑" },
-      { bank: "은행명", holder: "김영훈", number: "000-000-000000", relation: "아버지" },
-      { bank: "은행명", holder: "원정연", number: "000-0000-0000-00", relation: "어머니" },
+      { bank: "신한은행", holder: "김상호", number: "110-469-914282", relation: "신랑" },
+      { bank: "우리은행", holder: "김영훈", number: "1002-337-726797", relation: "아버지" },
+      { bank: "국민은행", holder: "원정연", number: "417202-01-290077", relation: "어머니" },
     ] satisfies Account[],
     bride: [
-      { bank: "은행명", holder: "창지윤", number: "0000-000-000000", relation: "신부" },
-      { bank: "은행명", holder: "창지환", number: "000-000000-000", relation: "아버지" },
-      { bank: "은행명", holder: "유병연", number: "0000-00-0000000", relation: "어머니" },
+      { bank: "신한은행", holder: "창지윤", number: "110-371-714600", relation: "신부" },
+      { bank: "신한은행", holder: "창지환", number: "110-311-576032", relation: "아버지" },
+      { bank: "우리은행", holder: "유병연", number: "595-141935-02-001", relation: "어머니" },
     ] satisfies Account[],
   },
 
@@ -609,12 +606,12 @@ export const wedding = {
   /* ── 혼주 연락처 ──────────────────────────────────────── */
   contacts: {
     groom: [
-      { role: "신랑 아버지", name: "김영훈", phone: "010-0000-0000" },
-      { role: "신랑 어머니", name: "원정연", phone: "010-0000-0000" },
+      { role: "신랑 아버지", name: "김영훈", phone: "010-5267-3640" },
+      { role: "신랑 어머니", name: "원정연", phone: "010-9474-9520" },
     ] satisfies ContactPerson[],
     bride: [
-      { role: "신부 아버지", name: "창지환", phone: "010-0000-0000" },
-      { role: "신부 어머니", name: "유병연", phone: "010-0000-0000" },
+      { role: "신부 아버지", name: "창지환", phone: "010-4749-7641" },
+      { role: "신부 어머니", name: "유병연", phone: "010-8763-7641" },
     ] satisfies ContactPerson[],
   },
 

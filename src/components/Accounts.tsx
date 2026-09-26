@@ -17,7 +17,8 @@ function AccountRow({ account }: { account: Account }) {
   const ready = !isPlaceholderAccount(account);
 
   const handleCopy = async () => {
-    const ok = await copyText(account.number.replace(/\s/g, ""));
+    // 은행 앱에 그대로 붙여넣을 수 있도록 숫자만 복사한다.
+    const ok = await copyText(account.number.replace(/\D/g, ""));
     showToast(ok ? "계좌번호가 복사되었습니다." : "복사에 실패했습니다.");
   };
 
