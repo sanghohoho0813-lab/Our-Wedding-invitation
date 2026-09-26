@@ -4,6 +4,23 @@ import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { wedding, type GalleryImage, type TimelineItem } from "@/config/wedding";
+import { parseWeddingDate } from "@/lib/date";
+
+/**
+ * 본문의 {days} 를 "연인이 된 날 → 예식일" 날수로 바꾼다.
+ * 날짜를 고치면 숫자도 따라 바뀌므로 직접 세어 넣지 않아도 된다.
+ */
+function fillTokens(text: string | undefined) {
+  if (!text || !text.includes("{days}")) return text;
+
+  const from = wedding.togetherTime.startDate;
+  if (!from) return text.replace(/\{days\}/g, "");
+
+  const start = parseWeddingDate(from);
+  const end = parseWeddingDate(wedding.wedding.date);
+  const days = Math.round((end.getTime() - start.getTime()) / 86_400_000);
+  return text.replace(/\{days\}/g, days.toLocaleString("ko-KR"));
+}
 
 /** 본문 안의 강조 문구만 형광펜 처리한다. */
 function Body({ text, highlight }: { text: string; highlight?: string }) {
@@ -83,7 +100,10 @@ function TimelineList({
                   <div className={`${photoLeft ? "order-2" : "order-1"} text-center`}>
                     <p className="text-[14.5px] tracking-[-0.01em] text-ink">{item.title}</p>
                     <p className="mt-2.5 text-[13.5px] leading-[1.75] text-muted">
-                      <Body text={item.body} highlight={item.highlight} />
+                      <Body
+                        text={fillTokens(item.body) ?? item.body}
+                        highlight={fillTokens(item.highlight)}
+                      />
                     </p>
                     {item.draft && <DraftMark status={item.draft} className="mt-2.5" />}
                   </div>
