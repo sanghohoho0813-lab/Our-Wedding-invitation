@@ -12,19 +12,16 @@ import { type GalleryImage } from "@/config/wedding";
 /** 처음에 보여줄 장수 (3열 × 3줄) */
 const INITIAL = 9;
 
-type Props = {
-  id: string;
-  title: string;
-  body?: readonly string[];
+type BodyProps = {
   images: readonly GalleryImage[];
+  className?: string;
 };
 
 /**
- * 3열 그리드 사진 묶음.
- * 사진을 누르면 전체화면 뷰어가 열리고, 거기서는 잘리지 않은 원본 프레임을 본다.
- * 웨딩 화보(갤러리)와 일상 사진이 같은 모양을 쓰도록 공통으로 뺐다.
+ * 3열 그리드 + 더보기 + 전체화면 뷰어.
+ * 섹션 껍데기 없이 본체만 필요할 때(타임라인 중간 등) 이것만 쓴다.
  */
-export function PhotoGrid({ id, title, body, images }: Props) {
+export function PhotoGridBody({ images, className = "mt-9" }: BodyProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [expanded, setExpanded] = useState(false);
 
@@ -33,10 +30,8 @@ export function PhotoGrid({ id, title, body, images }: Props) {
   const visible = expanded ? images : images.slice(0, INITIAL);
 
   return (
-    <section className="edge pb-24" aria-labelledby={`${id}-heading`}>
-      <SectionHeading id={`${id}-heading`} title={title} body={body} />
-
-      <Reveal className="mt-9">
+    <>
+      <Reveal className={className}>
         <ul className="grid grid-cols-3 gap-1.5">
           {visible.map((image, index) => (
             <li key={image.src}>
@@ -80,6 +75,25 @@ export function PhotoGrid({ id, title, body, images }: Props) {
       {openIndex !== null && (
         <GalleryViewer images={images} startIndex={openIndex} onClose={() => setOpenIndex(null)} />
       )}
+    </>
+  );
+}
+
+type Props = {
+  id: string;
+  title: string;
+  body?: readonly string[];
+  images: readonly GalleryImage[];
+};
+
+/** 제목이 있는 사진 섹션. */
+export function PhotoGrid({ id, title, body, images }: Props) {
+  if (images.length === 0) return null;
+
+  return (
+    <section className="edge pb-24" aria-labelledby={`${id}-heading`}>
+      <SectionHeading id={`${id}-heading`} title={title} body={body} />
+      <PhotoGridBody images={images} />
     </section>
   );
 }

@@ -82,6 +82,7 @@ function ProfileBox() {
   if (groom.birth || bride.birth) {
     rows.push({
       key: "birth",
+      label: "생년월일",
       left: { text: groom.birth },
       right: { text: bride.birth },
     });
@@ -89,6 +90,7 @@ function ProfileBox() {
   if (groom.mbti || bride.mbti) {
     rows.push({
       key: "mbti",
+      label: "MBTI",
       left: { text: groom.mbti },
       right: { text: bride.mbti },
     });
