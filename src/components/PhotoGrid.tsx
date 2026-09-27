@@ -65,7 +65,7 @@ export function PhotoGridBody({ images, className = "mt-9" }: BodyProps) {
             type="button"
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
-            className="btn-outline active:bg-paper-deep"
+            className="btn-outline glow-hint active:bg-paper-deep"
           >
             {expanded ? "접기" : `사진 더보기 (${images.length - INITIAL}장)`}
           </button>

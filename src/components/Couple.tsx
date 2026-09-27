@@ -154,7 +154,7 @@ function HostContacts() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="btn-outline active:bg-paper-deep"
+        className="btn-outline glow-hint active:bg-paper-deep"
       >
         혼주에게 연락하기
       </button>

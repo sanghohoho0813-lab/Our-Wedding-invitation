@@ -52,8 +52,9 @@ function AccountGroup({ title, accounts }: { title: string; accounts: readonly A
   const [open, setOpen] = useState(false);
   if (accounts.length === 0) return null;
 
+  // 빛은 바깥 카드에 준다. 안쪽 버튼에 주면 overflow-hidden 에 잘린다.
   return (
-    <div className="card overflow-hidden">
+    <div className={`card overflow-hidden ${open ? "" : "glow-hint"}`}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

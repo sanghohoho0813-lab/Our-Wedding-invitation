@@ -6,16 +6,16 @@
   --color-ink: #2b2925;
   /* 본문 대비(AA)를 만족하도록 조정한 값 */
   --color-muted: #5f5c56;
-  --color-faint: #75706a;
+  --color-faint: #726d67;
   --color-line: #e9e5dd;
   /* 레퍼런스의 베이지 포인트 — 제목 / 버튼 / 강조 */
   --color-accent: #a68e63;
   --color-accent-soft: #b9a684;
   --color-accent-pale: #f3ede2;
-  /* 작은 글씨에 accent 색을 쓸 때 — 대비 4.5:1 을 넘기는 진한 베이지 */
-  --color-accent-deep: #886b4a;
-  /* 본문 배경보다 아주 조금만 진한 아이보리 — 정보를 묶는 박스에 쓴다 */
-  --color-paper-soft: #f7f4ee;
+  /* 작은 글씨에 accent 색을 쓸 때 — 띠 위에서도 대비 4.5:1 을 넘기는 진한 베이지 */
+  --color-accent-deep: #846747;
+  /* 본문 배경보다 한 톤 진한 아이보리 — 섹션 띠와 정보 박스에 쓴다 */
+  --color-paper-soft: #f4f0e7;
 
   --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Malgun Gothic", sans-serif;
@@ -311,4 +311,39 @@ img {
 
 main > section:has(+ .band) {
   padding-bottom: 0;
+}
+
+/**
+ * 펼쳐지는 버튼에 주는 아주 은은한 신호.
+ *
+ * 눌러야 내용이 보이는 버튼(인터뷰 · 혼주 연락처 · 계좌 · 사진 더보기 등)은
+ * 그냥 두면 눌러볼 생각을 못 한다. 3초에 한 번, 아주 약하게 빛을 준다.
+ * 이미 펼쳐진 뒤([aria-expanded="true"])에는 멈춘다.
+ */
+@keyframes glow-hint {
+  0%,
+  68%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(132, 103, 71, 0);
+  }
+  80% {
+    box-shadow: 0 0 16px 3px rgba(132, 103, 71, 0.42);
+  }
+  90% {
+    box-shadow: 0 0 11px 1px rgba(132, 103, 71, 0.16);
+  }
+}
+
+@utility glow-hint {
+  animation: glow-hint 3s ease-in-out infinite;
+}
+
+.glow-hint[aria-expanded="true"] {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-hint {
+    animation: none;
+  }
 }

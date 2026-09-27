@@ -28,7 +28,7 @@ export function Interview() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="btn-solid active:btn-solid-active"
+          className="btn-solid glow-hint active:btn-solid-active"
         >
           {interview.buttonLabel}
         </button>

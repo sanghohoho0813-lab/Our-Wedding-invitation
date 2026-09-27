@@ -76,7 +76,7 @@ export function Rsvp() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="btn-solid w-full max-w-[320px] active:btn-solid-active"
+          className="btn-solid glow-hint w-full max-w-[320px] active:btn-solid-active"
         >
           {rsvp.buttonLabel}
         </button>

@@ -31,7 +31,7 @@ export function AddToCalendar() {
       <button
         type="button"
         onClick={handleClick}
-        className="btn-outline inline-flex items-center gap-2 active:bg-paper-deep"
+        className="btn-outline glow-hint inline-flex items-center gap-2 active:bg-paper-deep"
       >
         <CalendarPlus size={15} strokeWidth={1.4} aria-hidden="true" />
         캘린더에 추가

@@ -194,8 +194,8 @@ export const wedding = {
   /* ── 초대의 글 ────────────────────────────────────────── */
   invitation: {
     heading: "저희 결혼합니다",
-    /** 확정되면 draft 줄만 지우세요. */
-    draft: "example" as DraftStatus | undefined,
+    /** 아직 다듬는 중이라면 draft: "example" 을 다시 넣으면 [예시] 가 표시됩니다. */
+    draft: undefined as DraftStatus | undefined,
     body: [
       "서로의 가장 편한 사람이 되어",
       "평범한 날들을 오래 함께",
