@@ -50,8 +50,8 @@ export function Hero() {
       />
 
       {/* 필기체 제목 */}
-      <div className="absolute inset-x-0 top-0 edge pt-[max(env(safe-area-inset-top),46px)]">
-        <h1 className="hero-title script text-center text-white">
+      <div className="absolute inset-x-0 top-0 edge">
+        <h1 className="hero-title script pt-[calc(env(safe-area-inset-top,0px)+40px)] text-center text-white">
           {hero.title.map((line, i) => (
             <span
               key={i}
@@ -80,7 +80,7 @@ export function Hero() {
           {hero.caption.length > 0 && (
             <>
               <div className="mx-auto mt-6 h-px w-8 bg-white/35" aria-hidden="true" />
-              <div className="latin mt-6 text-[14px] leading-[1.65] tracking-[0.01em] text-white/80">
+              <div className="hero-caption latin mt-6 text-[14px] leading-[1.65] tracking-[0.01em] text-white/80">
                 {hero.caption.map((line, i) => (
                   <p key={i}>{line}</p>
                 ))}

@@ -191,7 +191,7 @@ export const wedding = {
      * 값을 낮추면 잘리는 창이 위로 올라가 두 사람이 화면 아래쪽으로 내려온다.
      * 첫 화면은 위아래에 글자가 있으므로 두 사람을 가운데로 내린다.
      */
-    imagePosition: "50% 26%",
+    imagePosition: "50% 6%",
     /** 사진 아래쪽 영문 문구 */
     caption: ["Forever begins with a single step,", "And love guides us every step of the way."],
   },
