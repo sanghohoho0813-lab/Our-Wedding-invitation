@@ -1,5 +1,6 @@
 "use client";
 
+import { ClipboardCheck } from "lucide-react";
 import { useState } from "react";
 
 import { Modal } from "@/components/Modal";
@@ -70,7 +71,7 @@ export function Rsvp() {
 
   return (
     <section className="edge pb-24" aria-labelledby="rsvp-heading">
-      <SectionHeading id="rsvp-heading" title={rsvp.heading} body={rsvp.body} />
+      <SectionHeading id="rsvp-heading" icon={ClipboardCheck} title={rsvp.heading} body={rsvp.body} />
 
       <Reveal delay={0.06} className="mt-9 text-center">
         <button

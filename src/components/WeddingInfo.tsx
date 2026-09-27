@@ -1,3 +1,4 @@
+import { CalendarHeart } from "lucide-react";
 import { AddToCalendar } from "@/components/AddToCalendar";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
@@ -16,7 +17,7 @@ export function WeddingInfo() {
 
   return (
     <section className="edge pb-24" aria-labelledby="weddinginfo-heading">
-      <SectionHeading id="weddinginfo-heading" title="예식 안내" />
+      <SectionHeading id="weddinginfo-heading" icon={CalendarHeart} title="예식 안내" />
 
       <Reveal className="mt-8 text-center">
         <p className="text-[16px] leading-relaxed tracking-[-0.01em] text-[#4a473f]">

@@ -16,6 +16,11 @@
   --color-accent-deep: #846747;
   /* 본문 배경보다 한 톤 진한 아이보리 — 섹션 띠와 정보 박스에 쓴다 */
   --color-paper-soft: #f4f0e7;
+  /* 인터뷰에서 신랑 · 신부를 한눈에 구분하는 아주 옅은 두 톤 */
+  --color-tint-groom: #f4ece0;
+  --color-tint-groom-ink: #7a5f42;
+  --color-tint-bride: #f9edea;
+  --color-tint-bride-ink: #8d5a54;
 
   --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Malgun Gothic", sans-serif;

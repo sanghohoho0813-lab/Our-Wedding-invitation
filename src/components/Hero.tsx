@@ -50,12 +50,12 @@ export function Hero() {
       />
 
       {/* 필기체 제목 */}
-      <div className="absolute inset-x-0 top-0 edge pt-[max(env(safe-area-inset-top),58px)]">
+      <div className="absolute inset-x-0 top-0 edge pt-[max(env(safe-area-inset-top),46px)]">
         <h1 className="hero-title script text-center text-white">
           {hero.title.map((line, i) => (
             <span
               key={i}
-              className="block text-[46px] leading-[1.06]"
+              className="block text-[42px] leading-[1.05]"
               style={{ marginLeft: i === 1 ? "0.6em" : i === 2 ? "1.6em" : 0 }}
             >
               {line}
@@ -66,7 +66,7 @@ export function Hero() {
 
       {/* 날짜 + 문구 */}
       <div className="absolute inset-x-0 bottom-0 edge pb-[max(env(safe-area-inset-bottom),18px)]">
-        <div className="hero-copy pb-12 text-center text-white">
+        <div className="hero-copy pb-16 text-center text-white">
           {/* 예식 일시·장소 — 첫 화면에서 바로 확인할 수 있게 */}
           <p className="text-[16.5px] leading-snug tracking-[0.01em] text-white">
             {formatDotted(date)}

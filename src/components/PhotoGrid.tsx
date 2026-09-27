@@ -5,7 +5,6 @@ import { useState } from "react";
 
 import { GalleryViewer } from "@/components/GalleryViewer";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/SectionHeading";
 import { blurFor } from "@/config/blur";
 import { type GalleryImage } from "@/config/wedding";
 
@@ -76,24 +75,5 @@ export function PhotoGridBody({ images, className = "mt-9" }: BodyProps) {
         <GalleryViewer images={images} startIndex={openIndex} onClose={() => setOpenIndex(null)} />
       )}
     </>
-  );
-}
-
-type Props = {
-  id: string;
-  title: string;
-  body?: readonly string[];
-  images: readonly GalleryImage[];
-};
-
-/** 제목이 있는 사진 섹션. */
-export function PhotoGrid({ id, title, body, images }: Props) {
-  if (images.length === 0) return null;
-
-  return (
-    <section className="edge pb-24" aria-labelledby={`${id}-heading`}>
-      <SectionHeading id={`${id}-heading`} title={title} body={body} />
-      <PhotoGridBody images={images} />
-    </section>
   );
 }

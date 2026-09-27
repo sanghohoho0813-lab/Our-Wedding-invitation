@@ -41,7 +41,7 @@ npm run lint       # ESLint
 09 우리의 시간        첫 만남 · 연인 → 일상 사진 27장 → 결혼 (한 흐름)
 09-1 서로에게         신랑·신부가 서로에게 남기는 짧은 편지
 10 게스트스냅         하객 참여 안내 (업로드는 예식 당일 오픈)
-11 안내 사항          주차 / 식사 / 셔틀 / 화환 탭
+11 안내 사항          주차 / 식사 / 셔틀 탭
 12 오시는 길          지도 + 지도앱 버튼 + 교통
 13 참석 여부 전달      RSVP 폼
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
@@ -166,7 +166,7 @@ PHOTO_SRC=/원본이/있는/폴더 node scripts/build-photos.mjs
 | 자리 | config 위치 | 권장 비율 |
 | --- | --- | --- |
 | 주차안내 | `infoTabs.items[].image` | 4:3 |
-| 지도 | `location.mapImage` | 이미 생성됨 — `node scripts/build-map.mjs` (OpenStreetMap, API 키 불필요). 예식장 약도로 바꾸려면 그 파일 경로를 넣으세요 |
+| 지도 | `location.mapImage` | `node scripts/build-map.mjs` 로 만든 OpenStreetMap 이미지 (API 키 불필요) |
 | 타임라인 사진 | `timeline.items[].image` | 1:1 (비워두면 날짜만 표시) |
 
 파일은 `public/images/` 아래에 넣고 `/images/파일명.jpg` 형태로 경로를 적으면 됩니다.
@@ -346,6 +346,18 @@ src/
 위쪽 여백은 띠가 직접 갖고, 바로 앞 섹션의 아래 여백은 CSS 가 알아서 지우므로
 간격은 그대로 유지됩니다. (띠가 연달아 붙지 않도록 한 칸씩 띄우세요)
 
+### 섹션 제목 아이콘
+
+각 섹션 제목 위에 선 아이콘을 하나씩 얹었습니다.
+이모지 대신 `lucide-react` 의 선 아이콘을 베이지(`accent-soft`)로 써서
+색이 튀지 않게 했습니다. `SectionHeading` 의 `icon` 으로 바꿀 수 있습니다.
+
+### 인터뷰의 두 톤
+
+답변이 이어지면 누가 한 말인지 놓치기 쉬워서,
+신랑은 옅은 베이지, 신부는 옅은 블러시 블록에 담았습니다.
+색은 `--color-tint-groom` / `--color-tint-bride` 네 줄로 조절합니다.
+
 ### 펼쳐지는 버튼의 빛
 
 눌러야 내용이 보이는 버튼은 그냥 두면 눌러볼 생각을 못 합니다.
@@ -370,6 +382,14 @@ src/
 
 - 제목: `Noto Serif KR` / 본문: `Noto Sans KR` / 영문: `Cormorant Garamond` / HERO 필기체: `Parisienne`
 - 필기체를 바꾸려면 `layout.tsx` 의 `Parisienne` 하나만 교체하면 됩니다.
+
+### 지도에 대하여
+
+지금 지도는 OpenStreetMap 타일을 이어 붙여 만든 **이미지**입니다. API 키가 필요 없습니다.
+네이버지도 · 카카오맵 버튼은 실제 앱/웹으로 바로 연결됩니다.
+
+카카오맵을 **화면 안에 그대로 띄우려면** 카카오 JavaScript 키와
+카카오 지도 API 사용 설정이 필요합니다. 키가 준비되면 바꿔 넣을 수 있습니다.
 
 ### 성능 · 보안 메모
 

@@ -71,12 +71,13 @@ const stitched = await sharp({
   .png()
   .toBuffer();
 
-/* ── 청첩장 톤에 맞게 색을 눌러준다 ──────────────────────── */
+/* ── 보기 좋게 다듬는다 ──────────────────────────────────── */
 const base = await sharp(stitched)
   .extract({ left: left - tileX0 * TILE, top: top - tileY0 * TILE, width: MAP.width, height: MAP.height })
-  // 원본 OSM 타일은 색이 강해서 아이보리 톤과 부딪힌다. 채도를 낮추고 살짝 따뜻하게.
-  .modulate({ saturation: 0.3, brightness: 1.04 })
-  .tint("#fbf8f2")
+  // 지도는 지도답게 보여야 한다. 채도를 살짝만 눌러 청첩장 톤과 어울리게 하고
+  // 밝기를 올려 또렷하게 만든다. (예전처럼 전체를 아이보리로 덮지 않는다)
+  .modulate({ saturation: 0.82, brightness: 1.07 })
+  .linear(1.06, -6)
   .toBuffer();
 
 /* ── 예식장 표시 ─────────────────────────────────────────
@@ -86,20 +87,20 @@ const cx = MAP.width / 2;
 const cy = MAP.height / 2;
 const overlay = Buffer.from(`
 <svg width="${MAP.width}" height="${MAP.height}" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="${cx}" cy="${cy}" r="40" fill="#8c6f4e" opacity="0.14" />
+  <circle cx="${cx}" cy="${cy}" r="42" fill="#c0392b" opacity="0.13" />
   <!-- 물방울 모양 핀 -->
   <path d="M ${cx} ${cy + 6}
            c -13 -18 -20 -27 -20 -37
            a 20 20 0 1 1 40 0
            c 0 10 -7 19 -20 37 z"
-        fill="#8c6f4e" stroke="#ffffff" stroke-width="3.5" />
+        fill="#d64541" stroke="#ffffff" stroke-width="3.5" />
   <circle cx="${cx}" cy="${cy - 31}" r="7" fill="#ffffff" />
   <g>
-    <rect x="${cx - 120}" y="${cy + 18}" width="240" height="42" rx="21"
-          fill="#ffffff" opacity="0.94" />
+    <rect x="${cx - 122}" y="${cy + 18}" width="244" height="44" rx="22"
+          fill="#ffffff" opacity="0.96" stroke="#e0dbd2" stroke-width="1" />
     <text x="${cx}" y="${cy + 45}" text-anchor="middle"
           font-family="Apple SD Gothic Neo, Malgun Gothic, Noto Sans KR, sans-serif"
-          font-size="21" fill="#3d3a34">${MAP.label}</text>
+          font-size="21" font-weight="600" fill="#2b2925">${MAP.label}</text>
   </g>
 </svg>`);
 

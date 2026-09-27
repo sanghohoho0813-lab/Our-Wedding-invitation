@@ -100,7 +100,7 @@ export function EntryGate() {
               priority
               sizes="(max-width: 520px) 100vw, 520px"
               className="object-cover"
-              style={{ objectPosition: hero.imagePosition }}
+              style={{ objectPosition: entry.imagePosition }}
               aria-hidden="true"
             />
             <div

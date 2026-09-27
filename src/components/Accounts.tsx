@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Gift } from "lucide-react";
 import { useState } from "react";
 
 import { Reveal } from "@/components/Reveal";
@@ -98,7 +98,7 @@ export function Accounts() {
 
   return (
     <section className="edge band pb-24" aria-labelledby="accounts-heading">
-      <SectionHeading id="accounts-heading" title={heading} body={body} />
+      <SectionHeading id="accounts-heading" icon={Gift} title={heading} body={body} />
 
       <Reveal delay={0.06}>
         <div className="mt-9 space-y-2.5">

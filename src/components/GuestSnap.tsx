@@ -1,5 +1,7 @@
 "use client";
 
+import { Camera } from "lucide-react";
+
 import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
@@ -24,6 +26,7 @@ export function GuestSnap() {
   return (
     <section className="edge band pb-24" aria-labelledby="guestsnap-heading">
       <Reveal className="text-center">
+        <Camera size={19} strokeWidth={1.4} aria-hidden="true" className="mx-auto mb-3 text-accent-soft" />
         <h2 id="guestsnap-heading" className="section-title">
           {guestSnap.heading}
         </h2>

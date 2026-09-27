@@ -1,3 +1,4 @@
+import { Heart } from "lucide-react";
 import { DraftMark } from "@/components/DraftMark";
 import { PhotoGridBody } from "@/components/PhotoGrid";
 import { PhotoSlot } from "@/components/PhotoSlot";
@@ -138,7 +139,7 @@ export function Timeline() {
 
   return (
     <section className="edge band pb-24" aria-labelledby="timeline-heading">
-      <SectionHeading id="timeline-heading" title={timeline.heading} />
+      <SectionHeading id="timeline-heading" icon={Heart} title={timeline.heading} />
 
       <TimelineList items={before} startIndex={0} className="mt-12" />
 

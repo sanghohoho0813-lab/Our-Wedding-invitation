@@ -1,5 +1,6 @@
 "use client";
 
+import { MessagesSquare } from "lucide-react";
 import { useState } from "react";
 
 import { Modal } from "@/components/Modal";
@@ -7,11 +8,15 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { wedding, type InterviewAnswer } from "@/config/wedding";
 
-const WHO_LABEL: Record<InterviewAnswer["who"], string> = {
-  groom: "신랑",
-  bride: "신부",
-  both: "",
-};
+/**
+ * 답변이 이어지면 누가 한 말인지 놓치기 쉬워서,
+ * 신랑 · 신부에게 아주 옅은 두 톤을 나눠 준다. (톤은 globals.css)
+ */
+const WHO = {
+  groom: { label: "신랑", box: "bg-tint-groom", ink: "text-tint-groom-ink" },
+  bride: { label: "신부", box: "bg-tint-bride", ink: "text-tint-bride-ink" },
+  both: { label: "", box: "", ink: "" },
+} satisfies Record<InterviewAnswer["who"], { label: string; box: string; ink: string }>;
 
 /** 웨딩 인터뷰 — 버튼을 누르면 질문·답변이 모달로 열린다. */
 export function Interview() {
@@ -22,7 +27,7 @@ export function Interview() {
 
   return (
     <section className="edge pb-24" aria-labelledby="interview-heading">
-      <SectionHeading id="interview-heading" title={interview.heading} body={interview.intro} />
+      <SectionHeading id="interview-heading" icon={MessagesSquare} title={interview.heading} body={interview.intro} />
 
       <Reveal delay={0.06} className="mt-8 text-center">
         <button
@@ -43,18 +48,29 @@ export function Interview() {
               </dt>
               {item.answers
                 .filter((answer) => answer.text)
-                .map((answer, j) => (
-                  <dd key={j} className="mt-3">
-                    {WHO_LABEL[answer.who] && (
-                      <span className="block text-[12px] tracking-[0.02em] text-faint">
-                        {WHO_LABEL[answer.who]}
+                .map((answer, j) => {
+                  const who = WHO[answer.who];
+
+                  return (
+                    <dd
+                      key={j}
+                      className={`mt-3 rounded-[10px] ${who.box} ${who.box ? "px-4 py-3.5" : ""}`}
+                    >
+                      {who.label && (
+                        <span className={`block text-[12px] tracking-[0.02em] ${who.ink}`}>
+                          {who.label}
+                        </span>
+                      )}
+                      <span
+                        className={`block text-[14.5px] leading-[1.9] tracking-[-0.01em] text-[#4a473f] ${
+                          who.label ? "mt-1" : ""
+                        }`}
+                      >
+                        {answer.text}
                       </span>
-                    )}
-                    <span className="mt-1 block text-[14.5px] leading-[1.9] tracking-[-0.01em] text-[#4a473f]">
-                      {answer.text}
-                    </span>
-                  </dd>
-                ))}
+                    </dd>
+                  );
+                })}
             </div>
           ))}
         </dl>
