@@ -96,7 +96,7 @@ export function Accounts() {
   const { heading, body, groom, bride } = wedding.accounts;
 
   return (
-    <section className="edge pb-24" aria-labelledby="accounts-heading">
+    <section className="edge band pb-24" aria-labelledby="accounts-heading">
       <SectionHeading id="accounts-heading" title={heading} body={body} />
 
       <Reveal delay={0.06}>

@@ -33,7 +33,7 @@ export function Location() {
   };
 
   return (
-    <section className="pb-24" aria-labelledby="location-heading">
+    <section className="band pb-24" aria-labelledby="location-heading">
       <div className="edge">
         <SectionHeading id="location-heading" title={wedding.location.heading} />
 

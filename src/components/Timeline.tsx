@@ -137,7 +137,7 @@ export function Timeline() {
   const showPhotos = photos.length > 0 && splitAt < items.length + 1;
 
   return (
-    <section className="edge pb-24" aria-labelledby="timeline-heading">
+    <section className="edge band pb-24" aria-labelledby="timeline-heading">
       <SectionHeading id="timeline-heading" title={timeline.heading} />
 
       <TimelineList items={before} startIndex={0} className="mt-12" />

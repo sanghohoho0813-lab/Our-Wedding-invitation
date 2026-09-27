@@ -22,7 +22,7 @@ export function GuestSnap() {
   if (!guestSnap.enabled) return null;
 
   return (
-    <section className="edge pb-24" aria-labelledby="guestsnap-heading">
+    <section className="edge band pb-24" aria-labelledby="guestsnap-heading">
       <Reveal className="text-center">
         <h2 id="guestsnap-heading" className="section-title">
           {guestSnap.heading}

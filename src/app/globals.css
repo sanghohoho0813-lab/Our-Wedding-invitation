@@ -169,7 +169,8 @@ img {
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--color-accent);
+  /* accent 는 이 크기에서 대비가 3:1 에 그친다. 한 단계 진한 쪽을 쓴다. */
+  color: var(--color-accent-deep);
   line-height: 1.4;
 }
 
@@ -294,4 +295,20 @@ img {
   letter-spacing: 0.02em;
   white-space: nowrap;
   color: var(--color-muted);
+}
+
+/**
+ * 섹션 리듬.
+ *
+ * 중반 이후가 한 가지 아이보리로만 이어지면 색이 밋밋해 보인다.
+ * 한 섹션 건너 하나씩 아주 옅은 띠를 깔아 흐름을 만든다.
+ * (띠 위쪽 여백은 띠가 직접 갖고, 바로 앞 섹션의 아래 여백은 지운다)
+ */
+@utility band {
+  background: var(--color-paper-soft);
+  padding-top: 6rem;
+}
+
+main > section:has(+ .band) {
+  padding-bottom: 0;
 }
