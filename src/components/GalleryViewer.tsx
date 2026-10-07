@@ -276,7 +276,7 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
             <ChevronLeft size={20} strokeWidth={1.3} aria-hidden="true" />
           </button>
 
-          <p className="latin min-w-[64px] text-center text-[12px] tracking-[0.24em] text-white/70">
+          <p className="latin min-w-[64px] text-center text-[length:calc(12px*var(--fs))] tracking-[0.24em] text-white/70">
             {String(index + 1).padStart(2, "0")}
             <span className="mx-1 text-white/30">/</span>
             {String(images.length).padStart(2, "0")}
@@ -293,7 +293,7 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
           </button>
         </div>
 
-        <p className="pb-1 text-center text-[11px] tracking-[0.02em] text-white/35">
+        <p className="pb-1 text-center text-[length:calc(11px*var(--fs))] tracking-[0.02em] text-white/35">
           {zoomed ? "두 번 탭하면 원래 크기로" : "두 번 탭하거나 두 손가락으로 확대할 수 있어요"}
         </p>
       </div>

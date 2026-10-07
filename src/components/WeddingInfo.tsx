@@ -19,10 +19,10 @@ export function WeddingInfo() {
       <SectionHeading id="weddinginfo-heading" icon="info" title="예식 안내" />
 
       <Reveal className="mt-8 text-center">
-        <p className="text-[16px] leading-relaxed tracking-[-0.01em] text-[#4a473f]">
+        <p className="text-[length:calc(16px*var(--fs))] leading-relaxed tracking-[-0.01em] text-[#4a473f]">
           {year}년 {month}월 {day}일 {weekdayKo(date)} {wedding.wedding.timeLabel}
         </p>
-        <p className="mt-1.5 text-[16px] leading-relaxed tracking-[-0.01em] text-[#4a473f]">
+        <p className="mt-1.5 text-[length:calc(16px*var(--fs))] leading-relaxed tracking-[-0.01em] text-[#4a473f]">
           {venueLine()}
         </p>
       </Reveal>
@@ -33,13 +33,13 @@ export function WeddingInfo() {
 
       {/* 달력 */}
       <Reveal delay={0.08}>
-        <p className="serif mt-12 text-center text-[17px] text-accent">{getMonth(date)}월</p>
+        <p className="serif mt-12 text-center text-[length:calc(17px*var(--fs))] text-accent">{getMonth(date)}월</p>
 
         <div className="mx-auto mt-6 grid max-w-[320px] grid-cols-7 text-center">
           {WEEKDAY_KO_SHORT.map((label, i) => (
             <span
               key={i}
-              className={`pb-3 text-[13px] ${i === 0 ? "text-accent-soft" : "text-faint"}`}
+              className={`pb-3 text-[length:calc(13px*var(--fs))] ${i === 0 ? "text-accent-soft" : "text-faint"}`}
               aria-hidden="true"
             >
               {label}
@@ -52,7 +52,7 @@ export function WeddingInfo() {
             ) : (
               <span
                 key={i}
-                className={`flex h-10 items-center justify-center text-[14px] ${
+                className={`flex h-10 items-center justify-center text-[length:calc(14px*var(--fs))] ${
                   cell.isWedding ? "text-white" : "text-muted"
                 }`}
               >

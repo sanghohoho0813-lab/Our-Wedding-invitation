@@ -43,7 +43,7 @@ export function PhotoSlot({
         aria-label={`${alt} — 준비 중`}
       >
         <ImageIcon size={20} strokeWidth={1.2} className="text-faint/70" aria-hidden="true" />
-        <p className="px-6 text-center text-[12.5px] leading-relaxed text-faint">사진 준비 중입니다</p>
+        <p className="px-6 text-center text-[length:calc(12.5px*var(--fs))] leading-relaxed text-faint">사진 준비 중입니다</p>
       </div>
     );
   }

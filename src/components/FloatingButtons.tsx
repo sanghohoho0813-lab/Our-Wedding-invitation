@@ -5,6 +5,7 @@ import { ArrowUp, Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { FontSizeButton } from "@/components/FontSizeButton";
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
 import { copyText } from "@/lib/clipboard";
@@ -62,7 +63,7 @@ export function FloatingButtons() {
           scrollRoot,
         )}
       <div
-        className="pointer-events-none fixed z-[70] flex flex-col gap-2.5"
+        className="pointer-events-none fixed z-[70] flex flex-col items-end gap-2.5"
         style={{
           bottom: "calc(env(safe-area-inset-bottom) + 18px)",
           right: "max(16px, calc(50vw - 260px + 16px))",
@@ -85,14 +86,18 @@ export function FloatingButtons() {
           )}
         </AnimatePresence>
 
-        <button
-          type="button"
-          onClick={handleShare}
-          aria-label="청첩장 공유하기"
-          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/95 text-muted active:bg-paper-deep"
-        >
-          <Share2 size={16} strokeWidth={1.5} aria-hidden="true" />
-        </button>
+        {/* 공유 버튼 바로 왼쪽에 글자 크기 버튼 */}
+        <div className="flex items-center gap-2">
+          <FontSizeButton />
+          <button
+            type="button"
+            onClick={handleShare}
+            aria-label="청첩장 공유하기"
+            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/95 text-muted active:bg-paper-deep"
+          >
+            <Share2 size={16} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </>
   );

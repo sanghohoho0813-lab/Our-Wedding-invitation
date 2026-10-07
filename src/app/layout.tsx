@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/Toast";
 import { ViewportHeight } from "@/components/ViewportHeight";
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
+import { FONT_SIZE_BOOT } from "@/lib/fontSize";
 import { SCROLL_ROOT_ID } from "@/lib/scroll";
 import { venueLine } from "@/lib/venue";
 
@@ -126,9 +127,15 @@ function StructuredData() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${notoSansKr.variable} ${notoSerifKr.variable} ${cormorant.variable} ${script.variable}`}>
+    <html
+      lang="ko"
+      // 글자 크기 스크립트가 React 보다 먼저 data-fs 를 붙이므로 그 차이는 경고하지 않는다.
+      suppressHydrationWarning
+      className={`${notoSansKr.variable} ${notoSerifKr.variable} ${cormorant.variable} ${script.variable}`}>
       <head>
         <StructuredData />
+        {/* 저장해 둔 글자 크기를 첫 화면이 그려지기 전에 적용한다 */}
+        <script dangerouslySetInnerHTML={{ __html: FONT_SIZE_BOOT }} />
         {/* 자바스크립트가 꺼져 있으면 입장 화면은 눌러도 열리지 않으므로 아예 숨긴다. */}
         <noscript>
           <style>{`[data-entry-gate]{display:none !important}`}</style>

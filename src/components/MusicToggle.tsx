@@ -60,7 +60,7 @@ export function MusicToggle() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 6 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-none absolute right-11 whitespace-nowrap rounded-full border border-white/50 bg-white/90 px-2.5 py-1 text-[11px] tracking-[-0.01em] text-ink/80"
+            className="pointer-events-none absolute right-11 whitespace-nowrap rounded-full border border-white/50 bg-white/90 px-2.5 py-1 text-[length:calc(11px*var(--fs))] tracking-[-0.01em] text-ink/80"
             aria-hidden="true"
           >
             {hintText}

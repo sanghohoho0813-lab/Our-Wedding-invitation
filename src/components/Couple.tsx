@@ -37,7 +37,7 @@ function PersonHead({ label, person }: { label: string; person: Person }) {
         sizes="(max-width: 520px) 45vw, 236px"
       />
 
-      <p className="mt-5 text-[15px] tracking-[-0.01em] text-ink">
+      <p className="mt-5 text-[length:calc(15px*var(--fs))] tracking-[-0.01em] text-ink">
         {label} {person.name}
         {callable && (
           <a
@@ -60,11 +60,11 @@ function Cell({ line }: { line: IntroLine }) {
   return (
     <div className="min-w-0 text-center">
       {line.label && (
-        <span className="block text-[11.5px] leading-tight tracking-[0.02em] text-faint">
+        <span className="block text-[length:calc(11.5px*var(--fs))] leading-tight tracking-[0.02em] text-faint">
           {line.label}
         </span>
       )}
-      <span className="mt-1.5 block text-[13.5px] leading-[1.7] text-muted">{line.text}</span>
+      <span className="mt-1.5 block text-[length:calc(13.5px*var(--fs))] leading-[1.7] text-muted">{line.text}</span>
       {line.draft && <DraftMark status={line.draft} className="mt-2" />}
     </div>
   );
@@ -115,17 +115,17 @@ function ProfileBox() {
       {rows.map((row, i) => (
         <div key={row.key} className={i === 0 ? "" : "mt-6 border-t border-line/70 pt-6"}>
           {row.label && (
-            <p className="mb-3 text-center text-[11.5px] tracking-[0.02em] text-faint">
+            <p className="mb-3 text-center text-[length:calc(11.5px*var(--fs))] tracking-[0.02em] text-faint">
               {row.label}
             </p>
           )}
           <div className="grid grid-cols-2 gap-x-4">
             {row.key === "mbti" ? (
               <>
-                <p className="latin text-center text-[13.5px] tracking-[0.08em] text-accent">
+                <p className="latin text-center text-[length:calc(13.5px*var(--fs))] tracking-[0.08em] text-accent">
                   {row.left.text}
                 </p>
-                <p className="latin text-center text-[13.5px] tracking-[0.08em] text-accent">
+                <p className="latin text-center text-[length:calc(13.5px*var(--fs))] tracking-[0.08em] text-accent">
                   {row.right.text}
                 </p>
               </>
@@ -176,8 +176,8 @@ function HostContacts() {
 
                 return (
                   <li key={i} className="flex items-center justify-between gap-4 py-3">
-                    <p className="min-w-0 text-[14px] tracking-[-0.01em] text-[#4a473f]">
-                      <span className="text-[12px] text-faint">{person.role}</span>
+                    <p className="min-w-0 text-[length:calc(14px*var(--fs))] tracking-[-0.01em] text-[#4a473f]">
+                      <span className="text-[length:calc(12px*var(--fs))] text-faint">{person.role}</span>
                       <span className="mx-2 text-line">·</span>
                       {person.name}
                     </p>
@@ -199,7 +199,7 @@ function HostContacts() {
                         </a>
                       </span>
                     ) : (
-                      <span className="shrink-0 text-[11.5px] text-faint">{PLACEHOLDER_LABEL}</span>
+                      <span className="shrink-0 text-[length:calc(11.5px*var(--fs))] text-faint">{PLACEHOLDER_LABEL}</span>
                     )}
                   </li>
                 );
@@ -227,10 +227,10 @@ export function Couple() {
 
         {(parentsLine(groom) || parentsLine(bride)) && (
           <div className="mt-6 grid grid-cols-2 gap-x-4">
-            <p className="text-center text-[12.5px] leading-relaxed text-faint">
+            <p className="text-center text-[length:calc(12.5px*var(--fs))] leading-relaxed text-faint">
               {parentsLine(groom)}
             </p>
-            <p className="text-center text-[12.5px] leading-relaxed text-faint">
+            <p className="text-center text-[length:calc(12.5px*var(--fs))] leading-relaxed text-faint">
               {parentsLine(bride)}
             </p>
           </div>

@@ -25,11 +25,11 @@ function AccountRow({ account }: { account: Account }) {
   return (
     <div className="flex items-center justify-between gap-4 py-4">
       <div className="min-w-0">
-        <p className="text-[12.5px] tracking-[0.02em] text-faint">
+        <p className="text-[length:calc(12.5px*var(--fs))] tracking-[0.02em] text-faint">
           {account.relation ? `${account.relation} · ` : ""}
           {account.holder}
         </p>
-        <p className="mt-1.5 text-[14.5px] tracking-[-0.01em] text-[#4a473f]">
+        <p className="mt-1.5 text-[length:calc(14.5px*var(--fs))] tracking-[-0.01em] text-[#4a473f]">
           {ready ? `${account.bank} ${account.number}` : PLACEHOLDER_LABEL}
         </p>
       </div>
@@ -38,7 +38,7 @@ function AccountRow({ account }: { account: Account }) {
           type="button"
           onClick={handleCopy}
           aria-label={`${account.holder} ${account.bank} 계좌번호 복사`}
-          className="tap shrink-0 rounded-[6px] border border-line px-3.5 text-[12.5px] text-muted active:bg-paper-deep"
+          className="tap shrink-0 rounded-[6px] border border-line px-3.5 text-[length:calc(12.5px*var(--fs))] text-muted active:bg-paper-deep"
         >
           복사
         </button>
@@ -62,7 +62,7 @@ function AccountGroup({ title, accounts }: { title: string; accounts: readonly A
           aria-expanded={open}
           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
         >
-          <span className="text-[15px] tracking-[-0.01em] text-ink">{title}</span>
+          <span className="text-[length:calc(15px*var(--fs))] tracking-[-0.01em] text-ink">{title}</span>
           <motion.span
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}

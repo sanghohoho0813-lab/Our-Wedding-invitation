@@ -17,7 +17,7 @@ export function Letters() {
         {items.map((letter, i) => (
           <Reveal key={i} delay={i * 0.06}>
             <div className="card px-7 py-9 text-center">
-              <p className="text-[12.5px] tracking-[0.04em] text-accent">{letter.label}</p>
+              <p className="text-[length:calc(12.5px*var(--fs))] tracking-[0.04em] text-accent">{letter.label}</p>
 
               <div className="mt-6">
                 {letter.body.map((line, j) =>
@@ -26,7 +26,7 @@ export function Letters() {
                   ) : (
                     <p
                       key={j}
-                      className="text-[14.5px] leading-[1.95] tracking-[-0.01em] text-[#4a473f]"
+                      className="text-[length:calc(14.5px*var(--fs))] leading-[1.95] tracking-[-0.01em] text-[#4a473f]"
                     >
                       {line}
                     </p>
@@ -34,7 +34,7 @@ export function Letters() {
                 )}
               </div>
 
-              <p className="mt-7 text-[12.5px] tracking-[0.02em] text-faint">
+              <p className="mt-7 text-[length:calc(12.5px*var(--fs))] tracking-[0.02em] text-faint">
                 {letter.from === "groom" ? wedding.groom.name : wedding.bride.name}
               </p>
 

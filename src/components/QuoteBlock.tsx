@@ -15,7 +15,7 @@ export function QuoteBlock() {
 
       <Reveal className="edge mt-16 text-center">
         {quote.en.length > 0 && (
-          <div className="latin text-[15px] leading-[1.8] tracking-[0.01em] text-muted">
+          <div className="latin text-[length:calc(15px*var(--fs))] leading-[1.8] tracking-[0.01em] text-muted">
             {quote.en.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -28,7 +28,7 @@ export function QuoteBlock() {
           ))}
         </div>
 
-        {quote.source && <p className="mt-7 text-[13px] text-faint">{quote.source}</p>}
+        {quote.source && <p className="mt-7 text-[length:calc(13px*var(--fs))] text-faint">{quote.source}</p>}
       </Reveal>
     </section>
   );

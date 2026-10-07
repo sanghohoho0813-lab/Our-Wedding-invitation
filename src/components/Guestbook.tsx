@@ -17,7 +17,7 @@ import {
 } from "@/lib/backend";
 
 const FIELD =
-  "mt-2 w-full rounded-[6px] border border-line bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors focus:border-accent-soft";
+  "mt-2 w-full rounded-[6px] border border-line bg-white px-4 py-3 text-[length:calc(15px*var(--fs))] text-ink outline-none transition-colors focus:border-accent-soft";
 
 function formatDate(iso: string) {
   const d = new Date(iso);
@@ -99,7 +99,7 @@ export function Guestbook() {
 
       <Reveal delay={0.06} className="mt-9">
         {entries.length === 0 ? (
-          <p className="py-6 text-center text-[14px] text-faint">
+          <p className="py-6 text-center text-[length:calc(14px*var(--fs))] text-faint">
             첫 번째 축하 메시지를 남겨주세요.
           </p>
         ) : (
@@ -115,13 +115,13 @@ export function Guestbook() {
                   <X size={14} strokeWidth={1.5} aria-hidden="true" />
                 </button>
 
-                <p className="pr-10 text-[14px] tracking-[-0.01em]">
+                <p className="pr-10 text-[length:calc(14px*var(--fs))] tracking-[-0.01em]">
                   <span className="text-accent">{entry.name}</span>
-                  <span className="ml-2.5 text-[12px] text-faint">
+                  <span className="ml-2.5 text-[length:calc(12px*var(--fs))] text-faint">
                     {formatDate(entry.createdAt)}
                   </span>
                 </p>
-                <p className="mt-2 whitespace-pre-line text-[14.5px] leading-[1.8] text-[#4a473f]">
+                <p className="mt-2 whitespace-pre-line text-[length:calc(14.5px*var(--fs))] leading-[1.8] text-[#4a473f]">
                   {entry.message}
                 </p>
               </li>
@@ -134,7 +134,7 @@ export function Guestbook() {
             <button
               type="button"
               onClick={() => setShowAll((v) => !v)}
-              className="btn-outline px-4 text-[13px]"
+              className="btn-outline px-4 text-[length:calc(13px*var(--fs))]"
             >
               {showAll ? "접기" : "전체보기"}
             </button>
@@ -145,7 +145,7 @@ export function Guestbook() {
           <button
             type="button"
             onClick={() => setWriteOpen(true)}
-            className="btn-outline px-5 text-[13px]"
+            className="btn-outline px-5 text-[length:calc(13px*var(--fs))]"
           >
             작성
           </button>
@@ -156,7 +156,7 @@ export function Guestbook() {
       <Modal open={writeOpen} onClose={() => setWriteOpen(false)} title="방명록 작성">
         <form onSubmit={handleWrite} className="space-y-6">
           <div>
-            <label htmlFor="gb-name" className="text-[13.5px] text-muted">
+            <label htmlFor="gb-name" className="text-[length:calc(13.5px*var(--fs))] text-muted">
               이름
             </label>
             <input
@@ -169,7 +169,7 @@ export function Guestbook() {
           </div>
 
           <div>
-            <label htmlFor="gb-message" className="text-[13.5px] text-muted">
+            <label htmlFor="gb-message" className="text-[length:calc(13.5px*var(--fs))] text-muted">
               축하 메시지
             </label>
             <textarea
@@ -183,7 +183,7 @@ export function Guestbook() {
           </div>
 
           <div>
-            <label htmlFor="gb-password" className="text-[13.5px] text-muted">
+            <label htmlFor="gb-password" className="text-[length:calc(13.5px*var(--fs))] text-muted">
               비밀번호 (삭제할 때 필요합니다)
             </label>
             <input
@@ -205,7 +205,7 @@ export function Guestbook() {
       {/* 삭제 */}
       <Modal open={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)} title="방명록 삭제">
         <form onSubmit={handleDelete} className="space-y-6">
-          <p className="text-[14.5px] leading-relaxed text-muted">
+          <p className="text-[length:calc(14.5px*var(--fs))] leading-relaxed text-muted">
             작성할 때 입력한 비밀번호를 넣어주세요.
           </p>
           <input

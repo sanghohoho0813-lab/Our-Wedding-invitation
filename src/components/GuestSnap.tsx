@@ -28,7 +28,7 @@ type Snap = {
 type Progress = { index: number; total: number; ratio: number };
 
 const FIELD =
-  "mt-2 w-full rounded-[8px] border border-line bg-white px-4 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-faint/70 focus:border-accent-soft";
+  "mt-2 w-full rounded-[8px] border border-line bg-white px-4 py-3 text-[length:calc(16px*var(--fs))] text-ink outline-none transition-colors placeholder:text-faint/70 focus:border-accent-soft";
 
 /** 같은 하객이 여러 번 올릴 때 비밀번호를 다시 치지 않게 이 탭에서만 기억한다. */
 const PW_KEY = "wedding:snap-pw";
@@ -191,7 +191,7 @@ function SnapViewer({
         type="button"
         onClick={() => setDeleting((v) => !v)}
         aria-expanded={deleting}
-        className="absolute left-3 top-[calc(env(safe-area-inset-top)+10px)] flex h-11 items-center gap-1.5 rounded-full bg-white/15 px-4 text-[13px] text-white"
+        className="absolute left-3 top-[calc(env(safe-area-inset-top)+10px)] flex h-11 items-center gap-1.5 rounded-full bg-white/15 px-4 text-[length:calc(13px*var(--fs))] text-white"
       >
         <Trash2 size={15} strokeWidth={1.6} aria-hidden="true" />
         삭제
@@ -202,7 +202,7 @@ function SnapViewer({
           onSubmit={confirmDelete}
           className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+12px)] mx-auto max-w-[420px] rounded-[12px] bg-white p-4"
         >
-          <label htmlFor="snap-delete-pw" className="text-[13px] text-muted">
+          <label htmlFor="snap-delete-pw" className="text-[length:calc(13px*var(--fs))] text-muted">
             올릴 때 정한 비밀번호
           </label>
           <div className="mt-2 flex gap-2">
@@ -213,19 +213,19 @@ function SnapViewer({
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="off"
               maxLength={30}
-              className="min-w-0 flex-1 rounded-[8px] border border-line px-3 py-2.5 text-[16px] text-ink outline-none focus:border-accent-soft"
+              className="min-w-0 flex-1 rounded-[8px] border border-line px-3 py-2.5 text-[length:calc(16px*var(--fs))] text-ink outline-none focus:border-accent-soft"
             />
             <button
               type="submit"
               disabled={busy}
-              className="shrink-0 rounded-[8px] bg-ink px-4 text-[14px] text-white disabled:opacity-60"
+              className="shrink-0 rounded-[8px] bg-ink px-4 text-[length:calc(14px*var(--fs))] text-white disabled:opacity-60"
             >
               {busy ? "확인 중…" : "지우기"}
             </button>
           </div>
         </form>
       ) : (
-        <p className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] text-[12.5px] tracking-[0.06em] text-white/70">
+        <p className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] text-[length:calc(12.5px*var(--fs))] tracking-[0.06em] text-white/70">
           {index + 1} / {snaps.length}
         </p>
       )}
@@ -394,7 +394,7 @@ export function GuestSnap() {
         <h2 id="guestsnap-heading" className="section-title">
           {guestSnap.heading}
         </h2>
-        <p className="mt-4 text-[14.5px] leading-relaxed tracking-[-0.01em] text-muted">
+        <p className="mt-4 text-[length:calc(14.5px*var(--fs))] leading-relaxed tracking-[-0.01em] text-muted">
           {guestSnap.subheading}
         </p>
       </Reveal>
@@ -409,7 +409,7 @@ export function GuestSnap() {
             line === "" ? (
               <div key={i} className="h-4" aria-hidden="true" />
             ) : (
-              <p key={i} className="text-[14px] leading-[1.85] tracking-[-0.01em] text-[#4a473f]">
+              <p key={i} className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-[#4a473f]">
                 {line}
               </p>
             ),
@@ -417,7 +417,7 @@ export function GuestSnap() {
 
           {guestSnap.reward.enabled && guestSnap.reward.text && (
             <div className="mt-7 border-t border-line pt-7">
-              <p className="text-[14px] leading-[1.85] tracking-[-0.01em] text-accent">
+              <p className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-accent">
                 {guestSnap.reward.text}
               </p>
               {guestSnap.reward.draft && (
@@ -466,11 +466,11 @@ export function GuestSnap() {
               {/* 아직 열리지 않은 기능이므로 눌리는 버튼처럼 보이게 하지 않는다. */}
               <p
                 aria-disabled="true"
-                className="mt-7 w-full rounded-[8px] border border-dashed border-line py-4 text-[14.5px] tracking-[-0.01em] text-faint"
+                className="mt-7 w-full rounded-[8px] border border-dashed border-line py-4 text-[length:calc(14.5px*var(--fs))] tracking-[-0.01em] text-faint"
               >
                 {guestSnap.buttonLabel}
               </p>
-              <p className="mt-3 text-[12.5px] tracking-[-0.01em] text-accent">
+              <p className="mt-3 text-[length:calc(12.5px*var(--fs))] tracking-[-0.01em] text-accent">
                 {guestSnap.pendingLabel}
               </p>
             </>
@@ -480,7 +480,7 @@ export function GuestSnap() {
 
       {snaps.length > 0 && (
         <div className="mt-8">
-          <p className="text-center text-[13px] tracking-[0.04em] text-accent">
+          <p className="text-center text-[length:calc(13px*var(--fs))] tracking-[0.04em] text-accent">
             함께 남긴 순간들 · {snaps.length}
           </p>
           <ul className="mt-4 grid grid-cols-3 gap-1.5">
@@ -554,7 +554,7 @@ export function GuestSnap() {
           className="space-y-6"
         >
           <div>
-            <label htmlFor="snap-password" className="text-[13.5px] text-muted">
+            <label htmlFor="snap-password" className="text-[length:calc(13.5px*var(--fs))] text-muted">
               비밀번호 <span className="text-faint">(내가 올린 것을 지울 때 필요해요)</span>
             </label>
             <input

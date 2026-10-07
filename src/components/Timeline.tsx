@@ -87,20 +87,20 @@ function TimelineList({
                           ratio="1 / 1"
                           sizes="(max-width: 520px) 42vw, 220px"
                         />
-                        <p className="mt-2.5 text-center text-[11.5px] tracking-[0.02em] text-faint">
+                        <p className="mt-2.5 text-center text-[length:calc(11.5px*var(--fs))] tracking-[0.02em] text-faint">
                           {item.date}
                         </p>
                       </>
                     ) : (
-                      <p className="latin text-center text-[16px] tracking-[0.06em] text-accent">
+                      <p className="latin text-center text-[length:calc(16px*var(--fs))] tracking-[0.06em] text-accent">
                         {item.date}
                       </p>
                     )}
                   </div>
 
                   <div className={`${photoLeft ? "order-2" : "order-1"} text-center`}>
-                    <p className="text-[14.5px] tracking-[-0.01em] text-ink">{item.title}</p>
-                    <p className="mt-2.5 text-[13.5px] leading-[1.75] text-muted">
+                    <p className="text-[length:calc(14.5px*var(--fs))] tracking-[-0.01em] text-ink">{item.title}</p>
+                    <p className="mt-2.5 text-[length:calc(13.5px*var(--fs))] leading-[1.75] text-muted">
                       <Body
                         text={fillTokens(item.body) ?? item.body}
                         highlight={fillTokens(item.highlight)}
@@ -148,7 +148,7 @@ export function Timeline() {
         <div className="mt-14">
           {timeline.photosHeading && (
             <Reveal className="text-center">
-              <p className="text-[13px] tracking-[0.04em] text-accent">{timeline.photosHeading}</p>
+              <p className="text-[length:calc(13px*var(--fs))] tracking-[0.04em] text-accent">{timeline.photosHeading}</p>
             </Reveal>
           )}
           <PhotoGridBody images={photos} className="mt-6" />

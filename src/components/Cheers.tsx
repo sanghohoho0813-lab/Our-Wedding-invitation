@@ -10,7 +10,7 @@ import { wedding } from "@/config/wedding";
 import { rpc, selectRows, supabaseReady } from "@/lib/supabase";
 
 const FIELD =
-  "mt-2 w-full rounded-[8px] border border-line bg-white px-4 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-faint/70 focus:border-accent-soft";
+  "mt-2 w-full rounded-[8px] border border-line bg-white px-4 py-3 text-[length:calc(16px*var(--fs))] text-ink outline-none transition-colors placeholder:text-faint/70 focus:border-accent-soft";
 
 const MAX_MESSAGE = 500;
 
@@ -91,7 +91,7 @@ function ManageCheer({
       <form onSubmit={submit} className="space-y-6">
         {mode === "edit" ? (
           <div>
-            <label htmlFor="manage-message" className="text-[13.5px] text-muted">
+            <label htmlFor="manage-message" className="text-[length:calc(13.5px*var(--fs))] text-muted">
               축하 메시지
             </label>
             <textarea
@@ -104,14 +104,14 @@ function ManageCheer({
             />
           </div>
         ) : (
-          <p className="text-[14.5px] leading-relaxed text-ink">
+          <p className="text-[length:calc(14.5px*var(--fs))] leading-relaxed text-ink">
             <span className="text-muted">{target && SIDE_LABEL[target.side]}</span> {target?.name}님의
             메시지를 지울까요?
           </p>
         )}
 
         <div>
-          <label htmlFor="manage-password" className="text-[13.5px] text-muted">
+          <label htmlFor="manage-password" className="text-[length:calc(13.5px*var(--fs))] text-muted">
             남길 때 정한 비밀번호
           </label>
           <input
@@ -247,26 +247,26 @@ export function Cheers() {
             {visible.map((c) => (
               <li key={c.id} className="py-5">
                 <p className="flex items-baseline gap-2">
-                  <span className="shrink-0 text-[12.5px] text-accent">{SIDE_LABEL[c.side]}</span>
-                  <span className="min-w-0 truncate text-[15px] font-medium text-ink">{c.name}</span>
+                  <span className="shrink-0 text-[length:calc(12.5px*var(--fs))] text-accent">{SIDE_LABEL[c.side]}</span>
+                  <span className="min-w-0 truncate text-[length:calc(15px*var(--fs))] font-medium text-ink">{c.name}</span>
                 </p>
-                <p className="mt-2 whitespace-pre-line break-words text-[14.5px] leading-[1.8] text-ink">
+                <p className="mt-2 whitespace-pre-line break-words text-[length:calc(14.5px*var(--fs))] leading-[1.8] text-ink">
                   {c.message}
                 </p>
                 <div className="mt-2 flex items-center justify-between gap-3">
-                  <span className="text-[11.5px] text-faint">{formatTime(c.created_at)}</span>
+                  <span className="text-[length:calc(11.5px*var(--fs))] text-faint">{formatTime(c.created_at)}</span>
                   <span className="-mr-2 flex shrink-0">
                     <button
                       type="button"
                       onClick={() => setManage({ target: c, mode: "edit" })}
-                      className="tap px-2 text-[12px] text-faint"
+                      className="tap px-2 text-[length:calc(12px*var(--fs))] text-faint"
                     >
                       수정
                     </button>
                     <button
                       type="button"
                       onClick={() => setManage({ target: c, mode: "delete" })}
-                      className="tap px-2 text-[12px] text-faint"
+                      className="tap px-2 text-[length:calc(12px*var(--fs))] text-faint"
                     >
                       삭제
                     </button>
@@ -294,8 +294,8 @@ export function Cheers() {
       <Modal open={open} onClose={() => setOpen(false)} title={cheers.heading}>
         {done ? (
           <div className="py-10 text-center">
-            <p className="serif text-[18px] text-accent-deep">소중한 마음 고맙습니다</p>
-            <p className="mt-3 text-[14.5px] leading-relaxed text-muted">
+            <p className="serif text-[length:calc(18px*var(--fs))] text-accent-deep">소중한 마음 고맙습니다</p>
+            <p className="mt-3 text-[length:calc(14.5px*var(--fs))] leading-relaxed text-muted">
               남겨주신 메시지는
               <br />
               아래 목록에서 모두 함께 볼 수 있어요.
@@ -311,7 +311,7 @@ export function Cheers() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
             <fieldset>
-              <legend className="text-[13.5px] text-muted">어느 쪽 하객이신가요?</legend>
+              <legend className="text-[length:calc(13.5px*var(--fs))] text-muted">어느 쪽 하객이신가요?</legend>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 {(["groom", "bride"] as const).map((v) => (
                   <button
@@ -319,7 +319,7 @@ export function Cheers() {
                     type="button"
                     onClick={() => setSide(v)}
                     aria-pressed={side === v}
-                    className={`tap rounded-[8px] border text-[15px] transition-colors ${
+                    className={`tap rounded-[8px] border text-[length:calc(15px*var(--fs))] transition-colors ${
                       side === v
                         ? "border-accent-soft bg-accent-pale text-ink"
                         : "border-line bg-white text-muted"
@@ -332,7 +332,7 @@ export function Cheers() {
             </fieldset>
 
             <div>
-              <label htmlFor="cheers-name" className="text-[13.5px] text-muted">
+              <label htmlFor="cheers-name" className="text-[length:calc(13.5px*var(--fs))] text-muted">
                 성함
               </label>
               <input
@@ -346,7 +346,7 @@ export function Cheers() {
             </div>
 
             <div>
-              <label htmlFor="cheers-message" className="text-[13.5px] text-muted">
+              <label htmlFor="cheers-message" className="text-[length:calc(13.5px*var(--fs))] text-muted">
                 축하 메시지
               </label>
               <textarea
@@ -364,19 +364,19 @@ export function Cheers() {
                     key={text}
                     type="button"
                     onClick={() => applyPreset(text)}
-                    className="rounded-full border border-line bg-white px-3 py-1.5 text-[12.5px] text-muted active:bg-paper-deep"
+                    className="rounded-full border border-line bg-white px-3 py-1.5 text-[length:calc(12.5px*var(--fs))] text-muted active:bg-paper-deep"
                   >
                     {text}
                   </button>
                 ))}
               </div>
-              <p className="mt-2 text-right text-[11.5px] text-faint">
+              <p className="mt-2 text-right text-[length:calc(11.5px*var(--fs))] text-faint">
                 {message.length} / {MAX_MESSAGE}
               </p>
             </div>
 
             <div>
-              <label htmlFor="cheers-password" className="text-[13.5px] text-muted">
+              <label htmlFor="cheers-password" className="text-[length:calc(13.5px*var(--fs))] text-muted">
                 비밀번호 <span className="text-faint">(나중에 고치거나 지울 때 필요해요)</span>
               </label>
               <input

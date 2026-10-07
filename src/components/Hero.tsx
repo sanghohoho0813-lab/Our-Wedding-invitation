@@ -55,7 +55,7 @@ export function Hero() {
           {hero.title.map((line, i) => (
             <span
               key={i}
-              className="block text-[42px] leading-[1.05]"
+              className="block text-[length:calc(42px*var(--fs))] leading-[1.05]"
               style={{ marginLeft: i === 1 ? "0.6em" : i === 2 ? "1.6em" : 0 }}
             >
               {line}
@@ -68,19 +68,19 @@ export function Hero() {
       <div className="absolute inset-x-0 bottom-0 edge pb-[max(env(safe-area-inset-bottom),18px)]">
         <div className="hero-copy pb-16 text-center text-white">
           {/* 예식 일시·장소 — 첫 화면에서 바로 확인할 수 있게 */}
-          <p className="text-[16.5px] leading-snug tracking-[0.01em] text-white">
+          <p className="text-[length:calc(16.5px*var(--fs))] leading-snug tracking-[0.01em] text-white">
             {formatDotted(date)}
             <span className="mx-2 text-white/60">·</span>
             {weekdayKo(date)} {wedding.wedding.timeLabel}
           </p>
-          <p className="mt-2 text-[14.5px] leading-snug tracking-[-0.01em] text-white/90">
+          <p className="mt-2 text-[length:calc(14.5px*var(--fs))] leading-snug tracking-[-0.01em] text-white/90">
             {venueLine()}
           </p>
 
           {hero.caption.length > 0 && (
             <>
               <div className="mx-auto mt-6 h-px w-8 bg-white/35" aria-hidden="true" />
-              <div className="hero-caption latin mt-6 text-[14px] leading-[1.65] tracking-[0.01em] text-white/80">
+              <div className="hero-caption latin mt-6 text-[length:calc(14px*var(--fs))] leading-[1.65] tracking-[0.01em] text-white/80">
                 {hero.caption.map((line, i) => (
                   <p key={i}>{line}</p>
                 ))}

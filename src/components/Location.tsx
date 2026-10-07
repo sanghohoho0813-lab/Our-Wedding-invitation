@@ -49,15 +49,15 @@ export function Location() {
         <SectionHeading id="location-heading" icon="pin" title={wedding.location.heading} />
 
         <Reveal className="mt-8 text-center">
-          <p className="text-[17px] leading-snug tracking-[-0.01em] text-ink">{venue}</p>
+          <p className="text-[length:calc(17px*var(--fs))] leading-snug tracking-[-0.01em] text-ink">{venue}</p>
           {(floor || hall) && (
-            <p className="mt-1.5 text-[14.5px] text-muted">{[floor, hall].filter(Boolean).join(" ")}</p>
+            <p className="mt-1.5 text-[length:calc(14.5px*var(--fs))] text-muted">{[floor, hall].filter(Boolean).join(" ")}</p>
           )}
-          <p className="mt-2.5 text-[14.5px] leading-relaxed text-muted">{address}</p>
+          <p className="mt-2.5 text-[length:calc(14.5px*var(--fs))] leading-relaxed text-muted">{address}</p>
           {tel && (
             <a
               href={`tel:${tel.replace(/-/g, "")}`}
-              className="tap text-[14px] text-muted underline decoration-line underline-offset-4"
+              className="tap text-[length:calc(14px*var(--fs))] text-muted underline decoration-line underline-offset-4"
             >
               {tel}
             </a>
@@ -90,7 +90,7 @@ export function Location() {
                 sizes="(max-width: 520px) 100vw, 520px"
                 className="object-cover"
               />
-              <span className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/95 px-3.5 py-2 text-[12.5px] tracking-[-0.01em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+              <span className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/95 px-3.5 py-2 text-[length:calc(12.5px*var(--fs))] tracking-[-0.01em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                 <Hand size={14} strokeWidth={1.6} aria-hidden="true" className="text-accent-deep" />
                 누르면 지도를 움직이고 확대할 수 있어요
               </span>
@@ -106,7 +106,7 @@ export function Location() {
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
               <MapPin size={18} strokeWidth={1.3} className="text-faint" aria-hidden="true" />
-              <p className="text-[13px] leading-relaxed text-faint">
+              <p className="text-[length:calc(13px*var(--fs))] leading-relaxed text-faint">
                 아래 버튼으로 지도 앱에서 길찾기를 열 수 있습니다.
               </p>
             </div>
@@ -114,7 +114,7 @@ export function Location() {
         </div>
         {/* 그림 지도는 OpenStreetMap 타일로 만들어 저작자 표기가 필요하다. */}
         {!mapLive && mapImage && (
-          <p className="mt-2 text-right text-[11px] tracking-[0.01em] text-faint">
+          <p className="mt-2 text-right text-[length:calc(11px*var(--fs))] tracking-[0.01em] text-faint">
             지도 © OpenStreetMap contributors
           </p>
         )}
@@ -127,7 +127,7 @@ export function Location() {
             href={naverMapHref()}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-outline active:bg-paper-deep"
+            className="btn-outline whitespace-nowrap px-2 active:bg-paper-deep"
           >
             네이버지도
           </a>
@@ -135,11 +135,11 @@ export function Location() {
             href={kakaoMapHref()}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-outline active:bg-paper-deep"
+            className="btn-outline whitespace-nowrap px-2 active:bg-paper-deep"
           >
             카카오맵
           </a>
-          <button type="button" onClick={handleCopy} className="btn-outline active:bg-paper-deep">
+          <button type="button" onClick={handleCopy} className="btn-outline whitespace-nowrap px-2 active:bg-paper-deep">
             주소 복사
           </button>
         </div>
@@ -154,7 +154,7 @@ export function Location() {
 
             return (
               <div key={group.label}>
-                <dt className="flex items-center gap-2 text-[14.5px] tracking-[-0.01em] text-accent">
+                <dt className="flex items-center gap-2 text-[length:calc(14.5px*var(--fs))] tracking-[-0.01em] text-accent">
                   <Icon size={15} strokeWidth={1.5} aria-hidden="true" />
                   {group.label}
                 </dt>
@@ -162,7 +162,7 @@ export function Location() {
                   {group.lines.map((line, i) => (
                     <p
                       key={i}
-                      className="text-[14px] leading-[1.85] tracking-[-0.01em] text-[#4a473f]"
+                      className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-[#4a473f]"
                     >
                       {line}
                     </p>

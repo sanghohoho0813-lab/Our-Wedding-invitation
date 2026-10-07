@@ -51,7 +51,7 @@ export function Interview() {
         <dl>
           {interview.qa.map((item, i) => (
             <div key={i} className={i === 0 ? "" : "mt-8 border-t border-line pt-8"}>
-              <dt className="flex gap-2 text-[15.5px] font-medium leading-[1.6] tracking-[-0.015em] text-ink">
+              <dt className="flex gap-2 text-[length:calc(15.5px*var(--fs))] font-medium leading-[1.6] tracking-[-0.015em] text-ink">
                 <span className="latin shrink-0 text-accent-deep" aria-hidden="true">
                   Q.
                 </span>
@@ -66,13 +66,13 @@ export function Interview() {
                     <dd key={j} className={`mt-3 rounded-[10px] px-4 py-3.5 ${who.box}`}>
                       {who.label && (
                         <span
-                          className={`block text-[12.5px] font-medium tracking-[0.02em] ${who.ink}`}
+                          className={`block text-[length:calc(12.5px*var(--fs))] font-medium tracking-[0.02em] ${who.ink}`}
                         >
                           {who.label}
                         </span>
                       )}
                       <span
-                        className={`block text-[15px] leading-[1.85] tracking-[-0.015em] text-ink ${
+                        className={`block text-[length:calc(15px*var(--fs))] leading-[1.85] tracking-[-0.015em] text-ink ${
                           who.label ? "mt-1" : ""
                         }`}
                       >
@@ -87,7 +87,7 @@ export function Interview() {
 
         {/* 신랑 답변이 모두 채워지면 config 의 pendingNote 를 비우세요. */}
         {interview.pendingNote && (
-          <p className="mt-9 border-t border-line pt-6 text-center text-[12px] leading-relaxed text-faint">
+          <p className="mt-9 border-t border-line pt-6 text-center text-[length:calc(12px*var(--fs))] leading-relaxed text-faint">
             {interview.pendingNote}
           </p>
         )}

@@ -48,15 +48,15 @@ export function TogetherTime() {
   return (
     <section className="edge pb-24 text-center" aria-label={togetherTime.heading}>
       <Reveal>
-        <p className="text-[15px] tracking-[-0.01em] text-muted">{togetherTime.heading}</p>
+        <p className="text-[length:calc(15px*var(--fs))] tracking-[-0.01em] text-muted">{togetherTime.heading}</p>
         <p
-          className="serif mt-4 text-[19px] leading-relaxed tracking-[0.01em] text-ink"
+          className="serif mt-4 text-[length:calc(19px*var(--fs))] leading-relaxed tracking-[0.01em] text-ink"
           aria-live="off"
           suppressHydrationWarning
         >
           {text || " "}
         </p>
-        <p className="mt-3 text-[12.5px] tracking-[0.02em] text-faint">
+        <p className="mt-3 text-[length:calc(12.5px*var(--fs))] tracking-[0.02em] text-faint">
           {formatDotted(togetherTime.startDate)} 부터
         </p>
       </Reveal>

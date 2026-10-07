@@ -38,7 +38,7 @@ export function InfoTabs() {
               aria-selected={i === active}
               aria-controls={`panel-${tab.key}`}
               onClick={() => setActive(i)}
-              className={`tap relative flex-1 text-[14.5px] tracking-[-0.01em] transition-colors ${
+              className={`tap relative flex-1 text-[length:calc(14.5px*var(--fs))] tracking-[-0.01em] transition-colors ${
                 i === active ? "text-accent" : "text-faint"
               }`}
             >
@@ -72,7 +72,7 @@ export function InfoTabs() {
               ) : (
                 <p
                   key={i}
-                  className="text-[14.5px] leading-[1.9] tracking-[-0.01em] text-[#4a473f]"
+                  className="text-[length:calc(14.5px*var(--fs))] leading-[1.9] tracking-[-0.01em] text-[#4a473f]"
                 >
                   {line}
                 </p>
@@ -83,8 +83,8 @@ export function InfoTabs() {
             {(current.schedule ?? []).map((group) =>
               group.times.length === 0 ? null : (
                 <div key={group.label} className="mt-7">
-                  <p className="text-[13px] tracking-[0.02em] text-accent">{group.label}</p>
-                  <p className="mt-2 text-[14px] leading-[1.9] tracking-[-0.01em] text-[#4a473f]">
+                  <p className="text-[length:calc(13px*var(--fs))] tracking-[0.02em] text-accent">{group.label}</p>
+                  <p className="mt-2 text-[length:calc(14px*var(--fs))] leading-[1.9] tracking-[-0.01em] text-[#4a473f]">
                     {group.times.join("  ·  ")}
                   </p>
                 </div>
@@ -92,7 +92,7 @@ export function InfoTabs() {
             )}
 
             {current.note && (
-              <p className="mt-6 text-[12.5px] leading-relaxed text-faint">{current.note}</p>
+              <p className="mt-6 text-[length:calc(12.5px*var(--fs))] leading-relaxed text-faint">{current.note}</p>
             )}
 
             {current.draft && <DraftMark status={current.draft} className="mt-3" />}

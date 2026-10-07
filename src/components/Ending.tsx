@@ -33,7 +33,7 @@ export function Ending() {
 
       <div className="edge pt-20 text-center">
         <Reveal>
-          <p className="latin text-[18px] font-light italic tracking-[0.06em] text-accent">
+          <p className="latin text-[length:calc(18px*var(--fs))] font-light italic tracking-[0.06em] text-accent">
             {ending.signature}
           </p>
           <p className="body-ko mt-7 whitespace-pre-line">{ending.message}</p>
@@ -48,14 +48,14 @@ export function Ending() {
                 ) : (
                   <p
                     key={i}
-                    className="text-[14.5px] leading-[1.95] tracking-[-0.01em] text-[#4a473f]"
+                    className="text-[length:calc(14.5px*var(--fs))] leading-[1.95] tracking-[-0.01em] text-[#4a473f]"
                   >
                     {line}
                   </p>
                 ),
               )}
               {ending.farewellSign && (
-                <p className="mt-6 text-[13.5px] tracking-[0.02em] text-muted">
+                <p className="mt-6 text-[length:calc(13.5px*var(--fs))] tracking-[0.02em] text-muted">
                   {ending.farewellSign}
                 </p>
               )}
@@ -65,12 +65,12 @@ export function Ending() {
             </div>
           )}
 
-          <p className="serif mt-12 text-[16px] tracking-[0.02em] text-ink">
+          <p className="serif mt-12 text-[length:calc(16px*var(--fs))] tracking-[0.02em] text-ink">
             {wedding.groom.name}
-            <span className="mx-2.5 text-[12px] text-faint">×</span>
+            <span className="mx-2.5 text-[length:calc(12px*var(--fs))] text-faint">×</span>
             {wedding.bride.name}
           </p>
-          <p className="latin mt-3 text-[12px] tracking-[0.24em] text-faint">
+          <p className="latin mt-3 text-[length:calc(12px*var(--fs))] tracking-[0.24em] text-faint">
             {formatDotted(date)}
           </p>
         </Reveal>
@@ -82,13 +82,13 @@ export function Ending() {
             <div className="mx-auto mb-6 h-6 w-px bg-line" aria-hidden="true" />
 
             {creditLead && (
-              <p className="serif text-[13px] leading-[1.7] tracking-[0.01em] text-accent-deep">
+              <p className="serif text-[length:calc(13px*var(--fs))] leading-[1.7] tracking-[0.01em] text-accent-deep">
                 {creditLead}
               </p>
             )}
 
             {credit.length > 0 && (
-              <p className="mt-2.5 text-[11.5px] leading-[1.8] tracking-[0.01em] text-faint">
+              <p className="mt-2.5 text-[length:calc(11.5px*var(--fs))] leading-[1.8] tracking-[0.01em] text-faint">
                 {credit.map((line, i) => (
                   <span key={i} className="block">
                     {line}
@@ -99,7 +99,7 @@ export function Ending() {
           </>
         )}
 
-        <p className="mt-6 text-[11px] tracking-[0.06em] text-faint">
+        <p className="mt-6 text-[length:calc(11px*var(--fs))] tracking-[0.06em] text-faint">
           © {getYear(date)} {wedding.groom.name} &amp; {wedding.bride.name}
         </p>
       </footer>

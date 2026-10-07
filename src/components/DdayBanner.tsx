@@ -54,7 +54,7 @@ export function DdayBanner() {
 
       <div className={`edge text-center ${hasPhoto ? "absolute inset-x-0 bottom-0 pb-6" : "pb-24"}`}>
         <p
-          className={`latin text-[38px] font-light leading-none tracking-[0.04em] ${
+          className={`latin text-[length:calc(38px*var(--fs))] font-light leading-none tracking-[0.04em] ${
             hasPhoto ? "text-white" : "text-ink"
           }`}
           aria-live="polite"
@@ -63,7 +63,7 @@ export function DdayBanner() {
           {dday ? ddayText(dday) : " "}
         </p>
         <p
-          className={`mt-3 text-[14px] ${hasPhoto ? "text-white/85" : "text-muted"}`}
+          className={`mt-3 text-[length:calc(14px*var(--fs))] ${hasPhoto ? "text-white/85" : "text-muted"}`}
           style={hasPhoto ? { textShadow: "0 1px 12px rgba(20,18,15,0.45)" } : undefined}
         >
           {year}년 {month}월 {day}일

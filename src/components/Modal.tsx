@@ -79,7 +79,7 @@ export function Modal({ open, onClose, title, children }: Props) {
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-paper px-5 py-3">
-              <p className="serif text-[15px] text-accent">{title}</p>
+              <p className="serif text-[length:calc(15px*var(--fs))] text-accent">{title}</p>
               <button
                 ref={closeRef}
                 type="button"

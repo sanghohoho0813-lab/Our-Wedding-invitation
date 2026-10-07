@@ -111,13 +111,13 @@ export function EntryGate() {
 
             {/* 두 사람의 얼굴을 가리지 않도록 글은 아래쪽에 둔다 */}
             <div className="relative flex h-full w-full flex-col items-center justify-end px-8 pb-[max(env(safe-area-inset-bottom),56px)] text-center">
-              <p className="script text-[30px] leading-none text-white/85">
+              <p className="script text-[length:calc(30px*var(--fs))] leading-none text-white/85">
                 our wedding day
               </p>
 
-              <p className="serif mt-7 text-[19px] tracking-[0.04em] text-white">
+              <p className="serif mt-7 text-[length:calc(19px*var(--fs))] tracking-[0.04em] text-white">
                 {wedding.groom.name}
-                <span className="mx-3 text-[13px] text-white/60">×</span>
+                <span className="mx-3 text-[length:calc(13px*var(--fs))] text-white/60">×</span>
                 {wedding.bride.name}
               </p>
 
@@ -126,24 +126,24 @@ export function EntryGate() {
                 aria-hidden="true"
               />
 
-              <p className="mt-6 text-[14.5px] leading-relaxed tracking-[0.01em] text-white/90">
+              <p className="mt-6 text-[length:calc(14.5px*var(--fs))] leading-relaxed tracking-[0.01em] text-white/90">
                 {formatDotted(date)} {weekdayKo(date)}{" "}
                 {wedding.wedding.timeLabel}
               </p>
-              <p className="mt-1.5 text-[13.5px] leading-relaxed tracking-[-0.01em] text-white/75">
+              <p className="mt-1.5 text-[length:calc(13.5px*var(--fs))] leading-relaxed tracking-[-0.01em] text-white/75">
                 {venueLine()}
               </p>
 
               <button
                 type="button"
                 onClick={handleEnter}
-                className="mt-9 min-w-[190px] rounded-full border border-white/55 bg-white/12 px-8 py-3.5 text-[15px] tracking-[0.02em] text-white outline-none backdrop-blur-md transition-colors focus-visible:border-white active:bg-white/25"
+                className="mt-9 min-w-[190px] rounded-full border border-white/55 bg-white/12 px-8 py-3.5 text-[length:calc(15px*var(--fs))] tracking-[0.02em] text-white outline-none backdrop-blur-md transition-colors focus-visible:border-white active:bg-white/25"
               >
                 {entry.buttonLabel}
               </button>
 
               {entry.note && (
-                <p className="mt-5 text-[12px] tracking-[0.02em] text-white/60">
+                <p className="mt-5 text-[length:calc(12px*var(--fs))] tracking-[0.02em] text-white/60">
                   {entry.note}
                 </p>
               )}

@@ -6,12 +6,12 @@ import { wedding } from "@/config/wedding";
 export default function ErrorPage({ reset }: { error: Error; reset: () => void }) {
   return (
     <main className="shell edge flex min-h-[100svh] flex-col items-center justify-center text-center">
-      <p className="serif text-[19px] tracking-[0.02em] text-ink">
+      <p className="serif text-[length:calc(19px*var(--fs))] tracking-[0.02em] text-ink">
         {wedding.groom.name}
-        <span className="mx-2.5 text-[12px] text-faint">×</span>
+        <span className="mx-2.5 text-[length:calc(12px*var(--fs))] text-faint">×</span>
         {wedding.bride.name}
       </p>
-      <p className="mt-5 text-[14.5px] leading-relaxed text-muted">
+      <p className="mt-5 text-[length:calc(14.5px*var(--fs))] leading-relaxed text-muted">
         화면을 불러오는 중 문제가 생겼습니다.
         <br />
         잠시 후 다시 열어주세요.
