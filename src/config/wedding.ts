@@ -111,7 +111,7 @@ export const wedding = {
     /** 소개 카드에 한 줄씩 들어갑니다. 확정되면 draft 줄만 지우세요. */
     likes: {
       label: "좋아하는 것",
-      text: "노래 부르기 · 웨이트 트레이닝",
+      text: "노래 부르기 · 웨이트 트레이닝 · 바이브 코딩",
     } satisfies IntroLine,
     /** 상대가 본 나 — 신부가 직접 써주면 가장 좋습니다. */
     partnerQuote: {
@@ -789,12 +789,6 @@ export const wedding = {
         logo: "/images/ai/perplexity.svg",
         color: "#20b8cd",
         message: "출처를 모두 확인했습니다 [1][2][3]. 두 분이 잘 어울린다는 근거가 압도적으로 많아요.",
-      },
-      {
-        name: "DeepSeek",
-        logo: "/images/ai/deepseek.svg",
-        color: "#4d6bfe",
-        message: "<think> 두 사람의 사랑을 아주 깊이 생각해 보았다… </think> 결론: 완벽한 한 쌍. 축하합니다!",
       },
       {
         name: "Llama",

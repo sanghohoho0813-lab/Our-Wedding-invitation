@@ -219,10 +219,10 @@ function AiReviews({ days }: { days: number | null }) {
           {dv.user}/groom + {dv.host}/bride → main · {aiReviews.length} reviewers
         </p>
         {/* 리뷰어 로고 한 줄 */}
-        <div className="mt-3 flex flex-wrap items-center gap-2.5" aria-label={aiReviews.map((r) => r.name).join(", ")}>
+        <div className="mt-3 flex flex-wrap items-center gap-3.5" aria-label={aiReviews.map((r) => r.name).join(", ")}>
           {aiReviews.map((r) => (
             // eslint-disable-next-line @next/next/no-img-element -- 작은 로고 SVG
-            <img key={r.name} src={r.logo} alt="" width={22} height={22} className="h-[22px] w-[22px]" />
+            <img key={r.name} src={r.logo} alt="" width={33} height={33} className="h-[33px] w-[33px]" />
           ))}
         </div>
       </div>
@@ -232,13 +232,13 @@ function AiReviews({ days }: { days: number | null }) {
           <li key={r.name} className="rounded-[6px] border border-dev-line px-4 py-3">
             <p className="flex items-center gap-2">
               <span
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-white/[0.06] ring-1 ring-dev-line"
+                className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-[10px] bg-white/[0.06] ring-1 ring-dev-line"
                 style={{ backgroundColor: r.color + "14" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- 작은 로고 SVG */}
-                <img src={r.logo} alt="" width={18} height={18} className="h-[18px] w-[18px]" />
+                <img src={r.logo} alt="" width={27} height={27} className="h-[27px] w-[27px]" />
               </span>
-              <span className="font-bold">{r.name}</span>
+              <span className="text-[length:calc(20px*var(--fs))] font-bold leading-tight">{r.name}</span>
               <span className="ml-auto shrink-0 text-dev-green">✓ approved</span>
             </p>
             <p className="mt-1.5 text-dev-ink/90">

@@ -53,6 +53,14 @@ function PersonHead({ label, person }: { label: string; person: Person }) {
   );
 }
 
+/** "노래 부르기 · 웨이트 트레이닝" → 항목 안의 띄어쓰기를 줄바꿈 없는 공백으로 */
+function keepItems(text: string) {
+  return text
+    .split(" · ")
+    .map((item) => item.replace(/ /g, "\u00a0"))
+    .join(" · ");
+}
+
 /** 값 한 칸 — 라벨이 있으면 값 위에 작게 붙인다. */
 function Cell({ line }: { line: IntroLine }) {
   if (!line.text) return <span aria-hidden="true" />;
@@ -100,8 +108,9 @@ function ProfileBox() {
       key: "likes",
       // 라벨이 양쪽 같으면 가운데에 한 번만 쓴다.
       label: groom.likes.label,
-      left: { ...groom.likes, label: undefined },
-      right: { ...bride.likes, label: undefined },
+      // "웨이트 / 트레이닝" 처럼 한 항목이 두 줄로 갈라지지 않게, 줄바꿈은 " · " 에서만 일어나게 한다.
+      left: { ...groom.likes, label: undefined, text: keepItems(groom.likes.text) },
+      right: { ...bride.likes, label: undefined, text: keepItems(bride.likes.text) },
     });
   }
   if (groom.partnerQuote.text || bride.partnerQuote.text) {
@@ -122,10 +131,10 @@ function ProfileBox() {
           <div className="grid grid-cols-2 gap-x-4">
             {row.key === "mbti" ? (
               <>
-                <p className="latin text-center text-[length:calc(13.5px*var(--fs))] tracking-[0.08em] text-accent">
+                <p className="latin text-center text-[length:calc(15px*var(--fs))] font-semibold tracking-[0.08em] text-accent">
                   {row.left.text}
                 </p>
-                <p className="latin text-center text-[length:calc(13.5px*var(--fs))] tracking-[0.08em] text-accent">
+                <p className="latin text-center text-[length:calc(15px*var(--fs))] font-semibold tracking-[0.08em] text-accent">
                   {row.right.text}
                 </p>
               </>

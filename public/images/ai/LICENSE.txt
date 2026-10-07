@@ -1,4 +1,4 @@
-AI 서비스 로고 (claude, chatgpt, gemini, copilot, perplexity, deepseek, llama, grok)
+AI 서비스 로고 (claude, chatgpt, gemini, copilot, perplexity, llama, grok)
 
 출처: LobeHub Icons — @lobehub/icons-static-svg v1.95.1
       https://github.com/lobehub/lobe-icons
