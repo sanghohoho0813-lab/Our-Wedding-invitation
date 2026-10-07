@@ -41,8 +41,12 @@ const T = {
   small: "text-[length:calc(12px*var(--fs))] leading-[1.7]",
 };
 
-function Section({ children }: { children: ReactNode }) {
-  return <section className="mt-14">{children}</section>;
+function Section({ id, children }: { id?: string; children: ReactNode }) {
+  return (
+    <section id={id} className="mt-14 scroll-mt-6">
+      {children}
+    </section>
+  );
 }
 
 /** 연인이 된 날부터 오늘까지 */
@@ -155,6 +159,100 @@ function DevPhotos({ images, initial = 6 }: { images: readonly GalleryImage[]; i
       )}
       {open !== null && <GalleryViewer images={images} startIndex={open} onClose={() => setOpen(null)} />}
     </>
+  );
+}
+
+/**
+ * AI 들의 코드 리뷰 — 화면에 들어오면 한 명씩 approve 를 남긴다.
+ * 끝의 버튼은 하객도 축하 메시지(= 리뷰)를 남기러 아래로 데려간다.
+ */
+function AiReviews({ days }: { days: number | null }) {
+  const { pr, aiReviews } = dv;
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(0);
+  const done = shown >= aiReviews.length;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(aiReviews.length);
+      return;
+    }
+    let timer = 0;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        let n = 0;
+        const tick = () => {
+          n += 1;
+          setShown(n);
+          if (n < aiReviews.length) timer = window.setTimeout(tick, 650);
+        };
+        timer = window.setTimeout(tick, 900);
+      },
+      { rootMargin: "0px 0px -20% 0px" },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, [aiReviews.length]);
+
+  const goWrite = () => {
+    document.getElementById("dev-cheers")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <div ref={ref} className={T.base}>
+      <div className="rounded-[6px] border border-dev-line bg-dev-panel px-4 py-3">
+        <p>
+          <span className="mr-2 rounded-full bg-dev-green/15 px-2 py-0.5 text-[length:calc(11.5px*var(--fs))] text-dev-green">
+            Open
+          </span>
+          <span className="font-bold">{pr.title}</span>
+          <span className="text-dev-faint"> #{pr.number}</span>
+        </p>
+        <p className={`mt-1 ${T.small} text-dev-faint`}>
+          {dv.user}/groom + {dv.host}/bride → main · {aiReviews.length} reviewers
+        </p>
+      </div>
+
+      <ul className="mt-3 space-y-2.5">
+        {aiReviews.slice(0, shown).map((r) => (
+          <li key={r.name} className="rounded-[6px] border border-dev-line px-4 py-3">
+            <p className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: r.color }} aria-hidden="true" />
+              <span className="font-bold">{r.name}</span>
+              <span className="ml-auto shrink-0 text-dev-green">✓ approved</span>
+            </p>
+            <p className="mt-1.5 text-dev-ink/90">
+              {r.message.replace("{days}", days === null ? "…" : days.toLocaleString("ko-KR"))}
+            </p>
+          </li>
+        ))}
+      </ul>
+      {!done && <span className="dev-cursor mt-3" aria-hidden="true" />}
+
+      {done && (
+        <div className="mt-4">
+          <p className="text-dev-green">
+            ✓ All checks have passed · {aiReviews.length} approvals · LGTM 🎉
+          </p>
+          <p className={`mt-1 ${T.small} text-dev-faint`}>{pr.note}</p>
+          <button
+            type="button"
+            onClick={goWrite}
+            className="mt-4 w-full rounded-[6px] border border-dev-cyan/60 bg-dev-cyan/10 px-4 py-3 text-left text-dev-cyan active:bg-dev-cyan/20"
+          >
+            $ {pr.button}
+            <span className={`ml-2 ${T.small} text-dev-faint`}># 나도 축하 메시지 남기기</span>
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -527,8 +625,15 @@ export function DevInvitation() {
           </Cmd>
         </Section>
 
-        {/* 축하 메시지 — 기본 청첩장과 같은 데이터 */}
+        {/* AI 들의 리뷰 */}
         <Section>
+          <Cmd command={`gh pr view ${dv.pr.number} --reviews`}>
+            <AiReviews days={days} />
+          </Cmd>
+        </Section>
+
+        {/* 축하 메시지 — 기본 청첩장과 같은 데이터 */}
+        <Section id="dev-cheers">
           <Cmd command={'git log --grep="축하"'}>
             <Cheers variant="dev" />
           </Cmd>

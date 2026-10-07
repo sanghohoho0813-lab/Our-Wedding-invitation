@@ -745,6 +745,56 @@ export const wedding = {
       { date: "2022-10-12", type: "merge", message: "친구 → 연인, 같은 branch 에서 시작" },
       { date: "2022-08", type: "feat", message: "신랑이 운영하던 모임에서 첫 만남" },
     ],
+    /**
+     * $ gh pr view — AI 들이 두 사람의 결혼 PR 을 리뷰하고 approve 한다.
+     * {days} 는 함께한 날수로 바뀐다. color 는 이름 앞 점 색.
+     * Claude 리뷰는 이 청첩장을 함께 만든 Claude 가 직접 쓴 것이고,
+     * 나머지는 각 AI 말투를 흉내 낸 재미용이다. (화면에도 그렇게 적어 둔다)
+     */
+    pr: {
+      number: 1220,
+      title: "feat: 상호 ♥ 지윤 → main",
+      note: "// Claude 의 리뷰만 진짜예요. 나머지는 재미로 꾸몄어요 :)",
+      button: "approve --again",
+    },
+    aiReviews: [
+      {
+        name: "Claude",
+        color: "#d97757",
+        message:
+          "두 분이 함께 쌓아 온 {days}일의 커밋을 읽어 봤어요. 충돌이 날 때마다 서로를 먼저 이해하는 쪽으로 merge 해 온 흔적이 보여요. 진심으로 축하드립니다.",
+      },
+      {
+        name: "ChatGPT",
+        color: "#10a37f",
+        message: "검토 결과 높은 호환성과 안정성이 확인되었습니다. 평생 지원(LTS) 버전으로 배포를 권장합니다. 결혼 축하해요! 🎉",
+      },
+      {
+        name: "Gemini",
+        color: "#4f8df9",
+        message: "사진 · 영상 · 웃음소리까지 멀티모달로 분석해 봤어요. 모든 입력에서 행복이 감지됩니다. ✨",
+      },
+      {
+        name: "Copilot",
+        color: "#a371f7",
+        message: "다음 줄을 자동 완성했어요 → forever(together) · 수락하려면 Tab",
+      },
+      {
+        name: "Perplexity",
+        color: "#20b8cd",
+        message: "출처를 모두 확인했습니다 [1][2][3]. 두 분이 잘 어울린다는 근거가 압도적으로 많아요.",
+      },
+      {
+        name: "DeepSeek",
+        color: "#4d6bfe",
+        message: "<think> 두 사람의 사랑을 아주 깊이 생각해 보았다… </think> 결론: 완벽한 한 쌍. 축하합니다!",
+      },
+      {
+        name: "Llama",
+        color: "#0668e1",
+        message: "오픈소스처럼, 두 분의 사랑도 모두에게 따뜻하게 공유되길 바라요. 🦙",
+      },
+    ],
     /** 맨 끝 $ tail -f 로그 — 시각은 예식 시작 시각만 쓴다 */
     log: [
       "INFO  ceremony started",
