@@ -21,6 +21,17 @@ export function Modal({ open, onClose, title, children }: Props) {
 
   useEffect(() => setMounted(true), []);
 
+  /*
+   * onClose 는 부르는 쪽에서 매번 새 함수로 넘어온다.
+   * 이걸 아래 효과의 조건에 넣으면 글자를 하나 칠 때마다(다시 그릴 때마다)
+   * 효과가 처음부터 다시 돌아 X 버튼으로 초점을 옮겨 버린다.
+   * → 키보드가 사라지던 원인. 최신 함수만 ref 에 담아 두고 효과는 열릴 때 한 번만 돈다.
+   */
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!open) return;
 
@@ -28,7 +39,7 @@ export function Modal({ open, onClose, title, children }: Props) {
     const unlock = lockScroll();
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", onKeyDown);
     closeRef.current?.focus();
@@ -37,7 +48,7 @@ export function Modal({ open, onClose, title, children }: Props) {
       unlock();
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!mounted) return null;
 

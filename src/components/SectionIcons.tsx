@@ -117,13 +117,17 @@ const ICONS = {
     </>
   ),
 
-  /** 참석 여부 — 클립보드에 초록 체크 */
-  rsvp: (
+  /** 축하 메시지 — 살구색 말풍선에 하트, 노란 반짝임 */
+  cheer: (
     <>
-      <rect x="4.5" y="4" width="15" height="18" rx="2" fill="#f3e3c8" stroke="#9c7034" {...S} />
-      <rect x="6.6" y="6.6" width="10.8" height="13.3" rx="1" fill="#ffffff" />
-      <rect x="8.5" y="2.5" width="7" height="3.5" rx="1" fill="#c4a27c" stroke="#9c7034" {...S} />
-      <path d="m9 13.4 2.2 2.2 4.3-4.6" fill="none" stroke="#3f8a5a" {...S} strokeWidth={1.8} />
+      <path
+        d="M5.5 4h11a2.5 2.5 0 0 1 2.5 2.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-4 3.5V16H5.5A2.5 2.5 0 0 1 3 13.5v-7A2.5 2.5 0 0 1 5.5 4z"
+        fill="#fbe1d3"
+        stroke="#c0704f"
+        {...S}
+      />
+      <path d={smallHeart(11, 7.4, 1.7)} fill="#e07a70" />
+      <path d="M20.5 2.2v2.6M19.2 3.5h2.6" stroke="#e8b24a" {...S} strokeWidth={1.3} />
     </>
   ),
 

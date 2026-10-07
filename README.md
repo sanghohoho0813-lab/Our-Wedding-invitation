@@ -38,12 +38,12 @@ npm run lint       # ESLint
 06 예식 안내          일시·장소 + 사진 + 달력 + 캘린더에 추가
 07 D-DAY             남은 날짜
 08 웨딩 갤러리        웨딩 화보 15장 + 전체화면 뷰어(확대 가능)
-09 우리의 시간        첫 만남 · 연인 → 일상 사진 27장 → 결혼 (한 흐름)
+09 우리의 시간        첫 만남 · 연인 → 일상 사진 26장 + 영상 → 결혼 (한 흐름)
 09-1 서로에게         신랑·신부가 서로에게 남기는 짧은 편지
 10 게스트스냅         하객 참여 안내 (업로드는 예식 당일 오픈)
 11 안내 사항          주차 / 식사 / 셔틀 탭
 12 오시는 길          지도 + 지도앱 버튼 + 교통
-13 참석 여부 전달      RSVP 폼
+13 축하 메시지        신랑측/신부측 · 이름 · 메시지 (신랑·신부만 /messages 에서 열람)
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
 15 방명록             서버 연결 전까지 자동으로 숨김 (6-1 참고)
 16 함께한 시간        2022. 10. 12 부터 흐르는 실시간 카운터
@@ -230,44 +230,29 @@ Chrome · Safari · 삼성인터넷 · 카카오톡 인앱 브라우저 모두 �
 
 ## 6. 아직 연결하지 않은 기능
 
-### 6-1. 참석 여부 · 방명록 (서버 없이 동작하는 방식)
+### 6-1. 축하 메시지 저장소 연결 (꼭 해주세요)
 
-서버(`hasRemoteBackend()`)가 연결되기 전까지는 이렇게 동작합니다.
+하객이 남긴 축하 메시지는 **Upstash Redis**(무료)에 저장되고,
+신랑 · 신부만 `https://www.sh-jy-wedding.app/messages` 에서 비밀번호로 열어볼 수 있습니다.
+연결 전에는 하객이 보내기를 눌러도 "준비 중" 안내만 뜹니다.
 
-| 기능 | 서버 없을 때 | Supabase 연결 후 |
-| --- | --- | --- |
-| 참석 여부 | 하객의 **문자 앱**이 열려 신랑·신부에게 바로 전송 | 서버에 저장 |
-| 방명록 | 섹션을 **아예 표시하지 않음** | 목록 + 작성 / 삭제 |
+1. Vercel → 이 프로젝트 → **Storage** 탭 → **Create Database** → **Upstash for Redis**
+   (무료 요금제) → 만들기 → **Connect Project** 로 이 프로젝트에 연결
+   → `KV_REST_API_URL` · `KV_REST_API_TOKEN` 이 자동으로 들어옵니다.
+2. **Settings → Environment Variables** 에 `MESSAGES_PASSWORD` 를 추가
+   (두 분만 아는 비밀번호. Production 체크)
+3. **Deployments** → 맨 위 배포의 `⋯` → **Redeploy**
 
-방명록은 서버가 없으면 각자 자기 글만 보이게 되어 기능을 못 하므로 숨깁니다.
-참석 여부는 문자로 실제 신랑에게 도착하므로 그대로 켜 두어도 됩니다.
+로컬에서 시험할 때는 `MESSAGES_STORE=memory MESSAGES_PASSWORD=아무거나 npm run dev`
+로 띄우면 메모리에만 저장됩니다.
 
-문자는 하객이 고른 쪽으로 갑니다.
-
-| 하객 선택 | 받는 사람 |
-| --- | --- |
-| 신랑측 | `groom.phone` |
-| 신부측 | `bride.phone` |
-
-> ⚠️ 해당 번호가 아직 `010-0000-0000` 이면 **문자 앱을 열지 않고** 안내만 띄웁니다.
-> 두 번호 모두 실제 번호로 바꿔주세요.
+방명록(공개 글 목록)은 서버가 없으면 각자 자기 글만 보이게 되어 기능을 못 하므로 숨겨 둡니다.
 
 ### 6-2. Supabase 연결 방법
 
 1. Supabase 프로젝트를 만들고 아래 테이블을 생성합니다.
 
 ```sql
-create table rsvp (
-  id          bigint generated always as identity primary key,
-  side        text    not null,          -- 'groom' | 'bride'
-  name        text    not null,
-  attending   boolean not null,
-  headcount   int     not null default 1,
-  meal_yn     boolean not null default true,
-  message     text,
-  created_at  timestamptz not null default now()
-);
-
 create table guestbook (
   id          bigint generated always as identity primary key,
   name        text not null,
@@ -288,7 +273,7 @@ NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-3. `src/lib/backend.ts` 의 함수 4개(`submitRsvp`, `fetchGuestbook`,
+3. `src/lib/backend.ts` 의 함수 3개(`fetchGuestbook`,
    `addGuestbookEntry`, `deleteGuestbookEntry`) 안의 `TODO(Supabase)` 주석 자리를
    Supabase 호출로 바꾸면 됩니다. **화면 코드는 수정할 필요가 없습니다.**
 
@@ -376,7 +361,7 @@ src/
 (2.8초에 걸쳐 밝기만 천천히 오르내립니다)
 
 - 지금 붙은 곳: 인터뷰 읽어보기 · 혼주에게 연락하기 · 사진 더보기(2곳) ·
-  캘린더에 추가 · 참석 여부 전달 · 신랑측 / 신부측 계좌
+  캘린더에 추가 · 축하 메시지 남기기 · 신랑측 / 신부측 계좌
 - `aria-expanded="true"` 가 되면(이미 펼쳐졌으면) 저절로 멈춥니다.
 - `prefers-reduced-motion: reduce` 에서는 빛나지 않습니다.
 - 카드처럼 `overflow-hidden` 이 걸린 요소는 **안쪽 버튼이 아니라 바깥 카드**에
@@ -397,7 +382,10 @@ src/
 
 ### 지도에 대하여
 
-지금 지도는 OpenStreetMap 타일을 이어 붙여 만든 **이미지**입니다. API 키가 필요 없습니다.
+처음에는 OpenStreetMap 타일로 만든 **지도 그림**이 보이고, 누르면 그 자리에서
+끌고 확대할 수 있는 **구글 지도**로 바뀝니다. 둘 다 API 키가 필요 없습니다.
+구글 지도를 처음부터 띄우지 않는 이유: 휴대폰에서는 지도 코드가 청첩장과 같은
+실행 줄을 써서, 미리 띄워 두면 그 근처를 스크롤할 때 멈칫합니다.
 네이버지도 · 카카오맵 버튼은 실제 앱/웹으로 바로 연결됩니다.
 
 카카오맵을 **화면 안에 그대로 띄우려면** 카카오 JavaScript 키와
@@ -439,6 +427,7 @@ src/
 - [x] 신랑·신부 **연락처** 입력
 - [x] 혼주 **연락처** 입력
 - [x] **계좌번호** 입력
+- [ ] **축하 메시지 저장소** 연결 + `MESSAGES_PASSWORD` 설정 (6-1)
 - [ ] **교통 안내** 확인
 - [ ] 비어 있는 **사진 자리** 채우기 (4번 표)
 - [ ] 홀 이름이 정해지면 `wedding.hall` 입력

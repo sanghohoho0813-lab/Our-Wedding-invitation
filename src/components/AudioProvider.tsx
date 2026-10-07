@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { EntryGate } from "@/components/EntryGate";
@@ -54,7 +55,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
    * 곡이 되감기면서 스크롤도 순간 멈칫한다.
    */
   const audibleOnce = useRef(false);
-  const isReady = wedding.music.enabled && Boolean(wedding.music.src);
+  // 음악 · 입장 화면 · 떠 있는 버튼은 청첩장 본문(/)에서만 쓴다.
+  // (신랑 · 신부가 축하 메시지를 보는 /messages 같은 곳에서는 필요 없다)
+  const onInvitation = usePathname() === "/";
+  const isReady = onInvitation && wedding.music.enabled && Boolean(wedding.music.src);
 
   /** 화면 표시용 상태 — "재생 중이면서 음소거가 아닐 때"만 켜진 것으로 본다. */
   const sync = useCallback(() => {
@@ -243,8 +247,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         />
       )}
       {isReady && <MusicToggle />}
-      <FloatingButtons />
-      <EntryGate />
+      {onInvitation && <FloatingButtons />}
+      {onInvitation && <EntryGate />}
     </AudioCtx.Provider>
   );
 }

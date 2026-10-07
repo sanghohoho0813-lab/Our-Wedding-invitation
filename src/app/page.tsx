@@ -1,4 +1,5 @@
 import { Accounts } from "@/components/Accounts";
+import { Cheers } from "@/components/Cheers";
 import { Couple } from "@/components/Couple";
 import { DdayBanner } from "@/components/DdayBanner";
 import { Ending } from "@/components/Ending";
@@ -12,7 +13,6 @@ import { Interview } from "@/components/Interview";
 import { Invitation } from "@/components/Invitation";
 import { Location } from "@/components/Location";
 import { QuoteBlock } from "@/components/QuoteBlock";
-import { Rsvp } from "@/components/Rsvp";
 import { Timeline } from "@/components/Timeline";
 import { TogetherTime } from "@/components/TogetherTime";
 import { WeddingInfo } from "@/components/WeddingInfo";
@@ -33,7 +33,7 @@ export default function Page() {
       <GuestSnap />
       <InfoTabs />
       <Location />
-      <Rsvp />
+      <Cheers />
       <Accounts />
       <Guestbook />
       <TogetherTime />
