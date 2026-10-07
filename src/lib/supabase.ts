@@ -10,7 +10,8 @@
  *  한 번 실행하면 만들어진다. (README 6-1 참고)
  *
  *  두 값 모두 "공개해도 되는 키"다. 누가 무엇을 할 수 있는지는
- *  Supabase 쪽 규칙(RLS)이 정한다 — 읽기 · 새로 쓰기만 되고 지우기 · 고치기는 안 된다.
+ *  Supabase 쪽 규칙(RLS)과 함수가 정한다 — 읽기는 누구나, 쓰기 · 고치기 · 지우기는
+ *  비밀번호를 확인하는 함수로만 된다. (supabase/02-passwords.sql)
  *  SDK 없이 fetch 로 직접 부른다. (청첩장 용량을 늘리지 않기 위해)
  * ─────────────────────────────────────────────────────────────
  */
@@ -44,20 +45,27 @@ export async function selectRows<T>(table: string, query: string): Promise<T[]> 
   return (await res.json()) as T[];
 }
 
-/** 표에 한 줄 쓰기 — 저장된 줄을 돌려준다. */
-export async function insertRow<T>(table: string, row: Record<string, unknown>): Promise<T> {
-  const res = await fetch(`${URL_}/rest/v1/${table}`, {
+/**
+ * Supabase 함수 부르기 (supabase/02-passwords.sql).
+ * 쓰기 · 고치기 · 지우기는 모두 함수를 거친다 — 비밀번호 확인이 Supabase 안에서 이뤄지므로
+ * 화면 쪽 코드를 어떻게 바꿔도 남의 글이나 사진은 건드릴 수 없다.
+ * 함수가 오류를 내면 그 이유(예: "storage_full")를 담아 던진다.
+ */
+export async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const res = await fetch(`${URL_}/rest/v1/rpc/${fn}`, {
     method: "POST",
-    headers: {
-      ...authHeaders(),
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-    },
-    body: JSON.stringify(row),
+    headers: { ...authHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(args),
   });
-  if (!res.ok) throw new Error(`insert_${res.status}`);
-  const rows = (await res.json()) as T[];
-  return rows[0];
+  if (!res.ok) {
+    let reason = `rpc_${res.status}`;
+    try {
+      const err = (await res.json()) as { message?: string };
+      if (err.message) reason = err.message;
+    } catch {}
+    throw new Error(reason);
+  }
+  return (await res.json()) as T;
 }
 
 /**
@@ -84,6 +92,16 @@ export function uploadFile(
     xhr.onerror = () => reject(new Error("upload_network"));
     xhr.send(file);
   });
+}
+
+/** 지우기가 확인된 파일을 보관함에서 지운다. (실패해도 목록에서는 이미 빠져 있다) */
+export async function deleteFiles(paths: string[]) {
+  if (paths.length === 0) return;
+  await fetch(`${URL_}/storage/v1/object/${SNAP_BUCKET}`, {
+    method: "DELETE",
+    headers: { ...authHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ prefixes: paths }),
+  }).catch(() => undefined);
 }
 
 /** 보관함 파일의 공개 주소 */

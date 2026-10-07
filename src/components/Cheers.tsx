@@ -7,7 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
-import { insertRow, selectRows, supabaseReady } from "@/lib/supabase";
+import { rpc, selectRows, supabaseReady } from "@/lib/supabase";
 
 const FIELD =
   "mt-2 w-full rounded-[8px] border border-line bg-white px-4 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-faint/70 focus:border-accent-soft";
@@ -17,19 +17,125 @@ const MAX_MESSAGE = 500;
 type Side = "groom" | "bride";
 type Cheer = { id: number; side: Side; name: string; message: string; created_at: string };
 
-function formatDate(iso: string) {
+const SIDE_LABEL: Record<Side, string> = { groom: "신랑측", bride: "신부측" };
+
+/** 10월 7일 오후 3:05 */
+function formatTime(iso: string) {
   const d = new Date(iso);
-  return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}`;
+  const h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, "0");
+  return `${d.getMonth() + 1}월 ${d.getDate()}일 ${h < 12 ? "오전" : "오후"} ${h % 12 || 12}:${m}`;
 }
 
-const SIDES: { value: Side; label: string; on: string }[] = [
-  { value: "groom", label: "신랑측", on: "border-tint-groom-line bg-tint-groom text-tint-groom-ink" },
-  { value: "bride", label: "신부측", on: "border-tint-bride-line bg-tint-bride text-tint-bride-ink" },
-];
+/** 수정 · 삭제 — 남길 때 정한 비밀번호(또는 신랑 · 신부의 관리자 비밀번호)로만 된다. */
+function ManageCheer({
+  target,
+  mode,
+  onClose,
+  onUpdated,
+  onDeleted,
+}: {
+  target: Cheer | null;
+  mode: "edit" | "delete";
+  onClose: () => void;
+  onUpdated: (c: Cheer) => void;
+  onDeleted: (id: number) => void;
+}) {
+  const { showToast } = useToast();
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    setPassword("");
+    setMessage(target?.message ?? "");
+  }, [target]);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!target || busy) return;
+    if (!password) return showToast("비밀번호를 입력해 주세요.");
+    if (mode === "edit" && !message.trim()) return showToast("메시지를 입력해 주세요.");
+
+    setBusy(true);
+    try {
+      if (mode === "edit") {
+        const updated = await rpc<Cheer | null>("update_cheer", {
+          p_id: target.id,
+          p_message: message.trim(),
+          p_password: password,
+        });
+        if (!updated) return showToast("비밀번호가 맞지 않아요.");
+        onUpdated(updated);
+        showToast("메시지를 고쳤어요.");
+      } else {
+        const ok = await rpc<boolean>("delete_cheer", { p_id: target.id, p_password: password });
+        if (!ok) return showToast("비밀번호가 맞지 않아요.");
+        onDeleted(target.id);
+        showToast("메시지를 지웠어요.");
+      }
+      onClose();
+    } catch {
+      showToast("잠시 후 다시 시도해 주세요.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Modal
+      open={target !== null}
+      onClose={onClose}
+      title={mode === "edit" ? "메시지 고치기" : "메시지 지우기"}
+    >
+      <form onSubmit={submit} className="space-y-6">
+        {mode === "edit" ? (
+          <div>
+            <label htmlFor="manage-message" className="text-[13.5px] text-muted">
+              축하 메시지
+            </label>
+            <textarea
+              id="manage-message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={5}
+              maxLength={MAX_MESSAGE}
+              className={`${FIELD} resize-none leading-[1.7]`}
+            />
+          </div>
+        ) : (
+          <p className="text-[14.5px] leading-relaxed text-ink">
+            <span className="text-muted">{target && SIDE_LABEL[target.side]}</span> {target?.name}님의
+            메시지를 지울까요?
+          </p>
+        )}
+
+        <div>
+          <label htmlFor="manage-password" className="text-[13.5px] text-muted">
+            남길 때 정한 비밀번호
+          </label>
+          <input
+            id="manage-password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="off"
+            maxLength={30}
+            className={FIELD}
+          />
+        </div>
+
+        <button type="submit" disabled={busy} className="btn-solid w-full disabled:opacity-60">
+          {busy ? "확인 중…" : mode === "edit" ? "고치기" : "지우기"}
+        </button>
+      </form>
+    </Modal>
+  );
+}
 
 /**
  * 축하 메시지 — 신랑측 · 신부측, 이름, 메시지를 남기고 모두가 함께 본다.
- * Supabase 의 cheers 표에 저장된다. (lib/supabase.ts, supabase/setup.sql)
+ * 남길 때 정한 비밀번호로 본인 글만 고치고 지울 수 있다. (supabase/02-passwords.sql)
  */
 export function Cheers() {
   const { cheers } = wedding;
@@ -40,11 +146,13 @@ export function Cheers() {
   const [side, setSide] = useState<Side | null>(null);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
   /** 사람에게는 보이지 않는 칸 — 자동 전송 프로그램 거르기용 */
   const [website, setWebsite] = useState("");
   const [sending, setSending] = useState(false);
   const [list, setList] = useState<Cheer[]>([]);
   const [showAll, setShowAll] = useState(false);
+  const [manage, setManage] = useState<{ target: Cheer; mode: "edit" | "delete" } | null>(null);
   const ready = supabaseReady();
 
   const reload = useCallback(async () => {
@@ -64,6 +172,8 @@ export function Cheers() {
     if (cheers.enabled && ready) void reload();
   }, [cheers.enabled, ready, reload]);
 
+  const closeManage = useCallback(() => setManage(null), []);
+
   if (!cheers.enabled) return null;
 
   const visible = showAll ? list : list.slice(0, cheers.pageSize);
@@ -73,12 +183,21 @@ export function Cheers() {
     setOpen(true);
   };
 
+  /** 추천 문구 — 비어 있으면 채우고, 이미 쓴 글이 있으면 뒤에 붙인다. */
+  const applyPreset = (text: string) => {
+    setMessage((prev) => {
+      const next = prev.trim() ? `${prev.trimEnd()}\n${text}` : text;
+      return next.slice(0, MAX_MESSAGE);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (sending) return;
     if (!side) return showToast("신랑측 · 신부측을 골라 주세요.");
     if (!name.trim()) return showToast("성함을 입력해 주세요.");
     if (!message.trim()) return showToast("메시지를 입력해 주세요.");
+    if (password.length < 4) return showToast("비밀번호를 4자 이상 정해 주세요.");
 
     // 사람 눈에 보이지 않는 칸이 채워져 있으면 자동 전송 프로그램이다.
     if (website) {
@@ -89,15 +208,17 @@ export function Cheers() {
 
     setSending(true);
     try {
-      const saved = await insertRow<Cheer>("cheers", {
-        side,
-        name: name.trim(),
-        message: message.trim(),
+      const saved = await rpc<Cheer>("add_cheer", {
+        p_side: side,
+        p_name: name.trim(),
+        p_message: message.trim(),
+        p_password: password,
       });
       if (saved) setList((prev) => [saved, ...prev.filter((c) => c.id !== saved.id)]);
       setDone(true);
       setName("");
       setMessage("");
+      setPassword("");
       setSide(null);
     } catch {
       showToast("전송에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -122,32 +243,35 @@ export function Cheers() {
 
       {list.length > 0 && (
         <Reveal delay={0.08} className="mt-10">
-          <ul className="space-y-3">
+          <ul className="divide-y divide-line border-y border-line">
             {visible.map((c) => (
-              <li
-                key={c.id}
-                className={`rounded-[10px] border-l-[3px] px-4 py-4 ${
-                  c.side === "groom"
-                    ? "border-tint-groom-line bg-tint-groom"
-                    : "border-tint-bride-line bg-tint-bride"
-                }`}
-              >
-                <p className="flex items-baseline justify-between gap-3">
-                  <span className="min-w-0 text-[14.5px] font-medium text-ink">
-                    <span
-                      className={`mr-2 text-[12px] ${
-                        c.side === "groom" ? "text-tint-groom-ink" : "text-tint-bride-ink"
-                      }`}
-                    >
-                      {c.side === "groom" ? "신랑측" : "신부측"}
-                    </span>
-                    {c.name}
-                  </span>
-                  <span className="shrink-0 text-[11.5px] text-faint">{formatDate(c.created_at)}</span>
+              <li key={c.id} className="py-5">
+                <p className="flex items-baseline gap-2">
+                  <span className="shrink-0 text-[12.5px] text-accent">{SIDE_LABEL[c.side]}</span>
+                  <span className="min-w-0 truncate text-[15px] font-medium text-ink">{c.name}</span>
                 </p>
                 <p className="mt-2 whitespace-pre-line break-words text-[14.5px] leading-[1.8] text-ink">
                   {c.message}
                 </p>
+                <div className="mt-2 flex items-center justify-between gap-3">
+                  <span className="text-[11.5px] text-faint">{formatTime(c.created_at)}</span>
+                  <span className="-mr-2 flex shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setManage({ target: c, mode: "edit" })}
+                      className="tap px-2 text-[12px] text-faint"
+                    >
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setManage({ target: c, mode: "delete" })}
+                      className="tap px-2 text-[12px] text-faint"
+                    >
+                      삭제
+                    </button>
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
@@ -189,17 +313,19 @@ export function Cheers() {
             <fieldset>
               <legend className="text-[13.5px] text-muted">어느 쪽 하객이신가요?</legend>
               <div className="mt-2 grid grid-cols-2 gap-2">
-                {SIDES.map((s) => (
+                {(["groom", "bride"] as const).map((v) => (
                   <button
-                    key={s.value}
+                    key={v}
                     type="button"
-                    onClick={() => setSide(s.value)}
-                    aria-pressed={side === s.value}
+                    onClick={() => setSide(v)}
+                    aria-pressed={side === v}
                     className={`tap rounded-[8px] border text-[15px] transition-colors ${
-                      side === s.value ? s.on : "border-line bg-white text-muted"
+                      side === v
+                        ? "border-accent-soft bg-accent-pale text-ink"
+                        : "border-line bg-white text-muted"
                     }`}
                   >
-                    {s.label}
+                    {SIDE_LABEL[v]}
                   </button>
                 ))}
               </div>
@@ -232,9 +358,37 @@ export function Cheers() {
                 placeholder="두 사람에게 전하고 싶은 말을 적어 주세요."
                 className={`${FIELD} resize-none leading-[1.7]`}
               />
-              <p className="mt-1.5 text-right text-[11.5px] text-faint">
+              <div className="mt-2.5 flex flex-wrap gap-1.5">
+                {cheers.presets.map((text) => (
+                  <button
+                    key={text}
+                    type="button"
+                    onClick={() => applyPreset(text)}
+                    className="rounded-full border border-line bg-white px-3 py-1.5 text-[12.5px] text-muted active:bg-paper-deep"
+                  >
+                    {text}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-right text-[11.5px] text-faint">
                 {message.length} / {MAX_MESSAGE}
               </p>
+            </div>
+
+            <div>
+              <label htmlFor="cheers-password" className="text-[13.5px] text-muted">
+                비밀번호 <span className="text-faint">(나중에 고치거나 지울 때 필요해요)</span>
+              </label>
+              <input
+                id="cheers-password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                maxLength={30}
+                placeholder="4자 이상"
+                className={FIELD}
+              />
             </div>
 
             {/* 자동 전송 프로그램 거르기용 — 사람에게는 보이지 않는다 */}
@@ -256,6 +410,14 @@ export function Cheers() {
           </form>
         )}
       </Modal>
+
+      <ManageCheer
+        target={manage?.target ?? null}
+        mode={manage?.mode ?? "delete"}
+        onClose={closeManage}
+        onUpdated={(c) => setList((prev) => prev.map((x) => (x.id === c.id ? c : x)))}
+        onDeleted={(id) => setList((prev) => prev.filter((x) => x.id !== id))}
+      />
     </section>
   );
 }

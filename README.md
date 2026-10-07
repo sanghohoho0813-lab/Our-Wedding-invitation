@@ -238,6 +238,8 @@ Chrome · Safari · 삼성인터넷 · 카카오톡 인앱 브라우저 모두 �
 
 1. **Supabase → SQL Editor → New query** 에 [`supabase/setup.sql`](supabase/setup.sql) 내용을
    통째로 붙여넣고 **Run** (표 2개 + 사진 보관함 + 권한이 한 번에 만들어집니다)
+   이어서 [`supabase/02-passwords.sql`](supabase/02-passwords.sql) 도 같은 방법으로 **Run**
+   — 실행 전에 맨 아래 `여기에_관리자_비밀번호` 를 두 분만 아는 비밀번호로 바꿔주세요.
 2. **Vercel → 이 프로젝트 → Settings → Environment Variables** 에 아래 두 값이 있는지 확인
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (새 형식이면 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 도 됩니다)
@@ -248,8 +250,15 @@ Chrome · Safari · 삼성인터넷 · 카카오톡 인앱 브라우저 모두 �
 3. **Deployments → 맨 위 배포의 `⋯` → Redeploy**
    (`NEXT_PUBLIC_` 값은 배포할 때 청첩장에 담기므로 꼭 다시 배포해야 합니다)
 
-지울 메시지나 사진이 생기면 Supabase 의 **Table Editor**(cheers / snaps) 와
-**Storage → guest-snaps** 에서 직접 지우면 됩니다. 하객은 고치거나 지울 수 없습니다.
+**지우기 · 고치기**
+- 하객은 남기거나 올릴 때 비밀번호(4자 이상)를 정하고, 그 비밀번호로 **자기 것만** 지울 수 있습니다.
+  (축하 메시지는 고치기도 됩니다)
+- 신랑 · 신부는 같은 칸에 **관리자 비밀번호**를 넣으면 무엇이든 지우고 고칠 수 있습니다.
+- 비밀번호 확인은 Supabase 안의 함수가 하므로 화면을 조작해도 남의 것은 건드릴 수 없습니다.
+- 관리자 비밀번호를 바꾸려면 `02-passwords.sql` 맨 아래 한 줄만 고쳐 다시 Run 하세요.
+
+**공간** — 무료 요금제 저장 공간은 1GB 입니다. 사진 · 영상이 900MB 에 이르면
+청첩장이 더 올리지 않고 "공간이 가득 찼어요" 라고 안내합니다. (`guestSnap.maxTotalMb`)
 
 방명록(이름 + 글 + 비밀번호 삭제형)은 축하 메시지로 대신하므로 꺼져 있습니다.
 
