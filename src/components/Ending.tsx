@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
@@ -97,6 +99,15 @@ export function Ending() {
               </p>
             )}
           </>
+        )}
+
+        {wedding.devVersion.enabled && (
+          <Link
+            href="/dev"
+            className="tap mt-5 inline-flex px-2 font-mono text-[length:calc(12px*var(--fs))] text-faint underline decoration-line underline-offset-4"
+          >
+            {wedding.devVersion.switchLabel}
+          </Link>
         )}
 
         <p className="mt-6 text-[length:calc(11px*var(--fs))] tracking-[0.06em] text-faint">

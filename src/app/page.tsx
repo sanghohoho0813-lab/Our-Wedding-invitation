@@ -13,6 +13,7 @@ import { Interview } from "@/components/Interview";
 import { Invitation } from "@/components/Invitation";
 import { Location } from "@/components/Location";
 import { QuoteBlock } from "@/components/QuoteBlock";
+import { ScrollReset } from "@/components/ScrollReset";
 import { Timeline } from "@/components/Timeline";
 import { TogetherTime } from "@/components/TogetherTime";
 import { WeddingInfo } from "@/components/WeddingInfo";
@@ -20,6 +21,7 @@ import { WeddingInfo } from "@/components/WeddingInfo";
 export default function Page() {
   return (
     <main>
+      <ScrollReset />
       <Hero />
       <Invitation />
       <QuoteBlock />

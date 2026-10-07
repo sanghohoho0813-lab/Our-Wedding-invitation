@@ -695,6 +695,67 @@ export const wedding = {
     ] satisfies ContactPerson[],
   },
 
+  /* ── 개발자 버전 (/dev) ────────────────────────────────────
+     같은 내용을 까만 터미널 화면 + 개발자 말투로 다시 꾸민 버전.
+     본 청첩장 첫 화면의 "</> 개발자 버전" 스위치나 /dev 주소로 들어온다.
+     축하 메시지 · 사진 올리기 · 음악은 본 청첩장과 같은 데이터를 쓴다.
+     아래 문구는 초안이니 두 분 말투로 편하게 고쳐 주세요. */
+  devVersion: {
+    enabled: true,
+    /** 터미널 줄 앞에 붙는 이름 — user@host:path$ */
+    user: "sangho",
+    host: "jiyun",
+    path: "~/wedding",
+    switchLabel: "</> 개발자 버전",
+    backLabel: "기본 청첩장으로",
+    /** /dev 주소로 바로 들어온 분께 보여주는 부팅 화면 */
+    boot: [
+      "[  OK  ] Started love.service — 2022-10-12",
+      "[  OK  ] Mounted /home/sangho and /home/jiyun",
+      "[  OK  ] Reached target wedding.target",
+      "[  OK  ] Loaded {days} days of memories",
+    ],
+    bootButton: "[ ENTER ] 청첩장 실행하기",
+    /** 첫 화면 아래 한 줄 */
+    tagline: "두 개의 branch 가 main 으로 merge 됩니다",
+    /** $ cat README.md */
+    readme: [
+      "# 상호 ♥ 지윤",
+      "",
+      "서로 다른 환경에서 각자 개발되던 두 프로젝트가",
+      "2022년 8월, 같은 모임에서 처음 연결되었습니다.",
+      "",
+      "2022년 10월 12일부터는",
+      "하나의 branch 에서 함께 커밋하기 시작했고,",
+      "",
+      "서로의 버그까지 함께 debug 하며",
+      "여기까지 왔습니다.",
+      "",
+      "이제 두 사람의 branch 를 main 에 merge 하려 합니다.",
+      "소중한 분들의 approve 부탁드립니다. 🙏",
+    ],
+    /** $ weddingfetch 에 덧붙는 장난스러운 항목 */
+    fetchExtra: [
+      { key: "kernel", value: "love v2.0 (0 bugs)" },
+      { key: "shell", value: "/bin/happily-ever-after" },
+    ],
+    /** $ git log --graph — 위가 최신 */
+    commits: [
+      { date: "2026-12-20", type: "release", message: "v1.0.0 결혼 💍", head: true },
+      { date: "2022-10-12", type: "merge", message: "친구 → 연인, 같은 branch 에서 시작" },
+      { date: "2022-08", type: "feat", message: "신랑이 운영하던 모임에서 첫 만남" },
+    ],
+    /** 맨 끝 $ tail -f 로그 — 시각은 예식 시작 시각만 쓴다 */
+    log: [
+      "INFO  ceremony started",
+      "INFO  guests connected ........... OK",
+      "INFO  merge groom/sangho → main .. OK",
+      "INFO  merge bride/jiyun  → main .. OK",
+      "HTTP/1.1 200 OK",
+      "exit 0 — 0 bugs, 100% love",
+    ],
+  },
+
   /* ── 입장 화면 ────────────────────────────────────────────
      브라우저는 하객이 화면을 한 번 건드리기 전에는 소리를 내지 못하게 막습니다.
      그래서 청첩장을 여는 그 탭을 제스처로 삼아, 열리는 순간 음악이 함께 시작되게 합니다.

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
@@ -19,6 +20,19 @@ export function Hero() {
       style={{ height: "calc(var(--app-h, 100svh) * 0.92)", minHeight: "560px" }}
       aria-label="메인 화면"
     >
+      {/* 개발자 버전으로 가는 작은 스위치 — 음악 버튼(오른쪽 위)의 반대편 */}
+      {wedding.devVersion.enabled && (
+        <Link
+          href="/dev"
+          // 보이는 알약은 작게, 누르는 영역은 손가락 크기(44px)로
+          className="absolute left-1 top-[calc(env(safe-area-inset-top)+12px)] z-10 inline-flex min-h-11 items-center px-2"
+        >
+          <span className="rounded-full bg-black/30 px-3 py-1.5 font-mono text-[length:calc(11.5px*var(--fs))] tracking-[-0.01em] text-white/90">
+            {wedding.devVersion.switchLabel}
+          </span>
+        </Link>
+      )}
+
       <div className="hero-photo absolute inset-0">
         <Image
           src={hero.image}

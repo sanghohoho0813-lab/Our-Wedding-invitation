@@ -37,6 +37,19 @@
   --font-serif: var(--font-noto-serif-kr), "Apple SD Gothic Neo", Georgia, serif;
   --font-latin: var(--font-cormorant), Georgia, serif;
   --font-script: var(--font-script), var(--font-cormorant), cursive;
+  --font-mono: var(--font-coding), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* 개발자 버전(/dev) — 어두운 터미널 색 */
+  --color-dev-bg: #0b0f14;
+  --color-dev-panel: #11161d;
+  --color-dev-line: #232b36;
+  --color-dev-ink: #d6dde6;
+  --color-dev-faint: #8b96a5;
+  --color-dev-green: #3fb950;
+  --color-dev-cyan: #56d4dd;
+  --color-dev-purple: #b780ff;
+  --color-dev-pink: #ff7eb6;
+  --color-dev-yellow: #e3b341;
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
@@ -465,5 +478,59 @@ main > .dday-banner + section {
 
   .hero-copy .hero-caption {
     display: none;
+  }
+}
+
+/* ── 개발자 버전 (/dev) ─────────────────────────────────────── */
+
+/* 개발자 버전이 떠 있는 동안에는 바깥(PC 양옆 여백 포함)까지 어둡게 */
+body:has(.dev-root),
+body:has(.dev-root) .page-scroll {
+  background: var(--color-dev-bg);
+}
+
+/* 터미널 커서 */
+.dev-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background: var(--color-dev-green);
+  animation: dev-blink 1s steps(1) infinite;
+}
+
+@keyframes dev-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 픽셀 하트 박동 — 크기(transform)만 바꿔 화면을 다시 그리지 않는다 */
+.dev-beat {
+  animation: dev-beat 1.3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes dev-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.12);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-cursor,
+  .dev-beat {
+    animation: none;
   }
 }

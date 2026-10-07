@@ -240,8 +240,10 @@ function SnapViewer({
  * 하객이 올린 사진 · 영상은 Supabase 보관함(guest-snaps)에 저장되고
  * 이 섹션 아래에 모여 누구나 함께 본다. (lib/supabase.ts, supabase/setup.sql)
  */
-export function GuestSnap() {
+export function GuestSnap({ variant = "default" }: { variant?: "default" | "dev" }) {
   const { guestSnap } = wedding;
+  /** 개발자 버전(/dev)에서는 같은 데이터를 터미널 모양으로 보여준다. */
+  const dev = variant === "dev";
   const { showToast } = useToast();
   const ready = supabaseReady();
 
@@ -387,46 +389,8 @@ export function GuestSnap() {
     }
   };
 
-  return (
-    <section className="edge band pb-24" aria-labelledby="guestsnap-heading">
-      <Reveal className="text-center">
-        <SectionIcon name="camera" />
-        <h2 id="guestsnap-heading" className="section-title">
-          {guestSnap.heading}
-        </h2>
-        <p className="mt-4 text-[length:calc(14.5px*var(--fs))] leading-relaxed tracking-[-0.01em] text-muted">
-          {guestSnap.subheading}
-        </p>
-      </Reveal>
-
-      <Reveal delay={0.06} className="mt-8">
-        <PhotoSlot src={guestSnap.image} alt={guestSnap.imageAlt} ratio="4 / 3" />
-      </Reveal>
-
-      <Reveal delay={0.08}>
-        <div className="card mt-6 px-6 py-8 text-center">
-          {guestSnap.notes.map((line, i) =>
-            line === "" ? (
-              <div key={i} className="h-4" aria-hidden="true" />
-            ) : (
-              <p key={i} className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-[#4a473f]">
-                {line}
-              </p>
-            ),
-          )}
-
-          {guestSnap.reward.enabled && guestSnap.reward.text && (
-            <div className="mt-7 border-t border-line pt-7">
-              <p className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-accent">
-                {guestSnap.reward.text}
-              </p>
-              {guestSnap.reward.draft && (
-                <DraftMark status={guestSnap.reward.draft} className="mt-2.5" />
-              )}
-            </div>
-          )}
-
-          {ready ? (
+  /** 올리기 버튼 · 진행 막대 — 기본 / 개발자 버전이 함께 쓴다. */
+  const uploadControl = ready ? (
             <>
               <input
                 ref={inputRef}
@@ -440,22 +404,30 @@ export function GuestSnap() {
                 type="button"
                 disabled={uploading}
                 onClick={() => setAskOpen(true)}
-                className="btn-solid glow-hint mt-7 w-full active:btn-solid-active disabled:opacity-70"
+                className={
+                  dev
+                    ? "w-full rounded-[6px] border border-dev-green/60 bg-dev-green/10 px-4 py-3 text-left text-[length:calc(14px*var(--fs))] text-dev-green active:bg-dev-green/20 disabled:opacity-70"
+                    : "btn-solid glow-hint mt-7 w-full active:btn-solid-active disabled:opacity-70"
+                }
               >
                 {uploading
-                  ? `올리는 중… ${progress.index} / ${progress.total}`
-                  : guestSnap.buttonLabel}
+                  ? dev
+                    ? `> uploading ${progress.index}/${progress.total} … ${Math.round(progress.ratio * 100)}%`
+                    : `올리는 중… ${progress.index} / ${progress.total}`
+                  : dev
+                    ? `> git push origin photos  # ${guestSnap.buttonLabel}`
+                    : guestSnap.buttonLabel}
               </button>
               {uploading && (
                 <div
-                  className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-paper-deep"
+                  className={`mt-3 h-1.5 w-full overflow-hidden rounded-full ${dev ? "bg-dev-line" : "bg-paper-deep"}`}
                   role="progressbar"
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-valuenow={Math.round(progress.ratio * 100)}
                 >
                   <div
-                    className="h-full rounded-full bg-accent-soft transition-[width] duration-200"
+                    className={`h-full rounded-full transition-[width] duration-200 ${dev ? "bg-dev-green" : "bg-accent-soft"}`}
                     style={{ width: `${Math.round(progress.ratio * 100)}%` }}
                   />
                 </div>
@@ -474,14 +446,71 @@ export function GuestSnap() {
                 {guestSnap.pendingLabel}
               </p>
             </>
-          )}
-        </div>
-      </Reveal>
+          );
+
+  return (
+    <section
+      className={dev ? "" : "edge band pb-24"}
+      aria-labelledby={dev ? undefined : "guestsnap-heading"}
+      aria-label={dev ? guestSnap.heading : undefined}
+    >
+      {dev ? (
+        <Reveal>{uploadControl}</Reveal>
+      ) : (
+        <>
+          <Reveal className="text-center">
+            <SectionIcon name="camera" />
+            <h2 id="guestsnap-heading" className="section-title">
+              {guestSnap.heading}
+            </h2>
+            <p className="mt-4 text-[length:calc(14.5px*var(--fs))] leading-relaxed tracking-[-0.01em] text-muted">
+              {guestSnap.subheading}
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.06} className="mt-8">
+            <PhotoSlot src={guestSnap.image} alt={guestSnap.imageAlt} ratio="4 / 3" />
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <div className="card mt-6 px-6 py-8 text-center">
+              {guestSnap.notes.map((line, i) =>
+                line === "" ? (
+                  <div key={i} className="h-4" aria-hidden="true" />
+                ) : (
+                  <p key={i} className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-[#4a473f]">
+                    {line}
+                  </p>
+                ),
+              )}
+
+              {guestSnap.reward.enabled && guestSnap.reward.text && (
+                <div className="mt-7 border-t border-line pt-7">
+                  <p className="text-[length:calc(14px*var(--fs))] leading-[1.85] tracking-[-0.01em] text-accent">
+                    {guestSnap.reward.text}
+                  </p>
+                  {guestSnap.reward.draft && (
+                    <DraftMark status={guestSnap.reward.draft} className="mt-2.5" />
+                  )}
+                </div>
+              )}
+
+              {uploadControl}
+            </div>
+          </Reveal>
+        </>
+      )}
 
       {snaps.length > 0 && (
         <div className="mt-8">
-          <p className="text-center text-[length:calc(13px*var(--fs))] tracking-[0.04em] text-accent">
-            함께 남긴 순간들 · {snaps.length}
+          <p
+            className={
+              dev
+                ? "text-[length:calc(13px*var(--fs))] text-dev-faint"
+                : "text-center text-[length:calc(13px*var(--fs))] tracking-[0.04em] text-accent"
+            }
+          >
+            {dev ? `total ${snaps.length}  # 함께 남긴 순간들` : `함께 남긴 순간들 · ${snaps.length}`}
           </p>
           <ul className="mt-4 grid grid-cols-3 gap-1.5">
             {visible.map((snap, i) => (
@@ -520,9 +549,19 @@ export function GuestSnap() {
                 type="button"
                 onClick={() => setShowAll((v) => !v)}
                 aria-expanded={showAll}
-                className="btn-outline active:bg-paper-deep"
+                className={
+                  dev
+                    ? "tap px-3 text-[length:calc(13px*var(--fs))] text-dev-cyan underline underline-offset-4"
+                    : "btn-outline active:bg-paper-deep"
+                }
               >
-                {showAll ? "접기" : `더보기 (${snaps.length - guestSnap.pageSize})`}
+                {showAll
+                  ? dev
+                    ? "--collapse"
+                    : "접기"
+                  : dev
+                    ? `--more (${snaps.length - guestSnap.pageSize})`
+                    : `더보기 (${snaps.length - guestSnap.pageSize})`}
               </button>
             </div>
           )}

@@ -137,8 +137,10 @@ function ManageCheer({
  * 축하 메시지 — 신랑측 · 신부측, 이름, 메시지를 남기고 모두가 함께 본다.
  * 남길 때 정한 비밀번호로 본인 글만 고치고 지울 수 있다. (supabase/02-passwords.sql)
  */
-export function Cheers() {
+export function Cheers({ variant = "default" }: { variant?: "default" | "dev" }) {
   const { cheers } = wedding;
+  /** 개발자 버전(/dev)에서는 같은 데이터를 터미널 모양으로 보여준다. */
+  const dev = variant === "dev";
   const { showToast } = useToast();
 
   const [open, setOpen] = useState(false);
@@ -228,45 +230,66 @@ export function Cheers() {
   };
 
   return (
-    <section className="edge pb-24" aria-labelledby="cheers-heading">
-      <SectionHeading id="cheers-heading" icon="cheer" title={cheers.heading} body={cheers.body} />
+    <section
+      className={dev ? "" : "edge pb-24"}
+      aria-labelledby={dev ? undefined : "cheers-heading"}
+      aria-label={dev ? cheers.heading : undefined}
+    >
+      {!dev && (
+        <SectionHeading id="cheers-heading" icon="cheer" title={cheers.heading} body={cheers.body} />
+      )}
 
-      <Reveal delay={0.06} className="mt-9 text-center">
+      <Reveal delay={0.06} className={dev ? "" : "mt-9 text-center"}>
         <button
           type="button"
           onClick={openForm}
-          className="btn-solid glow-hint w-full max-w-[320px] active:btn-solid-active"
+          className={
+            dev
+              ? "w-full rounded-[6px] border border-dev-green/60 bg-dev-green/10 px-4 py-3 text-left text-[length:calc(14px*var(--fs))] text-dev-green active:bg-dev-green/20"
+              : "btn-solid glow-hint w-full max-w-[320px] active:btn-solid-active"
+          }
         >
-          {cheers.buttonLabel}
+          {dev ? `> git commit -m "${cheers.buttonLabel}"` : cheers.buttonLabel}
         </button>
       </Reveal>
 
       {list.length > 0 && (
-        <Reveal delay={0.08} className="mt-10">
-          <ul className="divide-y divide-line border-y border-line">
+        <Reveal delay={0.08} className={dev ? "mt-6" : "mt-10"}>
+          <ul className={dev ? "space-y-5" : "divide-y divide-line border-y border-line"}>
             {visible.map((c) => (
-              <li key={c.id} className="py-5">
+              <li key={c.id} className={dev ? "border-l-2 border-dev-line pl-3" : "py-5"}>
                 <p className="flex items-baseline gap-2">
-                  <span className="shrink-0 text-[length:calc(12.5px*var(--fs))] text-accent">{SIDE_LABEL[c.side]}</span>
-                  <span className="min-w-0 truncate text-[length:calc(15px*var(--fs))] font-medium text-ink">{c.name}</span>
+                  {dev && <span className="shrink-0 text-[length:calc(12.5px*var(--fs))] text-dev-yellow">commit</span>}
+                  <span className={`shrink-0 text-[length:calc(12.5px*var(--fs))] ${dev ? "text-dev-cyan" : "text-accent"}`}>
+                    {SIDE_LABEL[c.side]}
+                  </span>
+                  <span
+                    className={`min-w-0 truncate text-[length:calc(15px*var(--fs))] font-medium ${dev ? "text-dev-ink" : "text-ink"}`}
+                  >
+                    {c.name}
+                  </span>
                 </p>
-                <p className="mt-2 whitespace-pre-line break-words text-[length:calc(14.5px*var(--fs))] leading-[1.8] text-ink">
+                <p
+                  className={`mt-2 whitespace-pre-line break-words text-[length:calc(14.5px*var(--fs))] leading-[1.8] ${dev ? "text-dev-ink" : "text-ink"}`}
+                >
                   {c.message}
                 </p>
                 <div className="mt-2 flex items-center justify-between gap-3">
-                  <span className="text-[length:calc(11.5px*var(--fs))] text-faint">{formatTime(c.created_at)}</span>
+                  <span className={`text-[length:calc(11.5px*var(--fs))] ${dev ? "text-dev-faint" : "text-faint"}`}>
+                    {formatTime(c.created_at)}
+                  </span>
                   <span className="-mr-2 flex shrink-0">
                     <button
                       type="button"
                       onClick={() => setManage({ target: c, mode: "edit" })}
-                      className="tap px-2 text-[length:calc(12px*var(--fs))] text-faint"
+                      className={`tap px-2 text-[length:calc(12px*var(--fs))] ${dev ? "text-dev-faint" : "text-faint"}`}
                     >
                       수정
                     </button>
                     <button
                       type="button"
                       onClick={() => setManage({ target: c, mode: "delete" })}
-                      className="tap px-2 text-[length:calc(12px*var(--fs))] text-faint"
+                      className={`tap px-2 text-[length:calc(12px*var(--fs))] ${dev ? "text-dev-faint" : "text-faint"}`}
                     >
                       삭제
                     </button>
@@ -282,9 +305,19 @@ export function Cheers() {
                 type="button"
                 onClick={() => setShowAll((v) => !v)}
                 aria-expanded={showAll}
-                className="btn-outline active:bg-paper-deep"
+                className={
+                  dev
+                    ? "tap px-3 text-[length:calc(13px*var(--fs))] text-dev-cyan underline underline-offset-4"
+                    : "btn-outline active:bg-paper-deep"
+                }
               >
-                {showAll ? "접기" : `메시지 더보기 (${list.length - cheers.pageSize})`}
+                {showAll
+                  ? dev
+                    ? "--collapse"
+                    : "접기"
+                  : dev
+                    ? `--more (${list.length - cheers.pageSize})`
+                    : `메시지 더보기 (${list.length - cheers.pageSize})`}
               </button>
             </div>
           )}
