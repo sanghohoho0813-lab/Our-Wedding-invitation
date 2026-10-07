@@ -60,6 +60,9 @@ npm run lint       # ESLint
 - `cat README.md` 인사말 · `weddingfetch` 예식 정보 · `cal` 달력 · `git log` 우리의 시간
 - 사진 · 인터뷰 · 편지 · 오시는 길 · 안내 사항 · 계좌(`.env.gift`)
 - 축하 메시지 · 하객 사진은 기본 청첩장과 **같은 데이터** (어느 쪽에서 남겨도 양쪽에 보임)
+- `gh pr view` — Claude · ChatGPT · Gemini · Copilot · Perplexity · DeepSeek · Llama · Grok 가
+  로고와 함께 하나씩 ✓ approved (Claude 리뷰만 실제로 쓴 것, 나머지는 재미로 꾸밈)
+  로고 출처 · 라이선스: `public/images/ai/LICENSE.txt` (LobeHub Icons, MIT)
 - 마지막 `tail -f` 로그 → `exit 0 — 0 bugs, 100% love`
 
 문구는 `src/config/wedding.ts` 의 `devVersion` 에서 고칩니다. (초안입니다)

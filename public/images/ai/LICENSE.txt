@@ -1,0 +1,9 @@
+AI 서비스 로고 (claude, chatgpt, gemini, copilot, perplexity, deepseek, llama, grok)
+
+출처: LobeHub Icons — @lobehub/icons-static-svg v1.95.1
+      https://github.com/lobehub/lobe-icons
+라이선스: MIT License (Copyright (c) LobeHub)
+
+로고 자체의 상표권은 각 회사에 있습니다.
+개발자 버전 청첩장에서 "어느 AI 의 축하인지" 알아보게 하는 용도로만 씁니다.
+화면에 흰색으로 보이도록 단색 로고의 fill 만 #ffffff 로 바꿨습니다.

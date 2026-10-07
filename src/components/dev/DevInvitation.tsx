@@ -218,13 +218,26 @@ function AiReviews({ days }: { days: number | null }) {
         <p className={`mt-1 ${T.small} text-dev-faint`}>
           {dv.user}/groom + {dv.host}/bride → main · {aiReviews.length} reviewers
         </p>
+        {/* 리뷰어 로고 한 줄 */}
+        <div className="mt-3 flex flex-wrap items-center gap-2.5" aria-label={aiReviews.map((r) => r.name).join(", ")}>
+          {aiReviews.map((r) => (
+            // eslint-disable-next-line @next/next/no-img-element -- 작은 로고 SVG
+            <img key={r.name} src={r.logo} alt="" width={22} height={22} className="h-[22px] w-[22px]" />
+          ))}
+        </div>
       </div>
 
       <ul className="mt-3 space-y-2.5">
         {aiReviews.slice(0, shown).map((r) => (
           <li key={r.name} className="rounded-[6px] border border-dev-line px-4 py-3">
             <p className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: r.color }} aria-hidden="true" />
+              <span
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-white/[0.06] ring-1 ring-dev-line"
+                style={{ backgroundColor: r.color + "14" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- 작은 로고 SVG */}
+                <img src={r.logo} alt="" width={18} height={18} className="h-[18px] w-[18px]" />
+              </span>
               <span className="font-bold">{r.name}</span>
               <span className="ml-auto shrink-0 text-dev-green">✓ approved</span>
             </p>
