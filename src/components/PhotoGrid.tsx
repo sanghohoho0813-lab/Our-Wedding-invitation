@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { GalleryViewer } from "@/components/GalleryViewer";
 import { Reveal } from "@/components/Reveal";
-import { blurFor } from "@/config/blur";
+import { blurBackground } from "@/config/blur";
 import { type GalleryImage } from "@/config/wedding";
 
 /** 처음에 보여줄 장수 (3열 × 3줄) */
@@ -39,15 +39,13 @@ export function PhotoGridBody({ images, className = "mt-9" }: BodyProps) {
                 onClick={() => setOpenIndex(index)}
                 aria-label={`${image.alt} 크게 보기`}
                 className="relative block w-full overflow-hidden rounded-[3px] bg-paper-deep"
-                style={{ aspectRatio: "1 / 1" }}
+                style={{ aspectRatio: "1 / 1", ...blurBackground(image.src, image.objectPosition) }}
               >
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
                   loading="lazy"
-                  placeholder={blurFor(image.src) ? "blur" : "empty"}
-                  blurDataURL={blurFor(image.src)}
                   sizes="(max-width: 520px) 32vw, 166px"
                   className="object-cover"
                   style={{ objectPosition: image.objectPosition ?? "center" }}

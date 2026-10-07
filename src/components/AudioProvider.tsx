@@ -154,6 +154,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       }
       if (done || userPaused.current) return;
 
+      // 입장 화면이 떠 있는 동안에는 "청첩장 열기" 버튼만 음악을 켠다.
+      // (화면을 살짝 끌기만 해도 음악이 나오고, 열기를 누르면 또 처음부터 나오던 문제)
+      if (document.querySelector("[data-entry-gate]")) return;
+
       // 음악 버튼을 누른 경우는 버튼 자체 토글에 맡긴다.
       // (여기서 켜 버리면 이어지는 click 이 곧바로 꺼서 첫 탭이 먹지 않는다.)
       const target = event.target;

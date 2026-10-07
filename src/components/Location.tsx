@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Bus, Car, MapPin, TrainFront } from "lucide-react";
+import { Bus, Car, Hand, MapPin, TrainFront } from "lucide-react";
+import { useState } from "react";
 
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -27,6 +28,12 @@ export function Location() {
   const tel: string = wedding.wedding.tel;
   const mapImage: string = wedding.location.mapImage;
   const embedQuery: string = wedding.location.mapEmbedQuery;
+  /**
+   * 구글 지도는 처음부터 띄우지 않고, 지도를 눌렀을 때 불러온다.
+   * 휴대폰에서는 지도 코드가 청첩장과 같은 실행 줄을 함께 써서,
+   * 미리 띄워 두면 그 근처를 스크롤할 때마다 화면이 멈칫한다.
+   */
+  const [mapLive, setMapLive] = useState(false);
   const embedSrc = embedQuery
     ? `https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&hl=ko&z=${wedding.location.mapEmbedZoom}&output=embed`
     : "";
@@ -58,18 +65,36 @@ export function Location() {
         </Reveal>
       </div>
 
-      {/* 지도 — 화면 안에서 바로 끌고 확대할 수 있다. */}
+      {/* 지도 — 누르면 그 자리에서 끌고 확대할 수 있는 구글 지도로 바뀐다. */}
       <Reveal delay={0.06} className="edge mt-7">
         <div className="relative h-[260px] w-full overflow-hidden rounded-[10px] border border-line bg-paper-deep">
-          {embedSrc ? (
+          {embedSrc && mapLive ? (
             <iframe
               src={embedSrc}
               title={`${venue} 위치 지도`}
-              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0"
             />
+          ) : embedSrc && mapImage ? (
+            <button
+              type="button"
+              onClick={() => setMapLive(true)}
+              aria-label="지도 움직여 보기"
+              className="absolute inset-0 h-full w-full"
+            >
+              <Image
+                src={mapImage}
+                alt={`${venue} 위치 지도`}
+                fill
+                sizes="(max-width: 520px) 100vw, 520px"
+                className="object-cover"
+              />
+              <span className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/95 px-3.5 py-2 text-[12.5px] tracking-[-0.01em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+                <Hand size={14} strokeWidth={1.6} aria-hidden="true" className="text-accent-deep" />
+                누르면 지도를 움직이고 확대할 수 있어요
+              </span>
+            </button>
           ) : mapImage ? (
             <Image
               src={mapImage}
@@ -88,7 +113,7 @@ export function Location() {
           )}
         </div>
         {/* 그림 지도는 OpenStreetMap 타일로 만들어 저작자 표기가 필요하다. */}
-        {!embedSrc && mapImage && (
+        {!mapLive && mapImage && (
           <p className="mt-2 text-right text-[11px] tracking-[0.01em] text-faint">
             지도 © OpenStreetMap contributors
           </p>

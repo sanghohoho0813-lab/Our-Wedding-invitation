@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ["image/avif", "image/webp"],
+    // AVIF 는 용량은 작지만 휴대폰에서 풀어내는 데 CPU 를 많이 써서
+    // 빠르게 스크롤할 때 버벅인다. WebP 만 쓴다.
+    formats: ["image/webp"],
     // 실제 사진을 Google Drive / 외부 CDN으로 교체할 때 여기에 호스트를 추가하세요.
     // remotePatterns: [{ protocol: "https", hostname: "lh3.googleusercontent.com" }],
   },

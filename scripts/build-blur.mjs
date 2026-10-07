@@ -60,6 +60,23 @@ ${body}
 export function blurFor(src: string) {
   return blurDataUrls[src];
 }
+
+/**
+ * 사진 칸 배경으로 깔 미리보기 스타일.
+ *
+ * next/image 의 placeholder="blur" 는 SVG 흐림 필터를 쓰는데,
+ * 휴대폰은 이 필터를 그릴 때마다 CPU 로 다시 계산해서 사진이 많은 곳에서
+ * 스크롤이 버벅인다. 16px 짜리 작은 사진을 늘려 깔기만 해도 충분히 흐릿하다.
+ */
+export function blurBackground(src: string, position = "center") {
+  const url = blurDataUrls[src];
+  if (!url) return undefined;
+  return {
+    backgroundImage: \`url(\${url})\`,
+    backgroundSize: "cover",
+    backgroundPosition: position,
+  };
+}
 `,
   "utf8",
 );

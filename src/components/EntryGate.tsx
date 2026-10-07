@@ -49,13 +49,15 @@ export function EntryGate() {
   useEffect(() => {
     if (!open || !entry.enabled) return;
 
-    const { body } = document;
-    const prev = body.style.overflow;
+    const { body, documentElement: html } = document;
+    const prev = { body: body.style.overflow, html: html.style.overflow };
     body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
     return () => {
-      body.style.overflow = prev;
+      body.style.overflow = prev.body;
+      html.style.overflow = prev.html;
     };
   }, [open, entry.enabled]);
 
@@ -86,7 +88,9 @@ export function EntryGate() {
             ease: [0.22, 1, 0.36, 1],
           }}
           data-entry-gate
-          className="fixed inset-0 z-[100] bg-paper"
+          // touch-none: 입장 화면을 끌어도 뒤 페이지가 움직이거나
+          // 휴대폰 주소창이 접히며 화면이 커지지 않게 한다.
+          className="fixed inset-0 z-[100] touch-none overscroll-none bg-paper"
           role="dialog"
           aria-modal="true"
           aria-label="청첩장 입장"
