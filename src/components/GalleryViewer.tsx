@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import type { GalleryImage } from "@/config/wedding";
+import { lockScroll } from "@/lib/scroll";
 
 type Props = {
   images: readonly GalleryImage[];
@@ -95,30 +96,8 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
     [measurePanLimit, panX, panY],
   );
 
-  // body scroll lock (iOS Safari 포함)
-  useEffect(() => {
-    const scrollY = window.scrollY;
-    const { body } = document;
-    const prev = {
-      position: body.style.position,
-      top: body.style.top,
-      width: body.style.width,
-      overflow: body.style.overflow,
-    };
-
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.width = "100%";
-    body.style.overflow = "hidden";
-
-    return () => {
-      body.style.position = prev.position;
-      body.style.top = prev.top;
-      body.style.width = prev.width;
-      body.style.overflow = prev.overflow;
-      window.scrollTo({ top: scrollY, behavior: "instant" });
-    };
-  }, []);
+  // 보는 동안 뒤쪽 청첩장이 스크롤되지 않게 한다. 닫으면 보던 자리 그대로다.
+  useEffect(() => lockScroll(), []);
 
   // 키보드 조작
   useEffect(() => {

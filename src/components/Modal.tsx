@@ -5,6 +5,8 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
+import { lockScroll } from "@/lib/scroll";
+
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -22,13 +24,8 @@ export function Modal({ open, onClose, title, children }: Props) {
   useEffect(() => {
     if (!open) return;
 
-    const scrollY = window.scrollY;
-    const { body } = document;
-    const prev = { position: body.style.position, top: body.style.top, width: body.style.width };
-
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.width = "100%";
+    // 뒤쪽 청첩장만 멈춰 두므로 닫아도 보던 자리 그대로다.
+    const unlock = lockScroll();
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -37,12 +34,7 @@ export function Modal({ open, onClose, title, children }: Props) {
     closeRef.current?.focus();
 
     return () => {
-      body.style.position = prev.position;
-      body.style.top = prev.top;
-      body.style.width = prev.width;
-      // 페이지 전체에 부드러운 스크롤이 걸려 있어서, 그냥 되돌리면
-      // 맨 위에서부터 원래 자리까지 미끄러져 내려오는 게 보인다. 즉시 되돌린다.
-      window.scrollTo({ top: scrollY, behavior: "instant" });
+      unlock();
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open, onClose]);

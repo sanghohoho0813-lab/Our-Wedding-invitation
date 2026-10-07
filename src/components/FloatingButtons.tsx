@@ -3,10 +3,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
 import { copyText } from "@/lib/clipboard";
+import { getScrollRoot, scrollToTop } from "@/lib/scroll";
 import { canWebShare, isKakaoReady, kakaoShare, webShare } from "@/lib/share";
 
 /** 우하단 플로팅 — 맨 위로 / 공유. */
@@ -20,6 +22,10 @@ export function FloatingButtons() {
    * 다시 계산해서 스크롤이 멈칫한다. 페이지 맨 위 600px 짜리 투명 표식이
    * 화면에서 사라졌는지만 지켜보면 스크롤 중에는 아무 일도 하지 않는다.
    */
+  // 표식은 스크롤 상자 안에 있어야 내용과 함께 움직인다. (lib/scroll.ts)
+  const [scrollRoot, setScrollRoot] = useState<HTMLElement | null>(null);
+  useEffect(() => setScrollRoot(getScrollRoot()), []);
+
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel || typeof IntersectionObserver === "undefined") return;
@@ -27,7 +33,7 @@ export function FloatingButtons() {
     const io = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting));
     io.observe(sentinel);
     return () => io.disconnect();
-  }, []);
+  }, [scrollRoot]);
 
   const handleShare = async () => {
     const url = window.location.href.split("#")[0];
@@ -46,11 +52,15 @@ export function FloatingButtons() {
   return (
     <>
       {/* 페이지 맨 위 600px — 이 표식이 화면 밖으로 나가면 "맨 위로" 버튼을 보여준다 */}
-      <div
-        ref={sentinelRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-0 h-[600px] w-px"
-      />
+      {scrollRoot &&
+        createPortal(
+          <div
+            ref={sentinelRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-0 h-[600px] w-px"
+          />,
+          scrollRoot,
+        )}
       <div
         className="pointer-events-none fixed z-[70] flex flex-col gap-2.5"
         style={{
@@ -62,7 +72,7 @@ export function FloatingButtons() {
           {visible && (
             <motion.button
               type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => scrollToTop()}
               aria-label="맨 위로"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}

@@ -3,8 +3,10 @@ import { Cormorant_Garamond, Noto_Sans_KR, Noto_Serif_KR, Parisienne } from "nex
 
 import { AudioProvider } from "@/components/AudioProvider";
 import { ToastProvider } from "@/components/Toast";
+import { ViewportHeight } from "@/components/ViewportHeight";
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
+import { SCROLL_ROOT_ID } from "@/lib/scroll";
 import { venueLine } from "@/lib/venue";
 
 import "./globals.css";
@@ -144,17 +146,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         */}
       </head>
       <body>
+        <ViewportHeight />
         <ToastProvider>
           <AudioProvider>
-            <div className="shell">{children}</div>
+            {/*
+              청첩장은 창이 아니라 이 상자 안에서 스크롤된다. (이유는 lib/scroll.ts)
+              위로 올릴 때 앱의 주소창 · 버튼 줄이 들락날락하며 버벅이는 것을 막는다.
+            */}
+            <div id={SCROLL_ROOT_ID} className="page-scroll">
+              <div className="shell">{children}</div>
+              <noscript>
+                <div style={{ padding: "24px", textAlign: "center" }}>
+                  {wedding.groom.name} · {wedding.bride.name} — {formatDotted(wedding.wedding.date)}{" "}
+                  {weekdayKo(wedding.wedding.date)} {wedding.wedding.timeLabel}, {venueLine()}
+                </div>
+              </noscript>
+            </div>
           </AudioProvider>
         </ToastProvider>
-        <noscript>
-          <div style={{ padding: "24px", textAlign: "center" }}>
-            {wedding.groom.name} · {wedding.bride.name} — {formatDotted(wedding.wedding.date)}{" "}
-            {weekdayKo(wedding.wedding.date)} {wedding.wedding.timeLabel}, {venueLine()}
-          </div>
-        </noscript>
       </body>
     </html>
   );

@@ -16,7 +16,7 @@ export function Hero() {
   return (
     <section
       className="relative w-full overflow-hidden bg-paper-deep"
-      style={{ height: "92svh", minHeight: "560px" }}
+      style={{ height: "calc(var(--app-h, 100svh) * 0.92)", minHeight: "560px" }}
       aria-label="메인 화면"
     >
       <div className="hero-photo absolute inset-0">

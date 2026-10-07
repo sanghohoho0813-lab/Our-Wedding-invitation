@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useAudio } from "@/components/AudioProvider";
 import { wedding } from "@/config/wedding";
 import { formatDotted, weekdayKo } from "@/lib/date";
+import { lockScroll, scrollToTop } from "@/lib/scroll";
 import { venueLine } from "@/lib/venue";
 
 /**
@@ -49,16 +50,8 @@ export function EntryGate() {
   useEffect(() => {
     if (!open || !entry.enabled) return;
 
-    const { body, documentElement: html } = document;
-    const prev = { body: body.style.overflow, html: html.style.overflow };
-    body.style.overflow = "hidden";
-    html.style.overflow = "hidden";
-    window.scrollTo(0, 0);
-
-    return () => {
-      body.style.overflow = prev.body;
-      html.style.overflow = prev.html;
-    };
+    scrollToTop({ smooth: false });
+    return lockScroll();
   }, [open, entry.enabled]);
 
   if (!entry.enabled) return null;
