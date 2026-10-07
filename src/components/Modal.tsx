@@ -40,7 +40,9 @@ export function Modal({ open, onClose, title, children }: Props) {
       body.style.position = prev.position;
       body.style.top = prev.top;
       body.style.width = prev.width;
-      window.scrollTo(0, scrollY);
+      // 페이지 전체에 부드러운 스크롤이 걸려 있어서, 그냥 되돌리면
+      // 맨 위에서부터 원래 자리까지 미끄러져 내려오는 게 보인다. 즉시 되돌린다.
+      window.scrollTo({ top: scrollY, behavior: "instant" });
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open, onClose]);

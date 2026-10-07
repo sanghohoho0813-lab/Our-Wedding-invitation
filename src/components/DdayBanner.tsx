@@ -28,7 +28,7 @@ export function DdayBanner() {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
+      className="dday-banner relative w-full overflow-hidden"
       style={hasPhoto ? { aspectRatio: "4 / 3" } : undefined}
       aria-label="결혼식까지 남은 날"
     >

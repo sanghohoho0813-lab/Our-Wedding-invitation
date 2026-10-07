@@ -53,7 +53,7 @@ export function FloatingButtons() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.25 }}
-            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/85 text-muted backdrop-blur-md active:bg-paper-deep"
+            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/95 text-muted active:bg-paper-deep"
           >
             <ArrowUp size={17} strokeWidth={1.5} aria-hidden="true" />
           </motion.button>
@@ -64,7 +64,7 @@ export function FloatingButtons() {
         type="button"
         onClick={handleShare}
         aria-label="청첩장 공유하기"
-        className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/85 text-muted backdrop-blur-md active:bg-paper-deep"
+        className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/95 text-muted active:bg-paper-deep"
       >
         <Share2 size={16} strokeWidth={1.5} aria-hidden="true" />
       </button>

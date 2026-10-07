@@ -1,4 +1,3 @@
-import { Mail } from "lucide-react";
 import { DraftMark } from "@/components/DraftMark";
 import { SectionHeading } from "@/components/SectionHeading";
 import { wedding } from "@/config/wedding";
@@ -8,7 +7,7 @@ export function Invitation() {
 
   return (
     <section className="edge pt-24 pb-24" aria-labelledby="invitation-heading">
-      <SectionHeading id="invitation-heading" icon={Mail} tone="mail" title={heading} body={body} />
+      <SectionHeading id="invitation-heading" icon="mail" title={heading} body={body} />
 
       {draft && (
         <div className="mt-7 text-center">

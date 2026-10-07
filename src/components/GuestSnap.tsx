@@ -1,11 +1,9 @@
 "use client";
 
-import { Camera } from "lucide-react";
-
 import { DraftMark } from "@/components/DraftMark";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
-import { SectionIcon } from "@/components/SectionHeading";
+import { SectionIcon } from "@/components/SectionIcons";
 import { useToast } from "@/components/Toast";
 import { wedding } from "@/config/wedding";
 
@@ -27,7 +25,7 @@ export function GuestSnap() {
   return (
     <section className="edge band pb-24" aria-labelledby="guestsnap-heading">
       <Reveal className="text-center">
-        <SectionIcon icon={Camera} tone="camera" />
+        <SectionIcon name="camera" />
         <h2 id="guestsnap-heading" className="section-title">
           {guestSnap.heading}
         </h2>

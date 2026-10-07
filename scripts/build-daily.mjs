@@ -51,23 +51,30 @@ const src = (name) => path.join(SRC, `${name}.jpg`);
 
 await mkdir(OUT, { recursive: true });
 
+/**
+ * 파일 이름은 순번(01, 02 …)이 아니라 원본 사진 이름을 그대로 쓴다.
+ * 순번으로 두면 사진 하나를 뺐을 때 다른 사진이 같은 주소를 물려받아,
+ * 이미 사이트를 열어본 사람의 브라우저에는 빠진 사진이 계속 남아 보인다.
+ */
+const outName = (file) => `${file.toLowerCase()}.jpg`;
+
 let total = 0;
-for (const [i, [file]] of PHOTOS.entries()) {
-  const n = String(i + 1).padStart(2, "0");
+for (const [file] of PHOTOS) {
+  const n = outName(file);
   const { data, info } = await sharp(src(file))
     .rotate()
     .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
     .jpeg({ quality: 78, mozjpeg: true })
     .toBuffer({ resolveWithObject: true });
-  await writeFile(path.join(OUT, `${n}.jpg`), data);
+  await writeFile(path.join(OUT, n), data);
   total += data.length;
-  console.log(`${`${n}.jpg`.padEnd(10)} ${info.width}×${info.height} ${kb(data.length).padStart(6)} (${file})`);
+  console.log(`${n.padEnd(14)} ${info.width}×${info.height} ${kb(data.length).padStart(6)} (${file})`);
 }
 console.log(`\n일상 ${PHOTOS.length}장 합계 ${kb(total)}`);
 
 console.log(
   "\n" +
-    PHOTOS.map(
-      ([, alt], i) => `    { src: "/images/daily/${String(i + 1).padStart(2, "0")}.jpg", alt: "${alt}" },`,
-    ).join("\n"),
+    PHOTOS.map(([file, alt]) => `      { src: "/images/daily/${outName(file)}", alt: "${alt}" },`).join(
+      "\n",
+    ),
 );

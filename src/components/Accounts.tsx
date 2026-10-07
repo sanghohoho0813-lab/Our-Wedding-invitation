@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Gift } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 import { Reveal } from "@/components/Reveal";
@@ -52,43 +52,45 @@ function AccountGroup({ title, accounts }: { title: string; accounts: readonly A
   const [open, setOpen] = useState(false);
   if (accounts.length === 0) return null;
 
-  // 빛은 바깥 카드에 준다. 안쪽 버튼에 주면 overflow-hidden 에 잘린다.
+  // 빛은 카드 바깥 껍데기에 준다. 카드 자체에 주면 overflow-hidden 에 잘린다.
   return (
-    <div className={`card overflow-hidden ${open ? "" : "glow-hint"}`}>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
-      >
-        <span className="text-[15px] tracking-[-0.01em] text-ink">{title}</span>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="text-faint"
-          aria-hidden="true"
+    <div className={`rounded-[12px] ${open ? "" : "glow-hint"}`}>
+      <div className="card overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
         >
-          <ChevronDown size={17} strokeWidth={1.5} />
-        </motion.span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
+          <span className="text-[15px] tracking-[-0.01em] text-ink">{title}</span>
+          <motion.span
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-faint"
+            aria-hidden="true"
           >
-            <div className="divide-y divide-line border-t border-line px-5 pb-2">
-              {accounts.map((account, i) => (
-                <AccountRow key={i} account={account} />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <ChevronDown size={17} strokeWidth={1.5} />
+          </motion.span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="divide-y divide-line border-t border-line px-5 pb-2">
+                {accounts.map((account, i) => (
+                  <AccountRow key={i} account={account} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -98,7 +100,7 @@ export function Accounts() {
 
   return (
     <section className="edge band pb-24" aria-labelledby="accounts-heading">
-      <SectionHeading id="accounts-heading" icon={Gift} tone="gift" title={heading} body={body} />
+      <SectionHeading id="accounts-heading" icon="gift" title={heading} body={body} />
 
       <Reveal delay={0.06}>
         <div className="mt-9 space-y-2.5">

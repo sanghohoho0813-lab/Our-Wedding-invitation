@@ -117,7 +117,7 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
       body.style.top = prev.top;
       body.style.width = prev.width;
       body.style.overflow = prev.overflow;
-      window.scrollTo(0, scrollY);
+      window.scrollTo({ top: scrollY, behavior: "instant" });
     };
   }, []);
 

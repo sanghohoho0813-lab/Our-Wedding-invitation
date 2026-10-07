@@ -18,6 +18,10 @@ type Props = {
  * muted 라서 배경음악을 끊지 않는다. (오디오 포커스를 가져가지 않음)
  * 화면 밖으로 나가면 잠시 멈춰 배터리와 데이터를 아끼고,
  * 다시 보이면 이어서 재생한다.
+ *
+ * 페이지를 열자마자 영상을 받기 시작하면 배경음악 파일과 회선을 나눠 써서
+ * "청첩장 열기" 를 눌렀을 때 음악이 늦게 나온다.
+ * 그래서 autoPlay 속성 대신, 화면 가까이 왔을 때에야 받아서 재생한다.
  */
 export function LoopVideo({ src, webm, poster, alt, ratio = "16 / 9", className = "" }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -46,7 +50,7 @@ export function LoopVideo({ src, webm, poster, alt, ratio = "16 / 9", className 
         if (entry.isIntersecting) play();
         else video.pause();
       },
-      { rootMargin: "200px 0px" },
+      { rootMargin: "400px 0px" },
     );
     io.observe(video);
     return () => io.disconnect();
@@ -61,10 +65,9 @@ export function LoopVideo({ src, webm, poster, alt, ratio = "16 / 9", className 
         ref={ref}
         poster={poster}
         muted
-        autoPlay
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         disablePictureInPicture
         aria-label={alt}
         className="absolute inset-0 h-full w-full object-cover"

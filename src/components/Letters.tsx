@@ -1,4 +1,3 @@
-import { PenLine } from "lucide-react";
 import { DraftMark } from "@/components/DraftMark";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -12,7 +11,7 @@ export function Letters() {
 
   return (
     <section className="edge pb-24" aria-labelledby="letters-heading">
-      <SectionHeading id="letters-heading" icon={PenLine} tone="pen" title={letters.heading} />
+      <SectionHeading id="letters-heading" icon="pen" title={letters.heading} />
 
       <div className="mt-9 space-y-4">
         {items.map((letter, i) => (

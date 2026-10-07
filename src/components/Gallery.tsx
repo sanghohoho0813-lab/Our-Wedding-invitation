@@ -1,5 +1,3 @@
-import { Images } from "lucide-react";
-
 import { PhotoGridBody } from "@/components/PhotoGrid";
 import { SectionHeading } from "@/components/SectionHeading";
 import { wedding, type GalleryImage } from "@/config/wedding";
@@ -11,7 +9,7 @@ export function Gallery() {
 
   return (
     <section className="edge pb-24" aria-labelledby="gallery-heading">
-      <SectionHeading id="gallery-heading" icon={Images} tone="gallery" title="웨딩 갤러리" />
+      <SectionHeading id="gallery-heading" icon="gallery" title="웨딩 갤러리" />
       <PhotoGridBody images={images} />
     </section>
   );

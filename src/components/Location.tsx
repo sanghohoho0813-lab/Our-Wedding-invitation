@@ -39,7 +39,7 @@ export function Location() {
   return (
     <section className="band pb-24" aria-labelledby="location-heading">
       <div className="edge">
-        <SectionHeading id="location-heading" icon={MapPin} tone="pin" title={wedding.location.heading} />
+        <SectionHeading id="location-heading" icon="pin" title={wedding.location.heading} />
 
         <Reveal className="mt-8 text-center">
           <p className="text-[17px] leading-snug tracking-[-0.01em] text-ink">{venue}</p>
