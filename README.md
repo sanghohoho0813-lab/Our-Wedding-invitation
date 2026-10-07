@@ -40,10 +40,10 @@ npm run lint       # ESLint
 08 웨딩 갤러리        웨딩 화보 15장 + 전체화면 뷰어(확대 가능)
 09 우리의 시간        첫 만남 · 연인 → 일상 사진 26장 + 영상 → 결혼 (한 흐름)
 09-1 서로에게         신랑·신부가 서로에게 남기는 짧은 편지
-10 게스트스냅         하객 참여 안내 (업로드는 예식 당일 오픈)
+10 게스트스냅         하객이 사진 · 영상을 올리고 모두가 함께 보는 모음
 11 안내 사항          주차 / 식사 / 셔틀 탭
 12 오시는 길          지도 + 지도앱 버튼 + 교통
-13 축하 메시지        신랑측/신부측 · 이름 · 메시지 (신랑·신부만 /messages 에서 열람)
+13 축하 메시지        신랑측/신부측 · 이름 · 메시지 남기기 + 모두가 보는 목록
 14 마음 전하실 곳      신랑측 / 신부측 드롭다운
 15 방명록             서버 연결 전까지 자동으로 숨김 (6-1 참고)
 16 함께한 시간        2022. 10. 12 부터 흐르는 실시간 카운터
@@ -230,23 +230,28 @@ Chrome · Safari · 삼성인터넷 · 카카오톡 인앱 브라우저 모두 �
 
 ## 6. 아직 연결하지 않은 기능
 
-### 6-1. 축하 메시지 저장소 연결 (꼭 해주세요)
+### 6-1. 축하 메시지 · 게스트스냅 — Supabase 연결 (꼭 해주세요)
 
-하객이 남긴 축하 메시지는 **Upstash Redis**(무료)에 저장되고,
-신랑 · 신부만 `https://www.sh-jy-wedding.app/messages` 에서 비밀번호로 열어볼 수 있습니다.
-연결 전에는 하객이 보내기를 눌러도 "준비 중" 안내만 뜹니다.
+하객이 남긴 **축하 메시지**와 올린 **사진 · 영상**은 Supabase 에 저장되고,
+청첩장의 각 섹션 아래에 모여 **누구나 함께 볼 수 있습니다.**
+연결 전에는 메시지 보내기가 "준비 중" 안내만 띄우고, 사진 올리기 버튼은 "곧 열립니다" 로 잠겨 있습니다.
 
-1. Vercel → 이 프로젝트 → **Storage** 탭 → **Create Database** → **Upstash for Redis**
-   (무료 요금제) → 만들기 → **Connect Project** 로 이 프로젝트에 연결
-   → `KV_REST_API_URL` · `KV_REST_API_TOKEN` 이 자동으로 들어옵니다.
-2. **Settings → Environment Variables** 에 `MESSAGES_PASSWORD` 를 추가
-   (두 분만 아는 비밀번호. Production 체크)
-3. **Deployments** → 맨 위 배포의 `⋯` → **Redeploy**
+1. **Supabase → SQL Editor → New query** 에 [`supabase/setup.sql`](supabase/setup.sql) 내용을
+   통째로 붙여넣고 **Run** (표 2개 + 사진 보관함 + 권한이 한 번에 만들어집니다)
+2. **Vercel → 이 프로젝트 → Settings → Environment Variables** 에 아래 두 값이 있는지 확인
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (새 형식이면 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 도 됩니다)
 
-로컬에서 시험할 때는 `MESSAGES_STORE=memory MESSAGES_PASSWORD=아무거나 npm run dev`
-로 띄우면 메모리에만 저장됩니다.
+   Vercel 에서 Supabase 를 연결(Integration)했다면 이미 들어 있습니다.
+   없으면 Supabase → Project Settings → API(또는 API Keys) 에서 Project URL 과 anon(public) 키를
+   복사해 같은 이름으로 넣어주세요. (**service_role 키는 넣지 마세요**)
+3. **Deployments → 맨 위 배포의 `⋯` → Redeploy**
+   (`NEXT_PUBLIC_` 값은 배포할 때 청첩장에 담기므로 꼭 다시 배포해야 합니다)
 
-방명록(공개 글 목록)은 서버가 없으면 각자 자기 글만 보이게 되어 기능을 못 하므로 숨겨 둡니다.
+지울 메시지나 사진이 생기면 Supabase 의 **Table Editor**(cheers / snaps) 와
+**Storage → guest-snaps** 에서 직접 지우면 됩니다. 하객은 고치거나 지울 수 없습니다.
+
+방명록(이름 + 글 + 비밀번호 삭제형)은 축하 메시지로 대신하므로 꺼져 있습니다.
 
 ### 6-2. Supabase 연결 방법
 
@@ -281,12 +286,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 ### 6-3. 게스트스냅 업로드
 
-업로드 저장소는 아직 연결하지 않았습니다.
-되는 것처럼 보이면 안 되므로 버튼을 누를 수 없게 두고 `예식 당일 오픈됩니다` 만 보여줍니다.
-
-저장소를 붙인 뒤 `guestSnap.uploadReady` 를 `true` 로 바꾸면 버튼이 활성화됩니다.
-안내 문구(`guestSnap.notes`), 커피 선물 문구(`guestSnap.reward`), 보관 안내(`guestSnap.archiveNote`)
-는 모두 config 에서 바꿀 수 있습니다.
+6-1 의 Supabase 연결만 하면 바로 열립니다.
+- 사진은 올리기 전에 휴대폰에서 긴 변 2000px 로 줄이고 목록용 작은 그림도 함께 올립니다.
+- 영상은 그대로 올리며 한 개에 50MB 까지 (`guestSnap.maxVideoMb`). 올리는 동안 진행 막대가 보입니다.
+- 하객 영상은 소리 없이 재생되고, 소리를 켜면 배경음악이 잠시 멈췄다가 닫으면 다시 나옵니다.
+- 안내 문구는 `guestSnap.notes`, 커피 선물 문구는 `guestSnap.reward` 에서 고칩니다.
 
 ### 6-4. 카카오톡 공유
 
@@ -427,7 +431,7 @@ src/
 - [x] 신랑·신부 **연락처** 입력
 - [x] 혼주 **연락처** 입력
 - [x] **계좌번호** 입력
-- [ ] **축하 메시지 저장소** 연결 + `MESSAGES_PASSWORD` 설정 (6-1)
+- [ ] **Supabase** 에서 `supabase/setup.sql` 실행 + Vercel 환경 변수 확인 후 재배포 (6-1)
 - [ ] **교통 안내** 확인
 - [ ] 비어 있는 **사진 자리** 채우기 (4번 표)
 - [ ] 홀 이름이 정해지면 `wedding.hall` 입력

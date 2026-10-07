@@ -475,8 +475,8 @@ export const wedding = {
   /* ── 게스트스냅 ───────────────────────────────────────── */
   guestSnap: {
     enabled: true,
-    heading: "우리의 사진작가가 되어주세요",
-    subheading: "여러분의 시선으로 남겨주신 순간을 오래 간직하겠습니다.",
+    heading: "저희의 사진작가가 되어주세요",
+    subheading: "여러분의 시선으로 담은 순간을 이곳에 함께 모아요.",
     image: "/images/wedding/guestsnap.jpg",
     imageAlt: "잔디밭에서 카메라로 서로를 담는 신랑과 신부",
     notes: [
@@ -487,9 +487,8 @@ export const wedding = {
       "함께 웃고 있는 가족과 친구들",
       "예식장의 분위기와 짧은 영상까지 모두 좋아요.",
       "",
-      "보내주신 사진과 영상은",
-      "저희 두 사람이 평생 간직할",
-      "결혼 기록으로 소중히 보관하겠습니다.",
+      "올려주신 사진과 영상은",
+      "아래에 모여 누구나 함께 볼 수 있어요.",
     ],
     /** 커피 선물 안내 — 방식이 확정되면 draft 줄을 지우세요. 필요 없으면 enabled: false */
     reward: {
@@ -497,15 +496,13 @@ export const wedding = {
       text: "사진이나 영상을 보내주신 분들께 작은 커피 선물을 준비했습니다. ☕",
       draft: "example" as DraftStatus | undefined,
     },
-    buttonLabel: "사진 · 영상 보내기",
-    /**
-     * 업로드 저장소를 아직 연결하지 않았습니다.
-     * 연결 전까지는 버튼이 눌리지 않고 아래 문구만 보여줍니다.
-     * (Supabase Storage 등을 붙이면 uploadReady 를 true 로 바꾸세요)
-     */
-    uploadReady: false,
-    pendingLabel: "예식 당일 오픈됩니다",
-    archiveNote: "보내주신 사진과 영상은 신랑·신부의 개인 웨딩 아카이브에 보관됩니다.",
+    buttonLabel: "사진 · 영상 올리기",
+    /** 처음에 보여줄 개수 — 나머지는 "더보기" */
+    pageSize: 9,
+    /** 영상 한 개 최대 크기(MB) — Supabase 무료 요금제 한도가 50MB */
+    maxVideoMb: 50,
+    /** Supabase 가 아직 연결되지 않았을 때 버튼 대신 보여줄 문구 */
+    pendingLabel: "곧 열립니다",
   },
 
   /* ── 셔틀버스 ─────────────────────────────────────────────
@@ -624,9 +621,8 @@ export const wedding = {
   },
 
   /* ── 축하 메시지 ────────────────────────────────────────
-     하객이 신랑측 · 신부측, 이름, 축하 메시지를 남긴다.
-     남긴 글은 공개되지 않고 신랑 · 신부만 /messages 에서 볼 수 있다.
-     저장소 연결 방법은 src/lib/messageStore.ts 맨 위 설명 참고. */
+     하객이 신랑측 · 신부측, 이름, 축하 메시지를 남기고 누구나 함께 본다.
+     Supabase 연결 방법은 README 6-1 참고. */
   cheers: {
     enabled: true,
     heading: "축하 메시지",
@@ -634,8 +630,9 @@ export const wedding = {
       "두 사람에게 전하고 싶은",
       "축하의 마음을 남겨 주세요.",
     ],
-    note: "남겨주신 메시지는 신랑 · 신부만 볼 수 있어요.",
     buttonLabel: "축하 메시지 남기기",
+    /** 처음에 보여줄 개수 — 나머지는 "더보기" */
+    pageSize: 5,
   },
 
   /* ── 마음 전하실 곳 ───────────────────────────────────── */
