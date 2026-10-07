@@ -98,7 +98,7 @@ export function Accounts() {
 
   return (
     <section className="edge band pb-24" aria-labelledby="accounts-heading">
-      <SectionHeading id="accounts-heading" icon={Gift} title={heading} body={body} />
+      <SectionHeading id="accounts-heading" icon={Gift} tone="gift" title={heading} body={body} />
 
       <Reveal delay={0.06}>
         <div className="mt-9 space-y-2.5">

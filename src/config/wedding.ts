@@ -358,21 +358,20 @@ export const wedding = {
       { src: "/images/daily/10.jpg", alt: "네 컷 사진기로 남긴 두 사람" },
       { src: "/images/daily/11.jpg", alt: "조명 아래에서 얼굴을 맞댄 두 사람" },
       { src: "/images/daily/12.jpg", alt: "저녁 자리에서 함께 찍은 두 사람" },
-      { src: "/images/daily/13.jpg", alt: "거울에 비친 두 사람" },
-      { src: "/images/daily/14.jpg", alt: "집에서 장난스럽게 찍은 두 사람" },
-      { src: "/images/daily/15.jpg", alt: "운동하는 서로를 찍어주는 두 사람" },
-      { src: "/images/daily/16.jpg", alt: "운동복 차림으로 나란히 선 두 사람" },
-      { src: "/images/daily/17.jpg", alt: "운동 중에 마주 본 두 사람" },
-      { src: "/images/daily/18.jpg", alt: "운동기구 위에서 힘내는 신부" },
-      { src: "/images/daily/19.jpg", alt: "양이 있는 초원에서 마주 안은 두 사람" },
-      { src: "/images/daily/20.jpg", alt: "양이 있는 초원에 나란히 선 두 사람" },
-      { src: "/images/daily/21.jpg", alt: "강가 노을을 배경으로 안은 두 사람" },
-      { src: "/images/daily/22.jpg", alt: "야자수가 보이는 창가에서 웃는 두 사람" },
-      { src: "/images/daily/23.jpg", alt: "물가에서 어깨를 맞댄 두 사람" },
-      { src: "/images/daily/24.jpg", alt: "분홍색 지프차에 앉은 신랑" },
-      { src: "/images/daily/25.jpg", alt: "물 위에서 손으로 하트를 만든 두 사람" },
-      { src: "/images/daily/26.jpg", alt: "모래언덕에서 함께 뛰어오른 두 사람" },
-      { src: "/images/daily/27.jpg", alt: "모래언덕에서 마주 본 두 사람" },
+      { src: "/images/daily/13.jpg", alt: "집에서 장난스럽게 찍은 두 사람" },
+      { src: "/images/daily/14.jpg", alt: "운동하는 서로를 찍어주는 두 사람" },
+      { src: "/images/daily/15.jpg", alt: "운동복 차림으로 나란히 선 두 사람" },
+      { src: "/images/daily/16.jpg", alt: "운동 중에 마주 본 두 사람" },
+      { src: "/images/daily/17.jpg", alt: "운동기구 위에서 힘내는 신부" },
+      { src: "/images/daily/18.jpg", alt: "양이 있는 초원에서 마주 안은 두 사람" },
+      { src: "/images/daily/19.jpg", alt: "양이 있는 초원에 나란히 선 두 사람" },
+      { src: "/images/daily/20.jpg", alt: "강가 노을을 배경으로 안은 두 사람" },
+      { src: "/images/daily/21.jpg", alt: "야자수가 보이는 창가에서 웃는 두 사람" },
+      { src: "/images/daily/22.jpg", alt: "물가에서 어깨를 맞댄 두 사람" },
+      { src: "/images/daily/23.jpg", alt: "분홍색 지프차에 앉은 신랑" },
+      { src: "/images/daily/24.jpg", alt: "물 위에서 손으로 하트를 만든 두 사람" },
+      { src: "/images/daily/25.jpg", alt: "모래언덕에서 함께 뛰어오른 두 사람" },
+      { src: "/images/daily/26.jpg", alt: "모래언덕에서 마주 본 두 사람" },
     ] satisfies GalleryImage[],
   },
 
@@ -385,6 +384,19 @@ export const wedding = {
     /** 몇 번째 항목 뒤에 사진을 펼칠지. -1 이면 사진을 넣지 않습니다. */
     photosAfter: 1,
     photosHeading: "그 사이의 날들",
+    /**
+     * 사진 묶음 위에 놓이는 짧은 영상. 소리가 없는 영상만 넣어주세요.
+     * 저절로 재생되고 끝없이 반복되며, 배경음악은 그대로 이어집니다.
+     * 빼려면 src 를 "" 로 두면 됩니다.
+     */
+    video: {
+      src: "/video/moment.mp4",
+      /** H.264 를 못 읽는 브라우저용 예비 파일 */
+      webm: "/video/moment.webm",
+      poster: "/video/moment-poster.jpg",
+      alt: "포토부스에서 머리띠를 쓰고 장난치는 두 사람",
+      ratio: "3 / 2",
+    },
     items: [
       {
         date: "2022. 08",
@@ -578,7 +590,14 @@ export const wedding = {
   location: {
     heading: "오시는 길",
     /**
-     * 지도 이미지. scripts/build-map.mjs 로 만들어집니다.
+     * 화면 안에서 바로 움직이고 확대할 수 있는 지도(구글 지도).
+     * 이 이름으로 검색한 위치에 핀이 꽂힙니다. 키 발급이 필요 없습니다.
+     * "" 로 두면 아래 mapImage 그림 지도가 대신 나옵니다.
+     */
+    mapEmbedQuery: "연세대학교 동문회관",
+    mapEmbedZoom: 16,
+    /**
+     * 그림 지도. scripts/build-map.mjs 로 만들어집니다.
      * 예식장에서 받은 약도로 바꾸고 싶으면 그 파일 경로를 넣으세요.
      */
     mapImage: "/images/wedding/map.jpg",

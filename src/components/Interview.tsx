@@ -27,7 +27,7 @@ export function Interview() {
 
   return (
     <section className="edge pb-24" aria-labelledby="interview-heading">
-      <SectionHeading id="interview-heading" icon={MessagesSquare} title={interview.heading} body={interview.intro} />
+      <SectionHeading id="interview-heading" icon={MessagesSquare} tone="interview" title={interview.heading} body={interview.intro} />
 
       <Reveal delay={0.06} className="mt-8 text-center">
         <button

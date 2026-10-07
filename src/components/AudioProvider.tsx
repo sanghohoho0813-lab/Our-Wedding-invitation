@@ -209,6 +209,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
          */
         <video
           ref={audioRef}
+          data-bgm=""
           muted
           autoPlay
           playsInline

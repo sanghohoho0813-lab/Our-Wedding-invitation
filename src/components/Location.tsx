@@ -26,6 +26,10 @@ export function Location() {
   const hall: string = wedding.wedding.hall;
   const tel: string = wedding.wedding.tel;
   const mapImage: string = wedding.location.mapImage;
+  const embedQuery: string = wedding.location.mapEmbedQuery;
+  const embedSrc = embedQuery
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&hl=ko&z=${wedding.location.mapEmbedZoom}&output=embed`
+    : "";
 
   const handleCopy = async () => {
     const ok = await copyText(address);
@@ -35,7 +39,7 @@ export function Location() {
   return (
     <section className="band pb-24" aria-labelledby="location-heading">
       <div className="edge">
-        <SectionHeading id="location-heading" icon={MapPin} title={wedding.location.heading} />
+        <SectionHeading id="location-heading" icon={MapPin} tone="pin" title={wedding.location.heading} />
 
         <Reveal className="mt-8 text-center">
           <p className="text-[17px] leading-snug tracking-[-0.01em] text-ink">{venue}</p>
@@ -54,10 +58,19 @@ export function Location() {
         </Reveal>
       </div>
 
-      {/* 지도 */}
+      {/* 지도 — 화면 안에서 바로 끌고 확대할 수 있다. */}
       <Reveal delay={0.06} className="edge mt-7">
-        <div className="relative h-[230px] w-full overflow-hidden rounded-[10px] border border-line bg-paper-deep">
-          {mapImage ? (
+        <div className="relative h-[260px] w-full overflow-hidden rounded-[10px] border border-line bg-paper-deep">
+          {embedSrc ? (
+            <iframe
+              src={embedSrc}
+              title={`${venue} 위치 지도`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          ) : mapImage ? (
             <Image
               src={mapImage}
               alt={`${venue} 위치 지도`}
@@ -74,8 +87,8 @@ export function Location() {
             </div>
           )}
         </div>
-        {/* OpenStreetMap 타일로 만든 지도라 저작자 표기가 필요하다. */}
-        {mapImage && (
+        {/* 그림 지도는 OpenStreetMap 타일로 만들어 저작자 표기가 필요하다. */}
+        {!embedSrc && mapImage && (
           <p className="mt-2 text-right text-[11px] tracking-[0.01em] text-faint">
             지도 © OpenStreetMap contributors
           </p>

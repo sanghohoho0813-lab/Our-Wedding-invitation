@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { DraftMark } from "@/components/DraftMark";
+import { LoopVideo } from "@/components/LoopVideo";
 import { PhotoGridBody } from "@/components/PhotoGrid";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Reveal } from "@/components/Reveal";
@@ -136,10 +137,11 @@ export function Timeline() {
   const before = items.slice(0, splitAt);
   const after = items.slice(splitAt);
   const showPhotos = photos.length > 0 && splitAt < items.length + 1;
+  const video = timeline.video;
 
   return (
     <section className="edge band pb-24" aria-labelledby="timeline-heading">
-      <SectionHeading id="timeline-heading" icon={Heart} title={timeline.heading} />
+      <SectionHeading id="timeline-heading" icon={Heart} tone="heart" title={timeline.heading} />
 
       <TimelineList items={before} startIndex={0} className="mt-12" />
 
@@ -150,7 +152,12 @@ export function Timeline() {
               <p className="text-[13px] tracking-[0.04em] text-accent">{timeline.photosHeading}</p>
             </Reveal>
           )}
-          <PhotoGridBody images={photos} className="mt-6" />
+          {video.src && (
+            <Reveal className="mt-6">
+              <LoopVideo src={video.src} webm={video.webm} poster={video.poster} alt={video.alt} ratio={video.ratio} />
+            </Reveal>
+          )}
+          <PhotoGridBody images={photos} className={video.src ? "mt-1.5" : "mt-6"} />
         </div>
       )}
 

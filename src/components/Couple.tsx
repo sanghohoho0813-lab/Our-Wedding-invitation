@@ -43,9 +43,9 @@ function PersonHead({ label, person }: { label: string; person: Person }) {
           <a
             href={`tel:${tel}`}
             aria-label={`${label} ${person.name}에게 전화하기`}
-            className="-my-2 ml-1 inline-flex h-11 w-11 items-center justify-center align-middle text-accent"
+            className="-my-2 ml-1 inline-flex h-11 w-11 items-center justify-center align-middle text-call"
           >
-            <Phone size={14} strokeWidth={1.6} aria-hidden="true" />
+            <Phone size={15} strokeWidth={1.8} aria-hidden="true" />
           </a>
         )}
       </p>
@@ -154,7 +154,7 @@ function HostContacts() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="btn-outline glow-hint active:bg-paper-deep"
+        className="btn-outline glow-hint border-sage-line bg-sage text-sage-ink active:bg-[#e0ebe2]"
       >
         혼주에게 연락하기
       </button>
@@ -186,16 +186,16 @@ function HostContacts() {
                         <a
                           href={`tel:${tel}`}
                           aria-label={`${person.role} ${person.name}에게 전화하기`}
-                          className="tap w-11 text-muted active:text-ink"
+                          className="tap w-11 text-call active:opacity-70"
                         >
-                          <Phone size={15} strokeWidth={1.4} aria-hidden="true" />
+                          <Phone size={17} strokeWidth={1.7} aria-hidden="true" />
                         </a>
                         <a
                           href={`sms:${tel}`}
                           aria-label={`${person.role} ${person.name}에게 문자 보내기`}
-                          className="tap w-11 text-muted active:text-ink"
+                          className="tap w-11 text-sms active:opacity-70"
                         >
-                          <MessageSquare size={15} strokeWidth={1.4} aria-hidden="true" />
+                          <MessageSquare size={17} strokeWidth={1.7} aria-hidden="true" />
                         </a>
                       </span>
                     ) : (

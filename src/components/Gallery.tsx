@@ -11,7 +11,7 @@ export function Gallery() {
 
   return (
     <section className="edge pb-24" aria-labelledby="gallery-heading">
-      <SectionHeading id="gallery-heading" icon={Images} title="웨딩 갤러리" />
+      <SectionHeading id="gallery-heading" icon={Images} tone="gallery" title="웨딩 갤러리" />
       <PhotoGridBody images={images} />
     </section>
   );

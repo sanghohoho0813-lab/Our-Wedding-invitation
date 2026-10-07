@@ -22,6 +22,14 @@
   --color-tint-bride: #f9edea;
   --color-tint-bride-ink: #8d5a54;
 
+  /* 연락 버튼 — 전화는 초록, 문자는 파랑 (휴대폰 기본 앱과 같은 약속) */
+  --color-call: #2f9a5a;
+  --color-sms: #2f7bd6;
+  /* 혼주 연락 버튼 — 전화 초록과 어울리는 옅은 세이지 */
+  --color-sage: #edf3ee;
+  --color-sage-line: #b4ccba;
+  --color-sage-ink: #3d6a4b;
+
   --font-sans: var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Pretendard", "Malgun Gothic", sans-serif;
   --font-serif: var(--font-noto-serif-kr), "Apple SD Gothic Neo", Georgia, serif;
@@ -316,6 +324,11 @@ img {
 
 main > section:has(+ .band) {
   padding-bottom: 0;
+}
+
+/* 띠가 끝나자마자 다음 제목이 붙어 보이지 않도록 숨 쉴 틈을 준다. */
+main > .band + section:not(.band) {
+  padding-top: 5rem;
 }
 
 /**
