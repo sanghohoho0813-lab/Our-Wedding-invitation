@@ -48,6 +48,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   /** 하객이 음악 버튼으로 직접 껐는가 — 껐다면 그 의사를 존중한다. */
   const userPaused = useRef(false);
+  /**
+   * 소리가 한 번이라도 제대로 켜졌는가.
+   * 입장 화면에서 이미 켜졌는데 첫 스크롤에서 또 "처음부터" 켜면
+   * 곡이 되감기면서 스크롤도 순간 멈칫한다.
+   */
+  const audibleOnce = useRef(false);
   const isReady = wedding.music.enabled && Boolean(wedding.music.src);
 
   /** 화면 표시용 상태 — "재생 중이면서 음소거가 아닐 때"만 켜진 것으로 본다. */
@@ -141,6 +147,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     let done = false;
 
     const onGesture = (event: Event) => {
+      if (audibleOnce.current) {
+        done = true;
+        remove();
+        return;
+      }
       if (done || userPaused.current) return;
 
       // 음악 버튼을 누른 경우는 버튼 자체 토글에 맡긴다.
@@ -150,6 +161,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
       void startAudible({ fromStart: true }).then((ok) => {
         if (!ok) return;
+        audibleOnce.current = true;
         done = true;
         remove();
       });
@@ -189,7 +201,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   /** 입장 화면의 "열기" 처럼, 확실한 사용자 제스처 안에서 소리를 켤 때 쓴다. */
   const startMusic = useCallback(() => {
     userPaused.current = false;
-    void startAudible({ fromStart: true });
+    void startAudible({ fromStart: true }).then((ok) => {
+      if (ok) audibleOnce.current = true;
+    });
   }, [startAudible]);
 
   const value = useMemo(

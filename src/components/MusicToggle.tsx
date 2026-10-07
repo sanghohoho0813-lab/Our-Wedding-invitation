@@ -72,20 +72,25 @@ export function MusicToggle() {
         className="flex h-8 w-8 items-center justify-center gap-[2.5px] rounded-full border border-white/50 bg-white/75"
         aria-hidden="true"
       >
+        {/*
+          막대 높이를 매 프레임 스크립트로 바꾸면 음악이 나오는 내내 화면 전체를
+          다시 계산해서 스크롤이 버벅인다. 높이는 고정하고 CSS 로 세로 배율만
+          움직여 GPU 가 합성만 하게 한다. (eq-bar 는 globals.css)
+        */}
         {BARS.map((bar, i) => (
-          <motion.span
+          <span
             key={i}
-            className="w-[1.5px] rounded-full bg-ink/75"
-            initial={false}
-            animate={
-              isPlaying && !reduceMotion
-                ? { height: [bar.rest, bar.peak, bar.rest], opacity: 0.9 }
-                : { height: 3, opacity: 0.5 }
-            }
-            transition={
-              isPlaying && !reduceMotion
-                ? { duration: 1.15, repeat: Infinity, ease: "easeInOut", delay: bar.delay }
-                : { duration: 0.35, ease: "easeOut" }
+            className={`eq-bar w-[1.5px] rounded-full bg-ink/75 ${
+              isPlaying && !reduceMotion ? "eq-bar-on" : ""
+            }`}
+            style={
+              {
+                height: bar.peak,
+                "--eq-rest": bar.rest / bar.peak,
+                "--eq-off": 3 / bar.peak,
+                animationDelay: `${bar.delay}s`,
+                opacity: isPlaying ? 0.9 : 0.5,
+              } as React.CSSProperties
             }
           />
         ))}

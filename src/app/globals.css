@@ -386,6 +386,28 @@ main > .dday-banner + section {
   }
 }
 
+/* 음악 버튼의 작은 막대 — 세로 배율(transform)만 움직여 화면을 다시 그리지 않는다. */
+.eq-bar {
+  transform: scaleY(var(--eq-off));
+  transition:
+    transform 0.35s ease-out,
+    opacity 0.35s ease-out;
+}
+
+.eq-bar-on {
+  animation: eq-bar 1.15s ease-in-out infinite;
+}
+
+@keyframes eq-bar {
+  0%,
+  100% {
+    transform: scaleY(var(--eq-rest));
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
 /**
  * 첫 화면 — 화면이 넓고 낮을 때(폴더블 펼침 · 가로 · PC)
  *
