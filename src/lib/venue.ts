@@ -2,7 +2,7 @@ import { wedding } from "@/config/wedding";
 
 /**
  * 화면에 보여줄 예식 장소 한 줄.
- *   "연세대학교 신촌캠퍼스 동문회관 2층"
+ *   "연세대학교 신촌캠퍼스 동문회관 3층"
  * 홀 이름이 정해지면 층 뒤에 함께 붙는다.
  */
 export function venueLine() {

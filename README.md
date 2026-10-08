@@ -103,7 +103,7 @@ npm run lint       # ESLint
 | 부모님 | `groom.father/mother`, `bride.father/mother` | **김영훈 · 원정연 / 창지환 · 유병연** |
 | 예식 일시 | `wedding.date`, `wedding.timeLabel` | **2026-12-20(일) 오후 1시** |
 | 예식장 (화면 표시용) | `wedding.venue` | **연세대학교 신촌캠퍼스 동문회관** |
-| 예식 층 | `wedding.ceremonyFloor` | **2층** — 장소명 뒤에 자동으로 붙습니다 |
+| 예식 층 | `wedding.ceremonyFloor` | **3층** — 장소명 뒤에 자동으로 붙습니다 |
 | 주소 | `wedding.address` | **서울 서대문구 연세로 50** |
 | 지도 검색용 상호 | `wedding.mapQuery` | **연세동문회관예식장** (화면에는 보이지 않음) |
 | 네이버지도 링크 | `wedding.naverMapUrl` | **https://naver.me/5xgOX94G** |
