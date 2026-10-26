@@ -631,6 +631,16 @@ export function DevInvitation() {
                   {tab.body.filter(Boolean).map((line, i) => (
                     <p key={i}>{line}</p>
                   ))}
+                  {/* 셔틀 시간표 — 시간이 채워진 항목만 */}
+                  {(tab.schedule ?? [])
+                    .filter((g) => g.times.length > 0)
+                    .map((g) => (
+                      <p key={g.label} className="mt-1">
+                        <span className="text-dev-cyan">{g.label}</span>
+                        <br />
+                        <span className="pl-3 text-dev-yellow">{g.times.join("  ")}</span>
+                      </p>
+                    ))}
                   {tab.note && <p className="text-dev-faint">{`// ${tab.note}`}</p>}
                 </div>
               ))}

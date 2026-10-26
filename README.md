@@ -86,8 +86,7 @@ npm run lint       # ESLint
 | `draft: "needs-confirmation"` | `[확인 필요]` | 사실 확인이 끝나지 않은 정보입니다 |
 
 **확정되면 그 항목의 `draft` 줄만 지우면 표시가 사라집니다.** 내용은 그대로 남습니다.
-지금 남아 있는 곳은 **셔틀버스 운행 시간**(`[확인 필요]`) 한 군데뿐입니다.
-나머지 내용은 모두 두 분의 답변으로 채워졌습니다.
+지금은 남아 있는 곳이 없습니다. (마지막이던 셔틀버스 시간표도 예식장 안내대로 채웠습니다)
 
 ### 아직 값이 없는 개인정보
 
@@ -126,7 +125,7 @@ npm run lint       # ESLint
 | 일상 사진 | `dailyGallery.images` | 27장 — 타임라인 중간(`timeline.photosAfter`)에 펼쳐집니다 |
 | 주차 · 화환 | `infoTabs.items` | 예식장 최종 안내 반영 |
 | 게스트스냅 커피 선물 | `guestSnap.reward` | `[예시]` — 지급 방식 확정 후 교체 |
-| 셔틀버스 시간표 | `shuttle.toVenue`, `shuttle.fromVenue` | `[확인 필요]` — 비어 있으면 화면에 시간표가 나오지 않습니다 |
+| 셔틀버스 시간표 | `infoTabs` 의 셔틀 `schedule` (+ `shuttle`) | 이대역 3번 출구 앞 → 12:20 · 12:40 / 동문회관 B1 → 14:10 · 14:30 |
 | 맺음말 인사 | `ending.farewell` | 확정 |
 | 푸터 크레딧 | `ending.creditLead`(강조), `ending.credit` | 신랑이 직접 만들었다는 인사 (비우면 숨김) |
 
@@ -462,7 +461,7 @@ src/
 - [ ] 비어 있는 **사진 자리** 채우기 (4번 표)
 - [ ] 홀 이름이 정해지면 `wedding.hall` 입력
 - [ ] 화면에 남은 `[예시]` · `[확인 필요]` 표시 모두 정리 (해당 항목의 `draft` 줄 삭제)
-- [ ] 셔틀버스 운행 시간 확인 후 `shuttle.toVenue` / `shuttle.fromVenue` 입력
+- [x] 셔틀버스 운행 시간 입력 (13시 예식 기준)
 - [ ] **카카오 JavaScript 키** 입력 (`share.kakaoJavascriptKey`, 6-4 참고)
 - [ ] 카카오톡에 링크를 보내 미리보기(og.jpg) 확인
 - [ ] **웨딩 인터뷰** 답변을 두 분의 말로 다듬기 (지금은 초안)
