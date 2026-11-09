@@ -251,6 +251,8 @@ export function GalleryViewer({ images, startIndex, onClose }: Props) {
                 height={1600}
                 sizes="100vw"
                 priority
+                // 원본 그대로 보여줄 사진은 다시 압축하지 않는다.
+                unoptimized={image.original}
                 draggable={false}
                 onClick={onImageTap}
                 className="h-auto max-h-full w-auto max-w-full select-none object-contain"

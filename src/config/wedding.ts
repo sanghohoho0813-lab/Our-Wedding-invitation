@@ -34,6 +34,11 @@ export type GalleryImage = {
   alt: string;
   /** 잘리는 위치 조정 (CSS object-position). 생략하면 "center" */
   objectPosition?: string;
+  /**
+   * true 면 사이트가 다시 압축하지 않고 올린 파일을 그대로 보여준다.
+   * (포토부스 사진처럼 글자 · 테두리가 있어 원본 그대로가 중요한 사진)
+   */
+  original?: boolean;
 };
 
 export type Account = {
@@ -384,6 +389,20 @@ export const wedding = {
     /** 몇 번째 항목 뒤에 사진을 펼칠지. -1 이면 사진을 넣지 않습니다. */
     photosAfter: 1,
     photosHeading: "그 사이의 날들",
+    /**
+     * 포토부스에서 찍은 사진들 — 일상 사진 아래에 옆으로 넘겨 보는 줄로 놓인다.
+     * 테두리 · 글자까지 한 장의 작품이라 자르지 않고(2:3 그대로) 다시 압축하지도 않는다.
+     */
+    booth: {
+      heading: "네 컷으로 남긴 날들",
+      images: [
+        { src: "/images/booth/booth-01.jpg", alt: "하루필름 포토부스에서 함께 찍은 여섯 컷 사진", original: true },
+        { src: "/images/booth/booth-02.jpg", alt: "놀이공원 만화 프레임으로 찍은 포토부스 사진", original: true },
+        { src: "/images/booth/booth-03.jpg", alt: "파워부스에서 손하트를 만든 네 컷 사진", original: true },
+        { src: "/images/booth/booth-04.jpg", alt: "위에서 내려다본 구도로 찍은 네 컷 사진", original: true },
+        { src: "/images/booth/booth-05.jpg", alt: "뮤지컬 42번가 프레임으로 찍은 포토부스 사진", original: true },
+      ] satisfies GalleryImage[],
+    },
     /**
      * 사진 묶음 아래에 놓이는 짧은 영상. 소리가 없는 영상만 넣어주세요.
      * 저절로 재생되고 끝없이 반복되며, 배경음악은 그대로 이어집니다.

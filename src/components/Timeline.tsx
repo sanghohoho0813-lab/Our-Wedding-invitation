@@ -1,3 +1,4 @@
+import { BoothStrip } from "@/components/BoothStrip";
 import { DraftMark } from "@/components/DraftMark";
 import { LoopVideo } from "@/components/LoopVideo";
 import { PhotoGridBody } from "@/components/PhotoGrid";
@@ -152,6 +153,7 @@ export function Timeline() {
             </Reveal>
           )}
           <PhotoGridBody images={photos} className="mt-6" />
+          <BoothStrip heading={timeline.booth.heading} images={timeline.booth.images} className="mt-12" />
           {video.src && (
             <Reveal className="mt-8">
               <LoopVideo src={video.src} webm={video.webm} poster={video.poster} alt={video.alt} ratio={video.ratio} />

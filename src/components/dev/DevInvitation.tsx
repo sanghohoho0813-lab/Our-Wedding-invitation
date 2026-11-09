@@ -117,7 +117,16 @@ function DevBoot({ onDone }: { onDone: () => void }) {
 }
 
 /** 3열 사진 + --more + 크게 보기 */
-function DevPhotos({ images, initial = 6 }: { images: readonly GalleryImage[]; initial?: number }) {
+function DevPhotos({
+  images,
+  initial = 6,
+  tall = false,
+}: {
+  images: readonly GalleryImage[];
+  initial?: number;
+  /** 포토부스 사진처럼 자르면 안 되는 2:3 사진 — 정사각형 대신 2:3 칸에 통째로 */
+  tall?: boolean;
+}) {
   const [open, setOpen] = useState<number | null>(null);
   const [all, setAll] = useState(false);
   const visible = all ? images : images.slice(0, initial);
@@ -131,7 +140,9 @@ function DevPhotos({ images, initial = 6 }: { images: readonly GalleryImage[]; i
               type="button"
               onClick={() => setOpen(i)}
               aria-label={`${image.alt} 크게 보기`}
-              className="relative block aspect-square w-full overflow-hidden rounded-[2px] bg-dev-panel ring-1 ring-dev-line"
+              className={`relative block w-full overflow-hidden rounded-[2px] bg-dev-panel ring-1 ring-dev-line ${
+                tall ? "aspect-[2/3]" : "aspect-square"
+              }`}
               style={blurBackground(image.src, image.objectPosition)}
             >
               <Image
@@ -139,8 +150,9 @@ function DevPhotos({ images, initial = 6 }: { images: readonly GalleryImage[]; i
                 alt={image.alt}
                 fill
                 loading="lazy"
+                unoptimized={image.original}
                 sizes="(max-width: 520px) 32vw, 166px"
-                className="object-cover"
+                className={tall ? "object-contain" : "object-cover"}
                 style={{ objectPosition: image.objectPosition ?? "center" }}
               />
             </button>
@@ -523,6 +535,11 @@ export function DevInvitation() {
         <Section>
           <Cmd command="ls ./photos/daily">
             <DevPhotos images={wedding.dailyGallery.images} />
+          </Cmd>
+        </Section>
+        <Section>
+          <Cmd command="ls ./photos/booth">
+            <DevPhotos images={wedding.timeline.booth.images} tall />
           </Cmd>
         </Section>
 
